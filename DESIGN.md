@@ -3,8 +3,8 @@
 ## Vision
 
 Retail Atlast
-# Retail Atlas — PRD
 
+# Retail Atlas — PRD
 
 ## Context
 
@@ -17,7 +17,7 @@ What this PRD proposes building as a distinct product:
 3. Compose **cross-retailer aggregates** — "show me every US county where Target opened a store and Dollar General closed one in the last 12 months," "rank CBSAs by event density per $ of retail square footage," "find counties where all big-box retailers have plateaued."
 4. Package the whole thing as a self-service canvas a retail analyst, real-estate investor, or CI buyer can open daily — not as a demo surface gated behind a nowcast chain.
 
-Retail Atlas is a *productized vertical application* built on Elemental: it sells to retail CI / corp-dev / real-estate / merchandising teams directly, with a bounded feature set and a real subscription shape.
+Retail Atlas is a _productized vertical application_ built on Elemental: it sells to retail CI / corp-dev / real-estate / merchandising teams directly, with a bounded feature set and a real subscription shape.
 
 ## Goals
 
@@ -26,32 +26,31 @@ Retail Atlas is a *productized vertical application* built on Elemental: it sell
 3. Make the canvas compositional — multiple retailer layers, multiple analysis overlays, multiple time windows — without requiring a "chain run" or any server-side orchestration for basic map interactions. Heavy-lift analysis fans out on demand.
 4. Deliver at least three named analysis recipes that aren't currently possible in any competing product: store-level incident feed, footprint-delta-between-retailers (opened vs closed per county in a window), and event-density-per-store-density choropleth.
 
-
-`d3-geo` + TopoJSON and  MapLibre / deck.gl can be used.
+`d3-geo` + TopoJSON and MapLibre / deck.gl can be used.
 
 ## Locked-in decisions
 
-| # | Decision |
-|---|---|
-| 1 | **Separate Git repo, separate Vercel / host project, separate Supabase project.** Shared code is distributed via an internal npm package (`@lovelace/retail-map-core`). Shared data (CSVs, NEID caches, topojson) lives in an internal data repo the map-core package reads from at build time. |
-| 2 | Vite + React + TypeScript + Tailwind (frontend); Supabase + Deno edge functions (backend); Elemental MCP via the same `_shared/elemental.ts` helper shape. . |
-| 3 | Atomic map unit is the **Store Record**: `{ store_id, retailer, banner, format, lat, lng, address, area_code, area_type, country, neid? }`. `neid` is populated when Elemental has a resolvable entity for that store; absence is fine (the store still renders as a dot). |
-| 4 | Choropleth unit is the **Area Record**: `{ area_code, area_type, country, area_name, neid, centroid, store_counts_by_retailer }`. NEID is required for an area to be interactive; without one, the polygon is rendered in the base palette but not clickable. |
-| 5 | **No DB-backed entity cache in MVP.** NEID lookups come from bundled JSON files (`area_neids.json`, `store_neids.json`) . If the hit-rate gate in R5 passes, the caches graduate to a DB table in Phase 3. |
-| 6 | MVP ships **three retailers in the US** (Target, Walmart, Dollar General, store csvs can be provided) and **two international** (Tesco UK, Loblaw CA — also already enriched). Additional retailers are unlocked by dropping a new CSV into the data repo and running the build scripts; no code changes. |
-| 7 | The app is called **Retail Atlas**. Route structure: `/` (landing) → `/atlas` (map canvas, the product) → `/atlas/store/:store_id`, `/atlas/area/:area_code`, `/atlas/retailer/:slug` (detail panes). No nested sub-routes deeper than two levels. |
-| 8| Feature flag `VITE_ATLAS_BETA=true` gates the MVP build. Default off for any deploy that isn't the beta domain. |
+| #   | Decision                                                                                                                                                                                                                                                                                                  |
+| --- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| 1   | **Separate Git repo, separate Vercel / host project, separate Supabase project.** Shared code is distributed via an internal npm package (`@lovelace/retail-map-core`). Shared data (CSVs, NEID caches, topojson) lives in an internal data repo the map-core package reads from at build time.           |
+| 2   | Vite + React + TypeScript + Tailwind (frontend); Supabase + Deno edge functions (backend); Elemental MCP via the same `_shared/elemental.ts` helper shape. .                                                                                                                                              |
+| 3   | Atomic map unit is the **Store Record**: `{ store_id, retailer, banner, format, lat, lng, address, area_code, area_type, country, neid? }`. `neid` is populated when Elemental has a resolvable entity for that store; absence is fine (the store still renders as a dot).                                |
+| 4   | Choropleth unit is the **Area Record**: `{ area_code, area_type, country, area_name, neid, centroid, store_counts_by_retailer }`. NEID is required for an area to be interactive; without one, the polygon is rendered in the base palette but not clickable.                                             |
+| 5   | **No DB-backed entity cache in MVP.** NEID lookups come from bundled JSON files (`area_neids.json`, `store_neids.json`) . If the hit-rate gate in R5 passes, the caches graduate to a DB table in Phase 3.                                                                                                |
+| 6   | MVP ships **three retailers in the US** (Target, Walmart, Dollar General, store csvs can be provided) and **two international** (Tesco UK, Loblaw CA — also already enriched). Additional retailers are unlocked by dropping a new CSV into the data repo and running the build scripts; no code changes. |
+| 7   | The app is called **Retail Atlas**. Route structure: `/` (landing) → `/atlas` (map canvas, the product) → `/atlas/store/:store_id`, `/atlas/area/:area_code`, `/atlas/retailer/:slug` (detail panes). No nested sub-routes deeper than two levels.                                                        |
+| 8   | Feature flag `VITE_ATLAS_BETA=true` gates the MVP build. Default off for any deploy that isn't the beta domain.                                                                                                                                                                                           |
 
 ## Phasing
 
-| Phase | Scope | Effort | Trigger |
-|---|---|---|---|
-| **Phase 0** | Elemental store-level coverage probe (R5.1) — run before committing to the rest of the PRD. If per-store hit-rate is under 30%, this phasing collapses and the product pivots to area-only. | ~2 days | Immediate, blocking. |
-| **Phase 1** | Repo + shared-package extraction + MVP map canvas (R1, R2, R3) with the five retailers. Area-level clicks only; no store-level NEIDs yet. | ~2 person-weeks | Phase 0 result, regardless of outcome. |
-| **Phase 2** | Store-level NEID resolution + per-store context panel (R5, R6). Gated on Phase 0 hit-rate. | ~1.5 person-weeks | Phase 0 hit-rate ≥ 30%. |
-| **Phase 3** | Cross-retailer overlays + analysis recipes (R4, R7). The product differentiator. | ~2 person-weeks | Phase 1 lands and at least 3 beta users are active. |
-| **Phase 4** | Premium-feed composition surface (R8) — panel, credit-card, imagery overlays with the same `available_in_production[]` pattern uses. | ~1 person-week | First paid design-partner signals interest in feed composition. |
-| **Phase 5** | DB-backed entity + observation cache, admin UI, multi-tenant hardening (R9, R10). | ~3 person-weeks | Beta converts to paid. |
+| Phase       | Scope                                                                                                                                                                                       | Effort            | Trigger                                                         |
+| ----------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------- | --------------------------------------------------------------- |
+| **Phase 0** | Elemental store-level coverage probe (R5.1) — run before committing to the rest of the PRD. If per-store hit-rate is under 30%, this phasing collapses and the product pivots to area-only. | ~2 days           | Immediate, blocking.                                            |
+| **Phase 1** | Repo + shared-package extraction + MVP map canvas (R1, R2, R3) with the five retailers. Area-level clicks only; no store-level NEIDs yet.                                                   | ~2 person-weeks   | Phase 0 result, regardless of outcome.                          |
+| **Phase 2** | Store-level NEID resolution + per-store context panel (R5, R6). Gated on Phase 0 hit-rate.                                                                                                  | ~1.5 person-weeks | Phase 0 hit-rate ≥ 30%.                                         |
+| **Phase 3** | Cross-retailer overlays + analysis recipes (R4, R7). The product differentiator.                                                                                                            | ~2 person-weeks   | Phase 1 lands and at least 3 beta users are active.             |
+| **Phase 4** | Premium-feed composition surface (R8) — panel, credit-card, imagery overlays with the same `available_in_production[]` pattern uses.                                                        | ~1 person-week    | First paid design-partner signals interest in feed composition. |
+| **Phase 5** | DB-backed entity + observation cache, admin UI, multi-tenant hardening (R9, R10).                                                                                                           | ~3 person-weeks   | Beta converts to paid.                                          |
 
 ## Definitions
 
@@ -61,19 +60,19 @@ The atomic geocoded unit on the map. One row per physical retail location.
 
 ```jsonc
 {
-  "store_id": "target-1234",          // retailer slug + store number
-  "retailer": "Target",
-  "banner": null,                       // Loblaw / Tesco sub-brands populate this
-  "format": "General Merchandise",      // Supercenter / Express / Metro / …
-  "country": "US",
-  "area_code": "06037",                 // 5-digit FIPS / LAD / CMA
-  "area_type": "county",                // "county" | "lad" | "cma"
-  "lat": 34.0522,
-  "lng": -118.2437,
-  "address": "…",
-  "city": "Los Angeles",
-  "region": "CA",
-  "neid": "…"                           // optional; populated when Elemental has coverage
+    "store_id": "target-1234", // retailer slug + store number
+    "retailer": "Target",
+    "banner": null, // Loblaw / Tesco sub-brands populate this
+    "format": "General Merchandise", // Supercenter / Express / Metro / …
+    "country": "US",
+    "area_code": "06037", // 5-digit FIPS / LAD / CMA
+    "area_type": "county", // "county" | "lad" | "cma"
+    "lat": 34.0522,
+    "lng": -118.2437,
+    "address": "…",
+    "city": "Los Angeles",
+    "region": "CA",
+    "neid": "…", // optional; populated when Elemental has coverage
 }
 ```
 
@@ -83,18 +82,18 @@ The atomic polygon unit. One row per administrative area (county / LAD / CMA) th
 
 ```jsonc
 {
-  "area_code": "06037",
-  "area_type": "county",
-  "country": "US",
-  "area_name": "Los Angeles",
-  "region": "California",
-  "neid": "00514451033156531285",       // required for click-context
-  "centroid": [-118.24, 34.05],
-  "store_counts": {
-    "Target":           85,
-    "Walmart":          40,
-    "Dollar General":   35
-  }
+    "area_code": "06037",
+    "area_type": "county",
+    "country": "US",
+    "area_name": "Los Angeles",
+    "region": "California",
+    "neid": "00514451033156531285", // required for click-context
+    "centroid": [-118.24, 34.05],
+    "store_counts": {
+        "Target": 85,
+        "Walmart": 40,
+        "Dollar General": 35,
+    },
 }
 ```
 
@@ -104,12 +103,12 @@ A named, saveable composition of (retailers × area filter × overlay × time wi
 
 ```jsonc
 {
-  "recipe_id": "opened-vs-closed-12m",
-  "label": "Store openings minus closings, last 12 months",
-  "retailers": ["Target", "Walmart", "Dollar General"],
-  "area_scope": { "country": "US", "min_population": 50000 },
-  "overlay": { "kind": "event_delta", "event_types": ["store_open", "store_close"] },
-  "time_window": { "months_back": 12 }
+    "recipe_id": "opened-vs-closed-12m",
+    "label": "Store openings minus closings, last 12 months",
+    "retailers": ["Target", "Walmart", "Dollar General"],
+    "area_scope": { "country": "US", "min_population": 50000 },
+    "overlay": { "kind": "event_delta", "event_types": ["store_open", "store_close"] },
+    "time_window": { "months_back": 12 },
 }
 ```
 
@@ -117,11 +116,11 @@ MVP ships three canonical recipes (see R7); users can clone and tweak via URL pa
 
 ### Elemental coverage tiers
 
-| Tier | What Elemental resolves | How we use it |
-|---|---|---|
-| **Area** | County / LAD / CMA as `location` flavor entity  | Choropleth click → `nowcast-county-context`-style fan-out. |
-| **Retailer org** | Retailer as `organization` flavor (provven via `getEntityByCik`) | Global retailer event feed, roll-ups. |
-| **Store** | Individual store locations as `location` or `organization` flavors | Per-dot click; gated on Phase 0 hit-rate. |
+| Tier                         | What Elemental resolves                                                      | How we use it                                                        |
+| ---------------------------- | ---------------------------------------------------------------------------- | -------------------------------------------------------------------- |
+| **Area**                     | County / LAD / CMA as `location` flavor entity                               | Choropleth click → `nowcast-county-context`-style fan-out.           |
+| **Retailer org**             | Retailer as `organization` flavor (provven via `getEntityByCik`)             | Global retailer event feed, roll-ups.                                |
+| **Store**                    | Individual store locations as `location` or `organization` flavors           | Per-dot click; gated on Phase 0 hit-rate.                            |
 | **Shopping center / anchor** | Malls, lifestyle centers, strip-mall anchors as `location` or `organization` | Composed with stores; one click surfaces co-tenant events. Phase 3+. |
 
 ## Architecture
@@ -178,7 +177,7 @@ flowchart LR
   panel --> supabase
 ```
 
-The diagram is intentionally three-boxed: (1) data repo  (2) `@lovelace/retail-map-core` —  (3) Retail Atlas app — the product surface that imports core and wires it to its own routing, auth, and edge functions.
+The diagram is intentionally three-boxed: (1) data repo (2) `@lovelace/retail-map-core` — (3) Retail Atlas app — the product surface that imports core and wires it to its own routing, auth, and edge functions.
 
 ## Requirements
 
@@ -234,20 +233,19 @@ No other tables in Phase 1. Retailer rosters, NEID caches, and area summaries al
 
 A new internal npm package:
 
-| source | Moves to | Notes |
-|---|---|---|
-| `src/components/nowcast/NowcastCockpitMap.tsx` | `core/MapCanvas.tsx` | Rename, drop the nowcast-specific props (`retailer` becomes a required `retailers: string[]`), keep the five-layer render pipeline. |
-| `src/components/nowcast/NowcastCountyContextPanel.tsx` | `core/AreaContextPanel.tsx` | Becomes generic: takes `{ neid, area_type }` instead of `{ pinnedCountyFips, pinnedAreaCode }`. |
-| `src/lib/api/nowcast-counties.ts` | `core/areas.ts` | Rename types (`RetailArea` stays); drop the-specific top-N arrays in favor of a data-driven loader reading from `@lovelace/retail-data`. |
-| `supabase/functions/_shared/elemental.ts` | `core/elemental.ts` | Verbatim. The helper is already generic. |
-| `supabase/functions/_shared/sse.ts` | `core/sse.ts` | Verbatim. |
-| `supabase/functions/nowcast-county-context/index.ts` | `core/context-handler.ts` | Extract the Deno-agnostic traversal logic; the edge-function wrapper stays in each app. |
-| `scripts/build-retailer-map-data.ts` | `core/scripts/build-map-data.ts` | Verbatim. |
-| `scripts/expand-retailer-county-neids.ts` | `core/scripts/expand-area-neids.ts` | Generalize to area_type param. |
-| `scripts/expand-international-area-neids.ts` | merge with above | Unified in one script. |
-| `scripts/lib/retail-stores-fips.ts` | `core/scripts/lib/fips-enrich.ts` | Verbatim. |
-| `scripts/build-international-topojson.sh` | `core/scripts/build-topojson.sh` | Verbatim. |
-
+| source                                                 | Moves to                            | Notes                                                                                                                                    |
+| ------------------------------------------------------ | ----------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------- |
+| `src/components/nowcast/NowcastCockpitMap.tsx`         | `core/MapCanvas.tsx`                | Rename, drop the nowcast-specific props (`retailer` becomes a required `retailers: string[]`), keep the five-layer render pipeline.      |
+| `src/components/nowcast/NowcastCountyContextPanel.tsx` | `core/AreaContextPanel.tsx`         | Becomes generic: takes `{ neid, area_type }` instead of `{ pinnedCountyFips, pinnedAreaCode }`.                                          |
+| `src/lib/api/nowcast-counties.ts`                      | `core/areas.ts`                     | Rename types (`RetailArea` stays); drop the-specific top-N arrays in favor of a data-driven loader reading from `@lovelace/retail-data`. |
+| `supabase/functions/_shared/elemental.ts`              | `core/elemental.ts`                 | Verbatim. The helper is already generic.                                                                                                 |
+| `supabase/functions/_shared/sse.ts`                    | `core/sse.ts`                       | Verbatim.                                                                                                                                |
+| `supabase/functions/nowcast-county-context/index.ts`   | `core/context-handler.ts`           | Extract the Deno-agnostic traversal logic; the edge-function wrapper stays in each app.                                                  |
+| `scripts/build-retailer-map-data.ts`                   | `core/scripts/build-map-data.ts`    | Verbatim.                                                                                                                                |
+| `scripts/expand-retailer-county-neids.ts`              | `core/scripts/expand-area-neids.ts` | Generalize to area_type param.                                                                                                           |
+| `scripts/expand-international-area-neids.ts`           | merge with above                    | Unified in one script.                                                                                                                   |
+| `scripts/lib/retail-stores-fips.ts`                    | `core/scripts/lib/fips-enrich.ts`   | Verbatim.                                                                                                                                |
+| `scripts/build-international-topojson.sh`              | `core/scripts/build-topojson.sh`    | Verbatim.                                                                                                                                |
 
 #### R2.2 — Package shape
 
@@ -314,7 +312,7 @@ The five-layer composite generalizes to **N + 3** layers:
 Four simultaneous retailer choropleths can't all be solid fills without turning mud. MVP approach:
 
 - **Lead retailer** (first chip activated) → standard sequential-sqrt choropleth, its palette.
-- **Other active retailers** → rendered as *pattern overlays* (hatch / stipple via SVG `<pattern>` definitions) instead of fills. Density controlled by that retailer's store count in the area.
+- **Other active retailers** → rendered as _pattern overlays_ (hatch / stipple via SVG `<pattern>` definitions) instead of fills. Density controlled by that retailer's store count in the area.
 
 Hover tooltip shows all active retailers' counts regardless of who's drawing the fill. NEID halo is union across all active retailers.
 
@@ -352,11 +350,11 @@ candidates = [
 
 Threshold definition:
 
-| Hit-rate | Decision |
-|---|---|
-| ≥ 60% | Build store-level NEIDs for the full roster; store dots are click-targets by default. |
+| Hit-rate | Decision                                                                                                                                                              |
+| -------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| ≥ 60%    | Build store-level NEIDs for the full roster; store dots are click-targets by default.                                                                                 |
 | 30 – 60% | Build store-level NEIDs where they resolve; dots are conditionally click-targets (gated on NEID presence). Shopping-center resolution (Phase 3) becomes the fallback. |
-| < 30% | Cancel Phase 2. Product stays area-only; pitch pivots to "county-level context explorer." Shopping-center resolution moves earlier. |
+| < 30%    | Cancel Phase 2. Product stays area-only; pitch pivots to "county-level context explorer." Shopping-center resolution moves earlier.                                   |
 
 Script: `core/scripts/probe-store-coverage.ts`. Emits a JSON report + a markdown summary; commit both to the data repo for provenance.
 
@@ -365,7 +363,7 @@ Script: `core/scripts/probe-store-coverage.ts`. Emits a JSON report + a markdown
 Assuming Phase 0 ≥ 30%:
 
 - `core/scripts/expand-store-neids.ts` — iterates every store in every tracked retailer's CSV, runs the candidate cascade, caches to `neid_cache/store_neids.json`. Keyed by `store_id`.
-- Concurrency budget: 4 parallel MCP calls, 200 ms politeness delay between batches 
+- Concurrency budget: 4 parallel MCP calls, 200 ms politeness delay between batches
 - For Target (~2k stores) + Walmart (~4.6k) + DG (~20k) + Tesco (~4k) + Loblaw (~2.4k) = ~33k stores. At 4 parallel @ 500 ms / call average, the full run is ~70 minutes. Re-runs are incremental (cache hits skip).
 - Re-run cadence: monthly, or on any CSV refresh.
 
@@ -373,13 +371,13 @@ Assuming Phase 0 ≥ 30%:
 
 The Yottagraph NEID cache covers top-25 per retailer. Retail Atlas needs **every** area a tracked retailer operates in to be clickable. At a glance, that's:
 
-| Retailer  | Atlas coverage needed |
-|---|---|---|
-| Target | 25 / ~570 US counties | 570 |
-| Walmart | 25 / ~2,600 counties | 2,600 |
-| Dollar General | 25 / ~2,800 counties | 2,800 |
-| Tesco | 25 / ~350 LADs | 350 |
-| Loblaw | 25 / ~155 CMAs | 155 |
+| Retailer       | Atlas coverage needed |
+| -------------- | --------------------- | ----- |
+| Target         | 25 / ~570 US counties | 570   |
+| Walmart        | 25 / ~2,600 counties  | 2,600 |
+| Dollar General | 25 / ~2,800 counties  | 2,800 |
+| Tesco          | 25 / ~350 LADs        | 350   |
+| Loblaw         | 25 / ~155 CMAs        | 155   |
 
 Union is ~3,000 unique US counties + ~500 international areas. `expand-area-neids.ts` runs in the same cache-driven mode; incremental re-runs after roster refreshes are cheap.
 
@@ -387,13 +385,12 @@ Union is ~3,000 unique US counties + ~500 international areas. `expand-area-neid
 
 #### R6.1 — Area Context Panel
 
-
 - Takes `{ neid, area_type, area_name, country, retailers: string[] }`.
-- On mount, fires a Supabase edge function `atlas-area-context`  that:
-  1. Starts an Elemental MCP session.
-  2. Parallel: `elemental_get_events(area_neid)`, `elemental_get_related(area_neid, "article", 12)` → `getArticleProperties(…)`, `elemental_get_related(area_neid, "economic_concept", 8)`.
-  3. For each active retailer, parallel: `getEntityByCik(retailer_cik)` → `elemental_get_events(retailer_neid)` (retailer-level events).
-  4. Returns a unified shape: `{ area_events, area_articles, economic_concepts, retailer_events_by_retailer }`.
+- On mount, fires a Supabase edge function `atlas-area-context` that:
+    1. Starts an Elemental MCP session.
+    2. Parallel: `elemental_get_events(area_neid)`, `elemental_get_related(area_neid, "article", 12)` → `getArticleProperties(…)`, `elemental_get_related(area_neid, "economic_concept", 8)`.
+    3. For each active retailer, parallel: `getEntityByCik(retailer_cik)` → `elemental_get_events(retailer_neid)` (retailer-level events).
+    4. Returns a unified shape: `{ area_events, area_articles, economic_concepts, retailer_events_by_retailer }`.
 - Renders four sections (tabs on narrow viewports): area events, retailer events (per retailer chip), articles, economic concepts.
 - Footer: MCP provenance (which tools, how long each took, cache hit-rate over the last 24 h from `atlas_context_calls`).
 
@@ -480,7 +477,7 @@ Toggle infrastructure and cost readout port directly from `available_in_producti
 
 ### R10 — Telemetry + observability (P0, Phase 1)
 
-- Every MCP call logged to `atlas_context_calls` 
+- Every MCP call logged to `atlas_context_calls`
 - Per-load performance marks sent to PostHog: time-to-first-render, time-to-first-interactive, panel-open-latency.
 - Error budget: 99% of area clicks resolve a panel in ≤ 8 s; violations paged via Sentry (edge-fn timeouts) and fronted by a graceful fallback message.
 - Weekly summary cron (Supabase scheduled fn): top-10 most-clicked areas, top-10 slowest tools, panel cache hit-rate, invite-request count.
@@ -515,7 +512,7 @@ The following are lifted verbatim from [`src/index.css`](../../src/index.css) in
 
 **Focus visibility.** WCAG 2.2 compliant — `:focus-visible` renders a 2px outline in `hsl(var(--focus-outline))`. Every interactive element (retailer chips, halo polygons, store dots via SVG `role=button`) must participate.
 
-#### R11.2 — Retailer palette layer 
+#### R11.2 — Retailer palette layer
 
 Atlas adds one layer that a per-retailer color channel for choropleth fills + dot colors + legend chips.
 
@@ -527,7 +524,7 @@ Atlas adds one layer that a per-retailer color channel for choropleth fills + do
 --retailer-loblaw:   hsl(155, 60%, 50%)
 ```
 
-Defined at `:root`; the retailer chip component resolves `hsl(var(--retailer-{slug}))` at render time. New retailers added to `@lovelace/retail-data` get an auto-assigned slot from a 12-color palette, overridable in `retailer_metadata.json`. Palette values are *brand-adjacent*, not trademark reproductions — we lean 5–10 degrees off exact brand hues to preserve contrast and avoid implying endorsement.
+Defined at `:root`; the retailer chip component resolves `hsl(var(--retailer-{slug}))` at render time. New retailers added to `@lovelace/retail-data` get an auto-assigned slot from a 12-color palette, overridable in `retailer_metadata.json`. Palette values are _brand-adjacent_, not trademark reproductions — we lean 5–10 degrees off exact brand hues to preserve contrast and avoid implying endorsement.
 
 #### R11.3 — Layout: the canvas route
 
@@ -570,7 +567,7 @@ Defined at `:root`; the retailer chip component resolves `hsl(var(--retailer-{sl
 Annotated regions:
 
 - **Sidebar** (left, 240 px expanded / 56 px collapsed). . Nav items in MVP: Canvas, Saved recipes, Retailers, Docs, Settings. Collapse state persisted per user in localStorage ( `LS_KEY`). On narrow viewports it collapses to a top drawer.
-- **Header bar** (top, 48 px on mobile, embedded above main content on desktop). Background `hsl(var(--header-bg))`, foreground `hsl(var(--header-fg))`. Holds the wordmark, a beta chip, the palette switcher (`data-tenant-palette`), the mode toggle (`data-mode`), and user menu. 
+- **Header bar** (top, 48 px on mobile, embedded above main content on desktop). Background `hsl(var(--header-bg))`, foreground `hsl(var(--header-fg))`. Holds the wordmark, a beta chip, the palette switcher (`data-tenant-palette`), the mode toggle (`data-mode`), and user menu.
 - **Control rail** (top of canvas). Four horizontally-grouped controls: retailer chips, country selector, time window, overlay picker. Each is a `Card` with `--surface-2` fill and `--border` strokes. 12 px gap between groups, 8 px internal padding.
 - **Map canvas** (main). Full-bleed within the main content column; `min-height: calc(100vh - 200px)`. Responsive to sidebar collapse. Renders inside a `Card` with `--surface-1` fill and a 1 px `--border` stroke. Legend floats bottom-left with `--surface-2` backdrop + 90% opacity + 4 px blur. Pinned badge floats top-right.
 - **Context panel** (docked bottom, slides up on pin). 40% viewport height when open; `--surface-1` backdrop; tab strip uses `Tabs` component. Closes with `Esc` or an X button in the panel header. Same component shape as `NowcastCountyContextPanel`.
@@ -580,21 +577,21 @@ Annotated regions:
 
 All of these come directly from shadcn/ui + extensions and are already available in `@lovelace/retail-map-core`. Atlas imports them; no redesigns.
 
-| Component | source | Use in Atlas |
-|---|---|---|
-| `Card` + `CardContent` | `@/components/ui/card` | Every panel in the canvas. |
-| `Button` | `@/components/ui/button` | Retailer chips, overlay picker trigger, context panel actions. |
-| `Badge` | `@/components/ui/badge` | Beta chip, retailer chip labels, status chips. |
-| `Tabs` / `TabsList` / `TabsTrigger` / `TabsContent` | `@/components/ui/tabs` | Context panel sub-sections (events / articles / concepts). |
-| `Select` / `SelectContent` / `SelectItem` | `@/components/ui/select` | Country selector, overlay picker. |
-| `Tooltip` | `@/components/ui/tooltip` | Hover tooltips on dots + polygons. |
-| `Dialog` | `@/components/ui/dialog` | Saved-recipe confirmation, premium-feed upgrade modals. |
-| `Input` / `Label` | `@/components/ui/{input,label}` | Recipe naming, filter forms. |
-| `ScrollArea` | `@/components/ui/scroll-area` | Context panel content overflow, ranked-areas table. |
-| `Separator` | `@/components/ui/separator` | Subsection dividers in panels. |
-| `AppSidebar` | `@/components/layout/AppSidebar` | Directly ported; route entries swapped for Atlas. |
-| `AppLayout` | `@/components/layout/AppLayout` | Ported with `canvas` layout mode as the default. |
-| `ModeQuickToggle` | `@/components/layout/ModeQuickToggle` | Light / dark / terminal cycler in header. |
+| Component                                           | source                                | Use in Atlas                                                   |
+| --------------------------------------------------- | ------------------------------------- | -------------------------------------------------------------- |
+| `Card` + `CardContent`                              | `@/components/ui/card`                | Every panel in the canvas.                                     |
+| `Button`                                            | `@/components/ui/button`              | Retailer chips, overlay picker trigger, context panel actions. |
+| `Badge`                                             | `@/components/ui/badge`               | Beta chip, retailer chip labels, status chips.                 |
+| `Tabs` / `TabsList` / `TabsTrigger` / `TabsContent` | `@/components/ui/tabs`                | Context panel sub-sections (events / articles / concepts).     |
+| `Select` / `SelectContent` / `SelectItem`           | `@/components/ui/select`              | Country selector, overlay picker.                              |
+| `Tooltip`                                           | `@/components/ui/tooltip`             | Hover tooltips on dots + polygons.                             |
+| `Dialog`                                            | `@/components/ui/dialog`              | Saved-recipe confirmation, premium-feed upgrade modals.        |
+| `Input` / `Label`                                   | `@/components/ui/{input,label}`       | Recipe naming, filter forms.                                   |
+| `ScrollArea`                                        | `@/components/ui/scroll-area`         | Context panel content overflow, ranked-areas table.            |
+| `Separator`                                         | `@/components/ui/separator`           | Subsection dividers in panels.                                 |
+| `AppSidebar`                                        | `@/components/layout/AppSidebar`      | Directly ported; route entries swapped for Atlas.              |
+| `AppLayout`                                         | `@/components/layout/AppLayout`       | Ported with `canvas` layout mode as the default.               |
+| `ModeQuickToggle`                                   | `@/components/layout/ModeQuickToggle` | Light / dark / terminal cycler in header.                      |
 
 | `TerminalBootSequence` | `@/components/layout/TerminalBootSequence` | Verbatim port. |
 
@@ -632,7 +629,7 @@ src/index.css
 └── @layer utilities { … }
 ```
 
-Operation (palette switching, new palette addition, rollback) follows [`TENANT_PALETTE_OPERATIONS.md`](TENANT_PALETTE_OPERATIONS.md) exactly; Atlas ships its own `/admin/appearance` surface 
+Operation (palette switching, new palette addition, rollback) follows [`TENANT_PALETTE_OPERATIONS.md`](TENANT_PALETTE_OPERATIONS.md) exactly; Atlas ships its own `/admin/appearance` surface
 
 #### R11.7 — Accessibility posture
 
@@ -659,12 +656,10 @@ Operation (palette switching, new palette addition, rollback) follows [`TENANT_P
 6. **Shopping-center / mall entity coverage in Elemental.** Phase 3 Recipe 3 and the Phase 2 fallback for stores-without-NEIDs both lean on this. A second probe script similar to R5.1 should run during Phase 1 to sanity-check coverage.
 7. **International expansion beyond UK + CA.** Mexico and Japan are the obvious next two (Walmart de Mexico, Seven & i) but require new topojson + new enrichment pipelines. Gate on beta traction.
 
-
-
 ## Status
 
 Project just created. Run `/build_my_app` in Cursor to start building.
 
 ## Modules
 
-*None yet — the agent will populate this as features are built.*
+_None yet — the agent will populate this as features are built._
