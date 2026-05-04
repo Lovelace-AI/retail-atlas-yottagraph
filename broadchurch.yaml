@@ -1,0 +1,30 @@
+# Broadchurch project configuration
+# Auto-generated during tenant provisioning.
+
+gcp:
+  project: broadchurch
+  region: us-central1
+  staging_bucket: broadchurch-agent-staging
+
+tenant:
+  project_name: "retail-atlas"
+  display_name: "Retail Atlas"
+  org_id: "org_TnK1jDCyK6pUPhm6"
+  service_account: "tenant-tnk1jdcyk6puphm6@broadchurch.iam.gserviceaccount.com"
+
+gateway:
+  url: "https://broadchurch-portal-194773164895.us-central1.run.app"
+  qs_api_key: "913a03350b9032bf1693ae0aa7e6f4b241697b114e2d168a1703469b09dce35b"
+
+query_server:
+  url: "https://query.news.prod.g.lovelace.ai"
+  audience: "queryserver:api"
+
+auth:
+  client_id: "fJinrpyvOeEBfTeLunglRCrXubDbX5x7"
+  audience: "queryserver:api"
+
+aether:
+  data_mode: "api-mcp"
+
+agents: {}
