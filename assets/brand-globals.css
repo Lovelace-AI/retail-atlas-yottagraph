@@ -30,6 +30,21 @@
     --lv-finance-blue: #003bff;
     --lv-finance-blue-dim: #0230d0;
 
+    /* Retail Atlas — retailer palette (R11.2). Brand-adjacent hues, not exact
+       brand reproductions, tuned for legibility on a dark map canvas. */
+    --retailer-target: hsl(0, 85%, 60%);
+    --retailer-walmart: hsl(210, 90%, 60%);
+    --retailer-dg: hsl(42, 95%, 60%);
+    --retailer-tesco: hsl(280, 70%, 65%);
+    --retailer-loblaw: hsl(155, 60%, 55%);
+
+    /* Retail Atlas — semantic surfaces */
+    --atlas-halo: hsl(48, 100%, 70%);
+    --atlas-canvas-bg: #0c0e10;
+    --atlas-graticule: rgba(255, 255, 255, 0.04);
+    --atlas-area-fill: rgba(255, 255, 255, 0.04);
+    --atlas-area-stroke: rgba(255, 255, 255, 0.08);
+
     /* Typography */
     --font-primary: 'FK Grotesk', 'Inter', system-ui, -apple-system, sans-serif;
     --font-headline: 'FK Grotesk Mono', 'Inter', system-ui, sans-serif;
