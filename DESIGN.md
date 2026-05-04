@@ -658,8 +658,74 @@ Operation (palette switching, new palette addition, rollback) follows [`TENANT_P
 
 ## Status
 
-Project just created. Run `/build_my_app` in Cursor to start building.
+MVP scaffold landed (Aether-native build on Nuxt 3 + Vuetify 3, not the
+React+Supabase stack the PRD originally assumed — see "Stack delta" below).
+
+What ships now:
+
+- Landing page (`/`) — hero pitch, capability grid, link to the canvas.
+- Map canvas (`/atlas`) — sidebar, control rail (retailers / country /
+  time window / overlay picker), d3-geo projection per country, area
+  centroid choropleth + pattern overlay (lead vs other retailers), gold
+  NEID halo, store dots sized by format, legend, pinned badge, footer
+  strip with MCP provenance summary.
+- Live context fan-out — clicking a haloed area or a store dot loads
+  events / articles / economic concepts via the Elemental gateway, with
+  per-tool latency surfaced in the panel footer. Per-NEID results are
+  cached in-memory for the session (R6.3, sub-tier — Deno KV is part of
+  the original stack and isn't wired here).
+- Recipes index (`/atlas/recipes`) — three canonical recipes with
+  apply-on-canvas links.
+- Retailers index + detail (`/atlas/retailers`, `/atlas/retailer/:slug`)
+  with per-area presence tables.
+- Area detail (`/atlas/area/:code`) and Store detail (`/atlas/store/:id`)
+  pages so any link can be the entry point.
+
+What is NOT in this scaffold (deliberate Phase 1 cuts):
+
+- True TopoJSON polygons for counties / LADs / CMAs. The PRD-scale
+  pipeline lives in `@lovelace/retail-data`, an internal package not
+  available from this repo. The canvas approximates polygons with
+  centroid-projected circles + a country bounding silhouette so the
+  five-layer composite stays legible on the data we have.
+- Real retailer rosters. `public/data/retail-atlas/stores.json` is
+  generated deterministically by `scripts/generate-sample-stores.js`
+  (~200 sample stores across 26 areas; ~35% have store-level NEIDs to
+  match R5.1's 30–60% tier).
+- Phase 0 store-coverage probe (R5.1) and the Supabase telemetry tables
+  (R1.2, R10). Telemetry is rendered in the footer strip from in-memory
+  state only.
+- Premium-feed composition surface (R8) and recipe save-to-server (R7,
+  Phase 5).
+
+### Stack delta
+
+The PRD originally specified Vite + React + Supabase + Deno edge functions
+and a separate `@lovelace/retail-map-core` npm package. This repo is an
+Aether tenant project built on Nuxt 3 SPA + Vuetify 3 + Nitro (deployed
+to Vercel) + Auth0, which is the platform's standard. The Atlas surfaces
+are implemented natively in that stack — `MapCanvas.vue`,
+`AreaContextPanel.vue`, `StoreContextPanel.vue`, etc. — and call the
+Lovelace platform's gateway directly via `utils/elementalHelpers`. The
+"shared core" is in-tree under `components/atlas/` and `composables/`.
+
+If the team later wants to extract a true `@lovelace/retail-map-core`,
+the boundary is already drawn at the component / composable level.
 
 ## Modules
 
-_None yet — the agent will populate this as features are built._
+| Surface                 | Path                                | Source                                                                                         |
+| ----------------------- | ----------------------------------- | ---------------------------------------------------------------------------------------------- |
+| Landing                 | `/`                                 | `pages/index.vue`                                                                              |
+| Map canvas              | `/atlas`                            | `pages/atlas.vue` + `components/atlas/*`                                                       |
+| Recipes index           | `/atlas/recipes`                    | `pages/atlas/recipes.vue`                                                                      |
+| Retailers index         | `/atlas/retailers`                  | `pages/atlas/retailers.vue`                                                                    |
+| Retailer detail         | `/atlas/retailer/:slug`             | `pages/atlas/retailer/[slug].vue`                                                              |
+| Area detail             | `/atlas/area/:code`                 | `pages/atlas/area/[code].vue`                                                                  |
+| Store detail            | `/atlas/store/:id`                  | `pages/atlas/store/[id].vue`                                                                   |
+| Docs                    | `/atlas/docs`                       | `pages/atlas/docs.vue`                                                                         |
+| Atlas data composable   | `useAtlasData()`                    | `composables/useAtlasData.ts`                                                                  |
+| Canvas state composable | `useAtlasState()`                   | `composables/useAtlasState.ts`                                                                 |
+| Live context resolver   | `useAtlasContext()`                 | `composables/useAtlasContext.ts`                                                               |
+| Bundled retail data     | `public/data/retail-atlas/*.json`   | `retailers.json`, `areas.json`, `stores.json`, `recipes.json`                                  |
+| Sample-store generator  | `scripts/generate-sample-stores.js` | Deterministic PRNG seeded at 42; re-run after editing `areas.json` to regenerate `stores.json` |
