@@ -1,0 +1,264 @@
+{
+    "areas": [
+        {
+            "area_code": "06037",
+            "area_type": "county",
+            "country": "US",
+            "area_name": "Los Angeles",
+            "region": "California",
+            "centroid": [-118.24, 34.05],
+            "neid": "00514451033156531285",
+            "store_counts": { "target": 85, "walmart": 40, "dollar-general": 35 }
+        },
+        {
+            "area_code": "36061",
+            "area_type": "county",
+            "country": "US",
+            "area_name": "New York",
+            "region": "New York",
+            "centroid": [-73.97, 40.78],
+            "neid": "00514451033156531200",
+            "store_counts": { "target": 48, "walmart": 14, "dollar-general": 9 }
+        },
+        {
+            "area_code": "17031",
+            "area_type": "county",
+            "country": "US",
+            "area_name": "Cook",
+            "region": "Illinois",
+            "centroid": [-87.67, 41.84],
+            "neid": "00514451033156531201",
+            "store_counts": { "target": 52, "walmart": 38, "dollar-general": 28 }
+        },
+        {
+            "area_code": "48201",
+            "area_type": "county",
+            "country": "US",
+            "area_name": "Harris",
+            "region": "Texas",
+            "centroid": [-95.39, 29.78],
+            "neid": "00514451033156531202",
+            "store_counts": { "target": 36, "walmart": 47, "dollar-general": 41 }
+        },
+        {
+            "area_code": "04013",
+            "area_type": "county",
+            "country": "US",
+            "area_name": "Maricopa",
+            "region": "Arizona",
+            "centroid": [-112.07, 33.45],
+            "neid": "00514451033156531203",
+            "store_counts": { "target": 40, "walmart": 44, "dollar-general": 33 }
+        },
+        {
+            "area_code": "12086",
+            "area_type": "county",
+            "country": "US",
+            "area_name": "Miami-Dade",
+            "region": "Florida",
+            "centroid": [-80.49, 25.61],
+            "neid": "00514451033156531204",
+            "store_counts": { "target": 31, "walmart": 27, "dollar-general": 25 }
+        },
+        {
+            "area_code": "53033",
+            "area_type": "county",
+            "country": "US",
+            "area_name": "King",
+            "region": "Washington",
+            "centroid": [-121.83, 47.49],
+            "neid": "00514451033156531205",
+            "store_counts": { "target": 22, "walmart": 14, "dollar-general": 6 }
+        },
+        {
+            "area_code": "13121",
+            "area_type": "county",
+            "country": "US",
+            "area_name": "Fulton",
+            "region": "Georgia",
+            "centroid": [-84.46, 33.79],
+            "neid": "00514451033156531206",
+            "store_counts": { "target": 18, "walmart": 16, "dollar-general": 22 }
+        },
+        {
+            "area_code": "25025",
+            "area_type": "county",
+            "country": "US",
+            "area_name": "Suffolk",
+            "region": "Massachusetts",
+            "centroid": [-71.06, 42.34],
+            "neid": "00514451033156531207",
+            "store_counts": { "target": 14, "walmart": 4, "dollar-general": 2 }
+        },
+        {
+            "area_code": "06075",
+            "area_type": "county",
+            "country": "US",
+            "area_name": "San Francisco",
+            "region": "California",
+            "centroid": [-122.45, 37.77],
+            "neid": "00514451033156531208",
+            "store_counts": { "target": 11, "walmart": 1, "dollar-general": 0 }
+        },
+        {
+            "area_code": "39061",
+            "area_type": "county",
+            "country": "US",
+            "area_name": "Hamilton",
+            "region": "Ohio",
+            "centroid": [-84.55, 39.19],
+            "neid": "00514451033156531209",
+            "store_counts": { "target": 12, "walmart": 18, "dollar-general": 26 }
+        },
+        {
+            "area_code": "47037",
+            "area_type": "county",
+            "country": "US",
+            "area_name": "Davidson",
+            "region": "Tennessee",
+            "centroid": [-86.78, 36.17],
+            "neid": "00514451033156531210",
+            "store_counts": { "target": 11, "walmart": 14, "dollar-general": 21 }
+        },
+        {
+            "area_code": "37119",
+            "area_type": "county",
+            "country": "US",
+            "area_name": "Mecklenburg",
+            "region": "North Carolina",
+            "centroid": [-80.84, 35.23],
+            "neid": "00514451033156531211",
+            "store_counts": { "target": 14, "walmart": 19, "dollar-general": 28 }
+        },
+        {
+            "area_code": "08031",
+            "area_type": "county",
+            "country": "US",
+            "area_name": "Denver",
+            "region": "Colorado",
+            "centroid": [-104.99, 39.74],
+            "neid": "00514451033156531212",
+            "store_counts": { "target": 18, "walmart": 7, "dollar-general": 11 }
+        },
+        {
+            "area_code": "27053",
+            "area_type": "county",
+            "country": "US",
+            "area_name": "Hennepin",
+            "region": "Minnesota",
+            "centroid": [-93.49, 45.0],
+            "neid": "00514451033156531213",
+            "store_counts": { "target": 38, "walmart": 16, "dollar-general": 9 }
+        },
+        {
+            "area_code": "E09000001",
+            "area_type": "lad",
+            "country": "UK",
+            "area_name": "City of London",
+            "region": "Greater London",
+            "centroid": [-0.09, 51.51],
+            "neid": "00514451033156532000",
+            "store_counts": { "tesco": 12 }
+        },
+        {
+            "area_code": "E08000025",
+            "area_type": "lad",
+            "country": "UK",
+            "area_name": "Birmingham",
+            "region": "West Midlands",
+            "centroid": [-1.9, 52.48],
+            "neid": "00514451033156532001",
+            "store_counts": { "tesco": 31 }
+        },
+        {
+            "area_code": "E08000035",
+            "area_type": "lad",
+            "country": "UK",
+            "area_name": "Leeds",
+            "region": "West Yorkshire",
+            "centroid": [-1.55, 53.8],
+            "neid": "00514451033156532002",
+            "store_counts": { "tesco": 24 }
+        },
+        {
+            "area_code": "E08000003",
+            "area_type": "lad",
+            "country": "UK",
+            "area_name": "Manchester",
+            "region": "Greater Manchester",
+            "centroid": [-2.24, 53.48],
+            "neid": "00514451033156532003",
+            "store_counts": { "tesco": 22 }
+        },
+        {
+            "area_code": "S12000036",
+            "area_type": "lad",
+            "country": "UK",
+            "area_name": "Edinburgh",
+            "region": "Scotland",
+            "centroid": [-3.19, 55.95],
+            "neid": "00514451033156532004",
+            "store_counts": { "tesco": 18 }
+        },
+        {
+            "area_code": "E06000023",
+            "area_type": "lad",
+            "country": "UK",
+            "area_name": "Bristol",
+            "region": "South West",
+            "centroid": [-2.59, 51.45],
+            "neid": "00514451033156532005",
+            "store_counts": { "tesco": 14 }
+        },
+        {
+            "area_code": "535",
+            "area_type": "cma",
+            "country": "CA",
+            "area_name": "Toronto",
+            "region": "Ontario",
+            "centroid": [-79.38, 43.65],
+            "neid": "00514451033156533000",
+            "store_counts": { "loblaw": 142 }
+        },
+        {
+            "area_code": "462",
+            "area_type": "cma",
+            "country": "CA",
+            "area_name": "Montreal",
+            "region": "Quebec",
+            "centroid": [-73.57, 45.5],
+            "neid": "00514451033156533001",
+            "store_counts": { "loblaw": 88 }
+        },
+        {
+            "area_code": "933",
+            "area_type": "cma",
+            "country": "CA",
+            "area_name": "Vancouver",
+            "region": "British Columbia",
+            "centroid": [-123.12, 49.28],
+            "neid": "00514451033156533002",
+            "store_counts": { "loblaw": 64 }
+        },
+        {
+            "area_code": "825",
+            "area_type": "cma",
+            "country": "CA",
+            "area_name": "Calgary",
+            "region": "Alberta",
+            "centroid": [-114.07, 51.05],
+            "neid": "00514451033156533003",
+            "store_counts": { "loblaw": 41 }
+        },
+        {
+            "area_code": "505",
+            "area_type": "cma",
+            "country": "CA",
+            "area_name": "Ottawa-Gatineau",
+            "region": "Ontario / Quebec",
+            "centroid": [-75.7, 45.42],
+            "neid": "00514451033156533004",
+            "store_counts": { "loblaw": 38 }
+        }
+    ]
+}
