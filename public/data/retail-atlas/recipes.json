@@ -1,0 +1,28 @@
+{
+    "recipes": [
+        {
+            "recipe_id": "event-density",
+            "label": "Event density",
+            "blurb": "Events in window divided by store count for each area. Surfaces CBSAs that are 'unusually loud' relative to retail footprint.",
+            "overlay_kind": "event_density",
+            "color_scale": "diverging",
+            "default_time_window_months": 12
+        },
+        {
+            "recipe_id": "opened-vs-closed",
+            "label": "Openings minus closings",
+            "blurb": "Net store openings vs closings per retailer over a chosen window. Reds = net closures, greens = net opens.",
+            "overlay_kind": "open_close_delta",
+            "color_scale": "diverging-redgreen",
+            "default_time_window_months": 12
+        },
+        {
+            "recipe_id": "co-occurrence",
+            "label": "Cross-retailer co-occurrence",
+            "blurb": "count(primary) × count(competing) per area. Surfaces competitive hotspots vs single-chain dominance.",
+            "overlay_kind": "store_product",
+            "color_scale": "sequential",
+            "default_time_window_months": null
+        }
+    ]
+}

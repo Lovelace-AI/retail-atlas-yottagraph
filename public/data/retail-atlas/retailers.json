@@ -1,0 +1,54 @@
+{
+    "retailers": [
+        {
+            "slug": "target",
+            "name": "Target",
+            "country": "US",
+            "color": "hsl(0, 85%, 55%)",
+            "colorVar": "--retailer-target",
+            "format_default": "General Merchandise",
+            "store_count_total": 1956,
+            "neid": null
+        },
+        {
+            "slug": "walmart",
+            "name": "Walmart",
+            "country": "US",
+            "color": "hsl(210, 90%, 55%)",
+            "colorVar": "--retailer-walmart",
+            "format_default": "Supercenter",
+            "store_count_total": 4615,
+            "neid": null
+        },
+        {
+            "slug": "dollar-general",
+            "name": "Dollar General",
+            "country": "US",
+            "color": "hsl(42, 95%, 55%)",
+            "colorVar": "--retailer-dg",
+            "format_default": "Discount",
+            "store_count_total": 19782,
+            "neid": null
+        },
+        {
+            "slug": "tesco",
+            "name": "Tesco",
+            "country": "UK",
+            "color": "hsl(280, 70%, 55%)",
+            "colorVar": "--retailer-tesco",
+            "format_default": "Superstore",
+            "store_count_total": 4031,
+            "neid": null
+        },
+        {
+            "slug": "loblaw",
+            "name": "Loblaw",
+            "country": "CA",
+            "color": "hsl(155, 60%, 50%)",
+            "colorVar": "--retailer-loblaw",
+            "format_default": "Supermarket",
+            "store_count_total": 2429,
+            "neid": null
+        }
+    ]
+}
