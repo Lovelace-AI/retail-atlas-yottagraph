@@ -93,6 +93,17 @@ function normalizeUK(row: CsvRow, retailer: RetailerMeta): StoreRecord {
 
 function normalizeCA(row: CsvRow, retailer: RetailerMeta): StoreRecord {
     const cma_code = clean(row.cma_code);
+    const province_code = clean(row.province_code);
+    const province_name = clean(row.province_name);
+
+    // Stores in non-CMA (rural) Canada lack cma_code; fall back to the
+    // province so the dot still renders and the rollup contributes to a
+    // province-level Area Record. The map can choose to render or hide
+    // province-typed areas depending on viewport / overlay.
+    const useCma = cma_code !== null;
+    const area_code = useCma ? (cma_code as string) : (province_code ?? '');
+    const area_type: 'cma' | 'province' = useCma ? 'cma' : 'province';
+    const area_name = useCma ? clean(row.cma_name) : province_name;
 
     return {
         store_id: makeStoreId(retailer, row),
@@ -104,14 +115,14 @@ function normalizeCA(row: CsvRow, retailer: RetailerMeta): StoreRecord {
         country: 'CA',
         address: clean(row.address_line1),
         city: clean(row.city),
-        region: clean(row.region) ?? clean(row.province_name),
+        region: clean(row.region) ?? province_name,
         postal_code: clean(row.postal_code),
         lat: parseFloatOrNull(row.latitude),
         lng: parseFloatOrNull(row.longitude),
-        area_code: cma_code ?? '',
-        area_type: 'cma',
-        area_name: clean(row.cma_name),
-        province_code: clean(row.province_code) ?? undefined,
+        area_code,
+        area_type,
+        area_name,
+        province_code: province_code ?? undefined,
         cma_code: cma_code ?? undefined,
         cma_type: clean(row.cma_type) ?? undefined,
         fsa: clean(row.fsa) ?? undefined,

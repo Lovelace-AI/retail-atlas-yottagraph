@@ -11,6 +11,7 @@
         "prebuild": "npm run build:data",
         "build": "NODE_ENV=production NODE_OPTIONS='--max-old-space-size=8192' nuxt build",
         "build:data": "tsx scripts/build-retail-data.ts",
+        "build:topojson": "tsx scripts/fetch-topojson.ts",
         "generate": "nuxt generate",
         "preview": "nuxt preview",
         "format": "prettier --write \"**/*.{js,ts,vue,json,md}\" --ignore-path .gitignore --ignore-path .prettierignore",
@@ -39,7 +40,9 @@
         "localforage": "^1.10.0",
         "mitt": "^3.0.1",
         "prettier": "^3.5.3",
-        "vuetify": "^3.8.5"
+        "us-atlas": "^3.0.1",
+        "vuetify": "^3.8.5",
+        "world-atlas": "^2.0.2"
     },
     "devDependencies": {
         "@mdi/font": "^7.4.47",
@@ -55,6 +58,8 @@
         "lint-staged": "^16.1.6",
         "nuxt": "^3.16.0",
         "sass": "^1.84.0",
+        "topojson-server": "^3.0.1",
+        "topojson-simplify": "^3.0.3",
         "tsx": "^4.21.0",
         "typescript": "^5.7.3",
         "vercel": "^50.13.2",

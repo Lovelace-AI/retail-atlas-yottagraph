@@ -8,7 +8,7 @@
 
 export type Country = 'US' | 'UK' | 'CA';
 
-export type AreaType = 'county' | 'lad' | 'cma';
+export type AreaType = 'county' | 'lad' | 'cma' | 'province';
 
 export type SchemaFlavor = 'us-fips' | 'uk-lad' | 'ca-cma';
 
