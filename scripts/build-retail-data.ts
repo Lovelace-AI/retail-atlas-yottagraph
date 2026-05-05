@@ -21,6 +21,7 @@
 import { createHash } from 'node:crypto';
 import { existsSync, mkdirSync, readFileSync, statSync, writeFileSync } from 'node:fs';
 import { join, relative } from 'node:path';
+/* eslint-disable @typescript-eslint/no-unused-vars */
 
 import { parse } from 'csv-parse/sync';
 
@@ -32,6 +33,26 @@ const ROOT = join(__dirname, '..');
 const SOURCE_DIR = join(ROOT, 'data', 'retail_locations');
 const OUT_DIR = join(ROOT, 'public', 'data', 'retail_atlas');
 const STORES_DIR = join(OUT_DIR, 'stores');
+const AREA_NEIDS_CACHE = join(ROOT, 'data', 'neid_cache', 'area_neids.json');
+
+interface AreaNeidCacheEntry {
+    neid: string | null;
+    name: string | null;
+    score: number | null;
+    flavor: string | null;
+    matched_candidate: string | null;
+    resolved_at: string;
+}
+
+function loadAreaNeidCache(): Record<string, AreaNeidCacheEntry> {
+    if (!existsSync(AREA_NEIDS_CACHE)) return {};
+    try {
+        return JSON.parse(readFileSync(AREA_NEIDS_CACHE, 'utf-8'));
+    } catch (err) {
+        console.warn(`  warning: could not read area NEID cache: ${(err as Error).message}`);
+        return {};
+    }
+}
 
 function ensureDir(dir: string): void {
     if (!existsSync(dir)) mkdirSync(dir, { recursive: true });
@@ -213,6 +234,24 @@ function main(): void {
     }
 
     const areas = aggregateAreas(allStores);
+
+    // Merge in pre-resolved area NEIDs from the cache emitted by
+    // `npm run expand:areas`. Areas without an entry in the cache stay
+    // `neid: null` and the runtime UI degrades gracefully.
+    const neidCache = loadAreaNeidCache();
+    let neidsApplied = 0;
+    for (const a of areas) {
+        const entry = neidCache[a.area_key];
+        if (entry?.neid) {
+            a.neid = entry.neid;
+            neidsApplied += 1;
+        }
+    }
+    if (Object.keys(neidCache).length > 0) {
+        console.log(
+            `  merged area NEIDs: ${neidsApplied}/${areas.length} from cache (${Object.keys(neidCache).length} entries)`
+        );
+    }
 
     const retailersBytes = writeJSON(join(OUT_DIR, 'retailers.json'), summaries);
     const areasBytes = writeJSON(join(OUT_DIR, 'areas.json'), areas);

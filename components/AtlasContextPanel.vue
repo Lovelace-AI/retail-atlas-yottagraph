@@ -21,9 +21,29 @@
 
             <v-tabs v-model="tab" density="compact" color="primary" align-tabs="start">
                 <v-tab value="overview">Overview</v-tab>
-                <v-tab value="events" :disabled="!areaPin">Area events</v-tab>
-                <v-tab value="articles" :disabled="!areaPin">Articles</v-tab>
-                <v-tab value="concepts" :disabled="!areaPin">Economic concepts</v-tab>
+                <v-tab value="events" :disabled="!areaPin"> Area events </v-tab>
+                <v-tab value="articles" :disabled="!areaPin">
+                    Articles
+                    <v-chip
+                        v-if="contextData?.area_articles.length"
+                        size="x-small"
+                        class="ml-2"
+                        variant="tonal"
+                    >
+                        {{ contextData.area_articles.length }}
+                    </v-chip>
+                </v-tab>
+                <v-tab value="concepts" :disabled="!areaPin">
+                    Economic concepts
+                    <v-chip
+                        v-if="contextData?.economic_concepts.length"
+                        size="x-small"
+                        class="ml-2"
+                        variant="tonal"
+                    >
+                        {{ contextData.economic_concepts.length }}
+                    </v-chip>
+                </v-tab>
             </v-tabs>
 
             <div class="panel-body">
@@ -125,29 +145,97 @@
                     </v-window-item>
 
                     <v-window-item value="events">
-                        <ContextStub label="Area events" />
+                        <div v-if="contextLoading" class="muted">Loading events…</div>
+                        <div v-else class="muted-block">
+                            <v-icon icon="mdi-information" size="small" class="mr-2" />
+                            Event traversal requires the Elemental MCP tool
+                            <code class="mono">elemental_get_events</code>; it isn't exposed via the
+                            REST gateway used here. The Nitro endpoint will surface area events once
+                            we wire the MCP transport in Phase 1.5.
+                        </div>
                     </v-window-item>
                     <v-window-item value="articles">
-                        <ContextStub label="Articles" />
+                        <div v-if="contextLoading" class="muted">Loading articles…</div>
+                        <div v-else-if="contextError" class="error-msg">
+                            {{ contextError }}
+                        </div>
+                        <div
+                            v-else-if="contextData && contextData.area_articles.length"
+                            class="article-list"
+                        >
+                            <a
+                                v-for="a in contextData.area_articles"
+                                :key="a.neid"
+                                :href="a.url || '#'"
+                                target="_blank"
+                                rel="noopener"
+                                class="article-row"
+                            >
+                                <div class="article-title">{{ a.title }}</div>
+                                <div class="article-meta mono muted">
+                                    <span v-if="a.published_at">{{ a.published_at }}</span>
+                                    <span v-else>—</span>
+                                    <span class="dot-sep">·</span>
+                                    <span>{{ a.neid.slice(0, 12) }}…</span>
+                                </div>
+                            </a>
+                        </div>
+                        <div v-else class="muted-block">
+                            No articles linked to this area yet, or the area NEID hasn't been
+                            resolved (run <code class="mono">npm run expand:areas</code>).
+                        </div>
                     </v-window-item>
                     <v-window-item value="concepts">
-                        <ContextStub label="Economic concepts" />
+                        <div v-if="contextLoading" class="muted">Loading concepts…</div>
+                        <div v-else-if="contextError" class="error-msg">
+                            {{ contextError }}
+                        </div>
+                        <div
+                            v-else-if="contextData && contextData.economic_concepts.length"
+                            class="concept-list"
+                        >
+                            <v-chip
+                                v-for="c in contextData.economic_concepts"
+                                :key="c.neid"
+                                size="small"
+                                variant="tonal"
+                                class="ma-1"
+                            >
+                                {{ c.name }}
+                            </v-chip>
+                        </div>
+                        <div v-else class="muted-block">
+                            No economic concepts linked to this area.
+                        </div>
                     </v-window-item>
                 </v-window>
+            </div>
+
+            <div v-if="contextData" class="provenance">
+                <span v-if="contextData.cache_hit" class="mono muted">cache hit</span>
+                <span v-else class="mono muted"> fan-out {{ contextData.elapsed_ms }}ms </span>
             </div>
         </div>
     </transition>
 </template>
 
 <script setup lang="ts">
-    import { computed, h, ref, watch } from 'vue';
+    import { computed, ref, watch } from 'vue';
 
+    import { useAreaContext } from '~/composables/useAreaContext';
     import { useAtlasData } from '~/composables/useAtlasData';
     import { useAtlasState } from '~/composables/useAtlasState';
     import type { AreaRecord, RetailerSummary, StoreRecord } from '~/types/retail';
 
-    const { pinned, clearPin } = useAtlasState();
+    const { pinned, activeRetailers, clearPin } = useAtlasState();
     const { areas, retailers, stores } = useAtlasData();
+    const {
+        load: loadAreaContext,
+        reset: resetAreaContext,
+        loading: contextLoading,
+        error: contextError,
+        data: contextData,
+    } = useAreaContext();
 
     const tab = ref<string>('overview');
 
@@ -213,22 +301,31 @@
         return '';
     });
 
-    watch(pinned, (v) => {
-        if (!v) tab.value = 'overview';
-    });
-
-    // Inline lightweight stub for empty tabs.
-    const ContextStub = (props: { label: string }) =>
-        h('div', { class: 'context-stub' }, [
-            h('div', { class: 'muted mono' }, `${props.label} pending`),
-            h(
-                'div',
-                { class: 'context-stub-help' },
-                'The Phase-1 fan-out endpoint at /api/atlas/area-context is not yet wired. ' +
-                    'When it lands (R6.1), this tab will show area-level events, articles, ' +
-                    'or economic concepts traversed via Elemental MCP.'
-            ),
-        ]);
+    watch(
+        () => [pinned.value, area.value, activeRetailers.value],
+        () => {
+            const a = area.value;
+            const p = pinned.value;
+            if (!p) {
+                resetAreaContext();
+                tab.value = 'overview';
+                return;
+            }
+            if (p.kind !== 'area') {
+                resetAreaContext();
+                return;
+            }
+            // Fire fan-out for the pinned area. The composable handles caching
+            // by `(area_neid, area_key, retailers_hash)`; if the area has no
+            // resolved NEID, it returns an empty payload.
+            loadAreaContext({
+                area_key: p.area_key,
+                area_neid: a?.neid ?? null,
+                retailers: activeRetailers.value,
+            });
+        },
+        { immediate: true }
+    );
 </script>
 
 <style scoped>
@@ -345,16 +442,75 @@
         padding: 8px 10px;
     }
 
-    :deep(.context-stub) {
+    .muted-block {
+        color: rgba(255, 255, 255, 0.55);
+        font-size: 0.875rem;
+        line-height: 1.5;
         padding: 16px 0;
+        max-width: 720px;
     }
 
-    :deep(.context-stub-help) {
-        margin-top: 8px;
+    .muted-block code {
+        background: rgba(255, 255, 255, 0.05);
+        padding: 2px 6px;
+        border-radius: 3px;
+    }
+
+    .article-list {
+        display: flex;
+        flex-direction: column;
+        gap: 4px;
+        padding-top: 8px;
+    }
+
+    .article-row {
+        display: block;
+        padding: 8px 10px;
+        border-radius: 4px;
+        text-decoration: none;
+        color: inherit;
+        transition: background 150ms ease-out;
+    }
+
+    .article-row:hover {
+        background: rgba(255, 255, 255, 0.04);
+    }
+
+    .article-title {
+        font-size: 0.9rem;
+        line-height: 1.35;
+        margin-bottom: 2px;
+    }
+
+    .article-meta {
+        font-size: 0.7rem;
+        display: flex;
+        gap: 6px;
+        align-items: center;
+    }
+
+    .dot-sep {
+        opacity: 0.4;
+    }
+
+    .concept-list {
+        padding-top: 8px;
+    }
+
+    .error-msg {
+        color: #ef4444;
+        font-family: var(--font-mono, ui-monospace, monospace);
         font-size: 0.85rem;
-        color: rgba(255, 255, 255, 0.55);
-        max-width: 720px;
-        line-height: 1.5;
+        padding: 12px;
+        background: rgba(239, 68, 68, 0.05);
+        border: 1px solid rgba(239, 68, 68, 0.25);
+        border-radius: 6px;
+    }
+
+    .provenance {
+        padding: 6px 16px;
+        border-top: 1px solid rgba(255, 255, 255, 0.06);
+        font-size: 0.7rem;
     }
 
     .slide-up-enter-active,

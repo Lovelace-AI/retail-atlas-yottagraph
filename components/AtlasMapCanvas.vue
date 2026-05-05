@@ -38,6 +38,17 @@
                 </path>
             </g>
 
+            <!-- Layer 4: NEID halo (PRD R3.1) — gold outline on areas with a
+                 resolved Elemental NEID and >=1 active-retailer store. -->
+            <g class="layer-halo" pointer-events="none">
+                <path
+                    v-for="feat in haloFeatures"
+                    :key="`halo-${feat.id}`"
+                    :d="feat.path"
+                    class="halo-path"
+                />
+            </g>
+
             <!-- Layer 5: store dots (one set per active retailer) -->
             <g
                 v-for="dotLayer in dotLayers"
@@ -213,13 +224,20 @@
 
     interface RenderableArea {
         area_key: string;
+        id: string;
         path: string;
         fill: string;
         stroke: string;
         strokeWidth: number;
         pinned: boolean;
         hovered: boolean;
+        haloed: boolean;
         title: string;
+    }
+
+    interface RenderableHalo {
+        id: string;
+        path: string;
     }
 
     const areaFeatures = computed<RenderableArea[]>(() => {
@@ -246,10 +264,13 @@
                   }:${code}`;
             const isPinned = pinned.value?.kind === 'area' && pinned.value.area_key === pinKey;
             const isHovered = hoveredAreaKey.value === pinKey;
+            const isHaloed = !!area?.neid && score > 0;
             const name = area?.area_name ?? (f.properties as any)?.name ?? code;
             const region = area?.region ?? '';
+            const neid = area?.neid;
             out.push({
                 area_key: pinKey,
+                id: code,
                 path: d,
                 fill: isPinned
                     ? 'rgba(255, 215, 0, 0.55)'
@@ -264,8 +285,18 @@
                 strokeWidth: isPinned ? 1.8 : isHovered ? 1 : 0.4,
                 pinned: isPinned,
                 hovered: isHovered,
-                title: `${name}${region ? ', ' + region : ''} · ${score.toLocaleString()} stores`,
+                haloed: isHaloed,
+                title: `${name}${region ? ', ' + region : ''} · ${score.toLocaleString()} stores${neid ? ' · NEID resolved' : ''}`,
             });
+        }
+        return out;
+    });
+
+    const haloFeatures = computed<RenderableHalo[]>(() => {
+        const out: RenderableHalo[] = [];
+        for (const f of areaFeatures.value) {
+            if (!f.haloed || f.pinned) continue;
+            out.push({ id: f.id, path: f.path });
         }
         return out;
     });
@@ -441,6 +472,15 @@
         fill: rgba(20, 20, 20, 0.7);
         stroke: rgba(255, 255, 255, 0.06);
         stroke-width: 0.4;
+    }
+
+    .layer-halo .halo-path {
+        fill: none;
+        stroke: hsl(48, 100%, 70%);
+        stroke-width: 1.4;
+        stroke-opacity: 0.85;
+        filter: drop-shadow(0 0 3px hsla(48, 100%, 70%, 0.6));
+        transition: stroke-opacity 150ms ease-out;
     }
 
     .area-path {

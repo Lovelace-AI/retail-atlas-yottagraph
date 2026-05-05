@@ -79,7 +79,9 @@ export function useAreaContext() {
 
         try {
             if (!opts.area_neid) {
-                // Phase 1 placeholder until expand-area-neids.ts runs.
+                // Area NEID hasn't been resolved yet (`npm run expand:areas`
+                // hasn't run for this area). Surface a stub so the panel
+                // can render the "context unavailable" state.
                 data.value = {
                     area_events: [],
                     area_articles: [],
@@ -88,18 +90,33 @@ export function useAreaContext() {
                     elapsed_ms: 0,
                     cache_hit: false,
                 };
+                _cache.value = {
+                    ..._cache.value,
+                    [key]: { data: data.value, fetched_at: Date.now() },
+                };
                 return;
             }
-            // TODO(R6): wire the Nitro fan-out endpoint /api/atlas/area-context.
-            // For Phase 1 we shape the data structure but leave the fan-out
-            // unimplemented; the panel renders an "events coming soon" state
-            // when the data arrays are empty.
+
+            const res = await $fetch<{
+                area_events: ContextEvent[];
+                area_articles: ContextArticle[];
+                economic_concepts: ContextConcept[];
+                retailer_events: Record<string, ContextEvent[]>;
+                elapsed_ms: number;
+            }>('/api/atlas/area-context', {
+                method: 'POST',
+                body: {
+                    area_neid: opts.area_neid,
+                    area_key: opts.area_key,
+                    retailers: opts.retailers,
+                },
+            });
             data.value = {
-                area_events: [],
-                area_articles: [],
-                economic_concepts: [],
-                retailer_events: {},
-                elapsed_ms: 0,
+                area_events: res.area_events ?? [],
+                area_articles: res.area_articles ?? [],
+                economic_concepts: res.economic_concepts ?? [],
+                retailer_events: res.retailer_events ?? {},
+                elapsed_ms: res.elapsed_ms ?? 0,
                 cache_hit: false,
             };
             _cache.value = {

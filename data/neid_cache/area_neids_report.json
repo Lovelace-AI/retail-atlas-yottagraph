@@ -1,0 +1,23 @@
+{
+    "generated_at": "2026-05-05T18:34:19.080Z",
+    "countries": ["US", "UK", "CA"],
+    "min_score": 0.85,
+    "total_areas": 3601,
+    "resolved": 2318,
+    "new_resolutions": 3581,
+    "elapsed_ms": 437927,
+    "by_country": {
+        "CA": {
+            "total": 139,
+            "resolved": 120
+        },
+        "UK": {
+            "total": 357,
+            "resolved": 332
+        },
+        "US": {
+            "total": 3105,
+            "resolved": 1866
+        }
+    }
+}
