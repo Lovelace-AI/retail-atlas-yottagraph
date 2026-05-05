@@ -1,0 +1,1086 @@
+{
+    "generated_at": "2026-05-05T17:34:26.757Z",
+    "sample_per_retailer": 15,
+    "min_score": 0.75,
+    "results": [
+        {
+            "slug": "walmart",
+            "name": "Walmart",
+            "country": "US",
+            "sample_size": 15,
+            "strict_hits": 1,
+            "loose_hits": 2,
+            "strict_rate": 0.06666666666666667,
+            "loose_rate": 0.13333333333333333,
+            "elapsed_ms": 4439,
+            "sample": [
+                {
+                    "store_id": "walmart-2070",
+                    "city": "Anchorage",
+                    "region": "AK",
+                    "best_match": null,
+                    "matched_candidate": null,
+                    "strict_hit": false,
+                    "loose_hit": false
+                },
+                {
+                    "store_id": "walmart-707",
+                    "city": "Clarksdale",
+                    "region": "MS",
+                    "best_match": null,
+                    "matched_candidate": null,
+                    "strict_hit": false,
+                    "loose_hit": false
+                },
+                {
+                    "store_id": "walmart-1853",
+                    "city": "Hemet",
+                    "region": "CA",
+                    "best_match": {
+                        "neid": "03085116659582947598",
+                        "name": "Hemet – 1231 S Sanderson Ave.",
+                        "flavor": "location",
+                        "score": 0.8573941
+                    },
+                    "matched_candidate": "name+addr",
+                    "strict_hit": true,
+                    "loose_hit": true
+                },
+                {
+                    "store_id": "walmart-2436",
+                    "city": "Sykesville",
+                    "region": "MD",
+                    "best_match": null,
+                    "matched_candidate": null,
+                    "strict_hit": false,
+                    "loose_hit": false
+                },
+                {
+                    "store_id": "walmart-1077",
+                    "city": "Tallahassee",
+                    "region": "FL",
+                    "best_match": {
+                        "neid": "01783549398105161677",
+                        "name": "Seminole Walmart Supercenter",
+                        "flavor": "location",
+                        "score": 0.8334793
+                    },
+                    "matched_candidate": "name+city+region",
+                    "strict_hit": false,
+                    "loose_hit": true
+                },
+                {
+                    "store_id": "walmart-1787",
+                    "city": "Carroll",
+                    "region": "IA",
+                    "best_match": null,
+                    "matched_candidate": null,
+                    "strict_hit": false,
+                    "loose_hit": false
+                },
+                {
+                    "store_id": "walmart-152",
+                    "city": "De Soto",
+                    "region": "MO",
+                    "best_match": null,
+                    "matched_candidate": null,
+                    "strict_hit": false,
+                    "loose_hit": false
+                },
+                {
+                    "store_id": "walmart-493",
+                    "city": "Paris",
+                    "region": "KY",
+                    "best_match": null,
+                    "matched_candidate": null,
+                    "strict_hit": false,
+                    "loose_hit": false
+                },
+                {
+                    "store_id": "walmart-1428",
+                    "city": "Mount Pleasant",
+                    "region": "MI",
+                    "best_match": null,
+                    "matched_candidate": null,
+                    "strict_hit": false,
+                    "loose_hit": false
+                },
+                {
+                    "store_id": "walmart-2607",
+                    "city": "Polson",
+                    "region": "MT",
+                    "best_match": null,
+                    "matched_candidate": null,
+                    "strict_hit": false,
+                    "loose_hit": false
+                },
+                {
+                    "store_id": "walmart-5867",
+                    "city": "Bayonne",
+                    "region": "NJ",
+                    "best_match": null,
+                    "matched_candidate": null,
+                    "strict_hit": false,
+                    "loose_hit": false
+                },
+                {
+                    "store_id": "walmart-1239",
+                    "city": "Urbana",
+                    "region": "OH",
+                    "best_match": null,
+                    "matched_candidate": null,
+                    "strict_hit": false,
+                    "loose_hit": false
+                },
+                {
+                    "store_id": "walmart-616",
+                    "city": "Orangeburg",
+                    "region": "SC",
+                    "best_match": null,
+                    "matched_candidate": null,
+                    "strict_hit": false,
+                    "loose_hit": false
+                },
+                {
+                    "store_id": "walmart-940",
+                    "city": "Westworth Village",
+                    "region": "TX",
+                    "best_match": null,
+                    "matched_candidate": null,
+                    "strict_hit": false,
+                    "loose_hit": false
+                },
+                {
+                    "store_id": "walmart-5702",
+                    "city": "Lubbock",
+                    "region": "TX",
+                    "best_match": null,
+                    "matched_candidate": null,
+                    "strict_hit": false,
+                    "loose_hit": false
+                }
+            ]
+        },
+        {
+            "slug": "target",
+            "name": "Target",
+            "country": "US",
+            "sample_size": 15,
+            "strict_hits": 0,
+            "loose_hits": 1,
+            "strict_rate": 0,
+            "loose_rate": 0.06666666666666667,
+            "elapsed_ms": 4464,
+            "sample": [
+                {
+                    "store_id": "target-3",
+                    "city": "Crystal",
+                    "region": "MN",
+                    "best_match": null,
+                    "matched_candidate": null,
+                    "strict_hit": false,
+                    "loose_hit": false
+                },
+                {
+                    "store_id": "target-324",
+                    "city": "San Jose",
+                    "region": "CA",
+                    "best_match": null,
+                    "matched_candidate": null,
+                    "strict_hit": false,
+                    "loose_hit": false
+                },
+                {
+                    "store_id": "target-753",
+                    "city": "Palatine",
+                    "region": "IL",
+                    "best_match": null,
+                    "matched_candidate": null,
+                    "strict_hit": false,
+                    "loose_hit": false
+                },
+                {
+                    "store_id": "target-917",
+                    "city": "Snellville",
+                    "region": "GA",
+                    "best_match": null,
+                    "matched_candidate": null,
+                    "strict_hit": false,
+                    "loose_hit": false
+                },
+                {
+                    "store_id": "target-1080",
+                    "city": "Raleigh",
+                    "region": "NC",
+                    "best_match": null,
+                    "matched_candidate": null,
+                    "strict_hit": false,
+                    "loose_hit": false
+                },
+                {
+                    "store_id": "target-1228",
+                    "city": "Nashua",
+                    "region": "NH",
+                    "best_match": null,
+                    "matched_candidate": null,
+                    "strict_hit": false,
+                    "loose_hit": false
+                },
+                {
+                    "store_id": "target-1373",
+                    "city": "Meriden",
+                    "region": "CT",
+                    "best_match": null,
+                    "matched_candidate": null,
+                    "strict_hit": false,
+                    "loose_hit": false
+                },
+                {
+                    "store_id": "target-1517",
+                    "city": "Flower Mound",
+                    "region": "TX",
+                    "best_match": null,
+                    "matched_candidate": null,
+                    "strict_hit": false,
+                    "loose_hit": false
+                },
+                {
+                    "store_id": "target-1858",
+                    "city": "Charlottesville",
+                    "region": "VA",
+                    "best_match": null,
+                    "matched_candidate": null,
+                    "strict_hit": false,
+                    "loose_hit": false
+                },
+                {
+                    "store_id": "target-2020",
+                    "city": "Northridge",
+                    "region": "CA",
+                    "best_match": null,
+                    "matched_candidate": null,
+                    "strict_hit": false,
+                    "loose_hit": false
+                },
+                {
+                    "store_id": "target-2168",
+                    "city": "Wilson",
+                    "region": "NC",
+                    "best_match": null,
+                    "matched_candidate": null,
+                    "strict_hit": false,
+                    "loose_hit": false
+                },
+                {
+                    "store_id": "target-2315",
+                    "city": "Augusta",
+                    "region": "ME",
+                    "best_match": null,
+                    "matched_candidate": null,
+                    "strict_hit": false,
+                    "loose_hit": false
+                },
+                {
+                    "store_id": "target-2470",
+                    "city": "San Pedro",
+                    "region": "CA",
+                    "best_match": null,
+                    "matched_candidate": null,
+                    "strict_hit": false,
+                    "loose_hit": false
+                },
+                {
+                    "store_id": "target-2820",
+                    "city": "Denver",
+                    "region": "CO",
+                    "best_match": null,
+                    "matched_candidate": null,
+                    "strict_hit": false,
+                    "loose_hit": false
+                },
+                {
+                    "store_id": "target-3277",
+                    "city": "New York",
+                    "region": "NY",
+                    "best_match": {
+                        "neid": "07170226876233160127",
+                        "name": "Target SoHo",
+                        "flavor": "location",
+                        "score": 0.8668138
+                    },
+                    "matched_candidate": "name+city+region",
+                    "strict_hit": false,
+                    "loose_hit": true
+                }
+            ]
+        },
+        {
+            "slug": "costco",
+            "name": "Costco",
+            "country": "US",
+            "sample_size": 15,
+            "strict_hits": 0,
+            "loose_hits": 0,
+            "strict_rate": 0,
+            "loose_rate": 0,
+            "elapsed_ms": 4273,
+            "sample": [
+                {
+                    "store_id": "costco-362",
+                    "city": "Hoover",
+                    "region": "AL",
+                    "best_match": null,
+                    "matched_candidate": null,
+                    "strict_hit": false,
+                    "loose_hit": false
+                },
+                {
+                    "store_id": "costco-1011",
+                    "city": "Chico",
+                    "region": "CA",
+                    "best_match": null,
+                    "matched_candidate": null,
+                    "strict_hit": false,
+                    "loose_hit": false
+                },
+                {
+                    "store_id": "costco-146",
+                    "city": "Livermore",
+                    "region": "CA",
+                    "best_match": null,
+                    "matched_candidate": null,
+                    "strict_hit": false,
+                    "loose_hit": false
+                },
+                {
+                    "store_id": "costco-464",
+                    "city": "Sacramento",
+                    "region": "CA",
+                    "best_match": null,
+                    "matched_candidate": null,
+                    "strict_hit": false,
+                    "loose_hit": false
+                },
+                {
+                    "store_id": "costco-445",
+                    "city": "Yorba Linda",
+                    "region": "CA",
+                    "best_match": null,
+                    "matched_candidate": null,
+                    "strict_hit": false,
+                    "loose_hit": false
+                },
+                {
+                    "store_id": "costco-1332",
+                    "city": "North Miami",
+                    "region": "FL",
+                    "best_match": null,
+                    "matched_candidate": null,
+                    "strict_hit": false,
+                    "loose_hit": false
+                },
+                {
+                    "store_id": "costco-119",
+                    "city": "Kahului",
+                    "region": "HI",
+                    "best_match": null,
+                    "matched_candidate": null,
+                    "strict_hit": false,
+                    "loose_hit": false
+                },
+                {
+                    "store_id": "costco-1630",
+                    "city": "Ankeny",
+                    "region": "IA",
+                    "best_match": null,
+                    "matched_candidate": null,
+                    "strict_hit": false,
+                    "loose_hit": false
+                },
+                {
+                    "store_id": "costco-786",
+                    "city": "Brighton",
+                    "region": "MI",
+                    "best_match": null,
+                    "matched_candidate": null,
+                    "strict_hit": false,
+                    "loose_hit": false
+                },
+                {
+                    "store_id": "costco-127",
+                    "city": "Carson City",
+                    "region": "NV",
+                    "best_match": null,
+                    "matched_candidate": null,
+                    "strict_hit": false,
+                    "loose_hit": false
+                },
+                {
+                    "store_id": "costco-1215",
+                    "city": "Oceanside",
+                    "region": "NY",
+                    "best_match": null,
+                    "matched_candidate": null,
+                    "strict_hit": false,
+                    "loose_hit": false
+                },
+                {
+                    "store_id": "costco-1207",
+                    "city": "Tulsa",
+                    "region": "OK",
+                    "best_match": null,
+                    "matched_candidate": null,
+                    "strict_hit": false,
+                    "loose_hit": false
+                },
+                {
+                    "store_id": "costco-1448",
+                    "city": "Murfreesboro",
+                    "region": "TN",
+                    "best_match": null,
+                    "matched_candidate": null,
+                    "strict_hit": false,
+                    "loose_hit": false
+                },
+                {
+                    "store_id": "costco-1167",
+                    "city": "Katy",
+                    "region": "TX",
+                    "best_match": null,
+                    "matched_candidate": null,
+                    "strict_hit": false,
+                    "loose_hit": false
+                },
+                {
+                    "store_id": "costco-103",
+                    "city": "Clarkston",
+                    "region": "WA",
+                    "best_match": null,
+                    "matched_candidate": null,
+                    "strict_hit": false,
+                    "loose_hit": false
+                }
+            ]
+        },
+        {
+            "slug": "mcdonalds",
+            "name": "McDonald's",
+            "country": "US",
+            "sample_size": 15,
+            "strict_hits": 0,
+            "loose_hits": 0,
+            "strict_rate": 0,
+            "loose_rate": 0,
+            "elapsed_ms": 6783,
+            "sample": [
+                {
+                    "store_id": "mcdonalds-4979",
+                    "city": "Burley",
+                    "region": "ID",
+                    "best_match": null,
+                    "matched_candidate": null,
+                    "strict_hit": false,
+                    "loose_hit": false
+                },
+                {
+                    "store_id": "mcdonalds-1021",
+                    "city": "Monona",
+                    "region": "WI",
+                    "best_match": null,
+                    "matched_candidate": null,
+                    "strict_hit": false,
+                    "loose_hit": false
+                },
+                {
+                    "store_id": "mcdonalds-1018",
+                    "city": "Champaign",
+                    "region": "IL",
+                    "best_match": null,
+                    "matched_candidate": null,
+                    "strict_hit": false,
+                    "loose_hit": false
+                },
+                {
+                    "store_id": "mcdonalds-24917",
+                    "city": "Houston",
+                    "region": "TX",
+                    "best_match": null,
+                    "matched_candidate": null,
+                    "strict_hit": false,
+                    "loose_hit": false
+                },
+                {
+                    "store_id": "mcdonalds-33307",
+                    "city": "League City",
+                    "region": "TX",
+                    "best_match": null,
+                    "matched_candidate": null,
+                    "strict_hit": false,
+                    "loose_hit": false
+                },
+                {
+                    "store_id": "mcdonalds-12708",
+                    "city": "Thomasville",
+                    "region": "NC",
+                    "best_match": null,
+                    "matched_candidate": null,
+                    "strict_hit": false,
+                    "loose_hit": false
+                },
+                {
+                    "store_id": "mcdonalds-4262",
+                    "city": "Niles",
+                    "region": "OH",
+                    "best_match": null,
+                    "matched_candidate": null,
+                    "strict_hit": false,
+                    "loose_hit": false
+                },
+                {
+                    "store_id": "mcdonalds-1093",
+                    "city": "Silver Spring",
+                    "region": "MD",
+                    "best_match": null,
+                    "matched_candidate": null,
+                    "strict_hit": false,
+                    "loose_hit": false
+                },
+                {
+                    "store_id": "mcdonalds-3872",
+                    "city": "Los Angeles",
+                    "region": "CA",
+                    "best_match": null,
+                    "matched_candidate": null,
+                    "strict_hit": false,
+                    "loose_hit": false
+                },
+                {
+                    "store_id": "mcdonalds-4898",
+                    "city": "Scottsburg",
+                    "region": "IN",
+                    "best_match": null,
+                    "matched_candidate": null,
+                    "strict_hit": false,
+                    "loose_hit": false
+                },
+                {
+                    "store_id": "mcdonalds-19866",
+                    "city": "Haslett",
+                    "region": "MI",
+                    "best_match": null,
+                    "matched_candidate": null,
+                    "strict_hit": false,
+                    "loose_hit": false
+                },
+                {
+                    "store_id": "mcdonalds-16491",
+                    "city": "Bedford Heights",
+                    "region": "OH",
+                    "best_match": null,
+                    "matched_candidate": null,
+                    "strict_hit": false,
+                    "loose_hit": false
+                },
+                {
+                    "store_id": "mcdonalds-31781",
+                    "city": "Queen Creek",
+                    "region": "AZ",
+                    "best_match": null,
+                    "matched_candidate": null,
+                    "strict_hit": false,
+                    "loose_hit": false
+                },
+                {
+                    "store_id": "mcdonalds-1674",
+                    "city": "Feasterville Trevose",
+                    "region": "PA",
+                    "best_match": null,
+                    "matched_candidate": null,
+                    "strict_hit": false,
+                    "loose_hit": false
+                },
+                {
+                    "store_id": "mcdonalds-13143",
+                    "city": "Oxford",
+                    "region": "MA",
+                    "best_match": null,
+                    "matched_candidate": null,
+                    "strict_hit": false,
+                    "loose_hit": false
+                }
+            ]
+        },
+        {
+            "slug": "starbucks",
+            "name": "Starbucks",
+            "country": "US",
+            "sample_size": 15,
+            "strict_hits": 0,
+            "loose_hits": 0,
+            "strict_rate": 0,
+            "loose_rate": 0,
+            "elapsed_ms": 3484,
+            "sample": [
+                {
+                    "store_id": "starbucks-1033801",
+                    "city": "Burley",
+                    "region": "ID",
+                    "best_match": null,
+                    "matched_candidate": null,
+                    "strict_hit": false,
+                    "loose_hit": false
+                },
+                {
+                    "store_id": "starbucks-15073",
+                    "city": "Milwaukee",
+                    "region": "WI",
+                    "best_match": null,
+                    "matched_candidate": null,
+                    "strict_hit": false,
+                    "loose_hit": false
+                },
+                {
+                    "store_id": "starbucks-1055179",
+                    "city": "Indianapolis",
+                    "region": "IN",
+                    "best_match": null,
+                    "matched_candidate": null,
+                    "strict_hit": false,
+                    "loose_hit": false
+                },
+                {
+                    "store_id": "starbucks-1009399",
+                    "city": "Waltham",
+                    "region": "MA",
+                    "best_match": null,
+                    "matched_candidate": null,
+                    "strict_hit": false,
+                    "loose_hit": false
+                },
+                {
+                    "store_id": "starbucks-14724",
+                    "city": "High Point",
+                    "region": "NC",
+                    "best_match": null,
+                    "matched_candidate": null,
+                    "strict_hit": false,
+                    "loose_hit": false
+                },
+                {
+                    "store_id": "starbucks-17565",
+                    "city": "Palm Beach Gardens",
+                    "region": "FL",
+                    "best_match": null,
+                    "matched_candidate": null,
+                    "strict_hit": false,
+                    "loose_hit": false
+                },
+                {
+                    "store_id": "starbucks-1030053",
+                    "city": "Charlottesville",
+                    "region": "VA",
+                    "best_match": null,
+                    "matched_candidate": null,
+                    "strict_hit": false,
+                    "loose_hit": false
+                },
+                {
+                    "store_id": "starbucks-17637",
+                    "city": "Clarksville",
+                    "region": "MD",
+                    "best_match": null,
+                    "matched_candidate": null,
+                    "strict_hit": false,
+                    "loose_hit": false
+                },
+                {
+                    "store_id": "starbucks-10217",
+                    "city": "Santa Monica",
+                    "region": "CA",
+                    "best_match": null,
+                    "matched_candidate": null,
+                    "strict_hit": false,
+                    "loose_hit": false
+                },
+                {
+                    "store_id": "starbucks-1014999",
+                    "city": "Duluth",
+                    "region": "GA",
+                    "best_match": null,
+                    "matched_candidate": null,
+                    "strict_hit": false,
+                    "loose_hit": false
+                },
+                {
+                    "store_id": "starbucks-14796",
+                    "city": "Sterling Heights",
+                    "region": "MI",
+                    "best_match": null,
+                    "matched_candidate": null,
+                    "strict_hit": false,
+                    "loose_hit": false
+                },
+                {
+                    "store_id": "starbucks-1040388",
+                    "city": "Cedar Hills",
+                    "region": "UT",
+                    "best_match": null,
+                    "matched_candidate": null,
+                    "strict_hit": false,
+                    "loose_hit": false
+                },
+                {
+                    "store_id": "starbucks-1043858",
+                    "city": "Galloway",
+                    "region": "NJ",
+                    "best_match": null,
+                    "matched_candidate": null,
+                    "strict_hit": false,
+                    "loose_hit": false
+                },
+                {
+                    "store_id": "starbucks-1025416",
+                    "city": "Glendale",
+                    "region": "CA",
+                    "best_match": null,
+                    "matched_candidate": null,
+                    "strict_hit": false,
+                    "loose_hit": false
+                },
+                {
+                    "store_id": "starbucks-1040531",
+                    "city": "Henderson",
+                    "region": "NV",
+                    "best_match": null,
+                    "matched_candidate": null,
+                    "strict_hit": false,
+                    "loose_hit": false
+                }
+            ]
+        },
+        {
+            "slug": "tesco",
+            "name": "Tesco",
+            "country": "UK",
+            "sample_size": 15,
+            "strict_hits": 0,
+            "loose_hits": 2,
+            "strict_rate": 0,
+            "loose_rate": 0.13333333333333333,
+            "elapsed_ms": 3769,
+            "sample": [
+                {
+                    "store_id": "tesco-ovt-e7f18418-8103-4cb5-875b-04e3bc192c7b",
+                    "city": "Kilmacolm",
+                    "region": "Scotland",
+                    "best_match": null,
+                    "matched_candidate": null,
+                    "strict_hit": false,
+                    "loose_hit": false
+                },
+                {
+                    "store_id": "tesco-ovt-2b6c8d0b-084c-4348-a769-4f2f8b17ad6d",
+                    "city": "Bournemouth",
+                    "region": "South West",
+                    "best_match": null,
+                    "matched_candidate": null,
+                    "strict_hit": false,
+                    "loose_hit": false
+                },
+                {
+                    "store_id": "tesco-ovt-4df13e8f-85d1-4d99-b16e-e7e973801cea",
+                    "city": "Cambridge",
+                    "region": "East of England",
+                    "best_match": null,
+                    "matched_candidate": null,
+                    "strict_hit": false,
+                    "loose_hit": false
+                },
+                {
+                    "store_id": "tesco-ovt-bbf5ac4c-bb85-4f42-b9c7-20b267c4ffc8",
+                    "city": "Nuneaton",
+                    "region": "West Midlands",
+                    "best_match": null,
+                    "matched_candidate": null,
+                    "strict_hit": false,
+                    "loose_hit": false
+                },
+                {
+                    "store_id": "tesco-ovt-a3769343-4e43-40b3-a748-257de0a58842",
+                    "city": "London",
+                    "region": "London",
+                    "best_match": {
+                        "neid": "04042212589706048194",
+                        "name": "Tesco PLC",
+                        "flavor": "organization",
+                        "score": 0.90799403
+                    },
+                    "matched_candidate": "name+city",
+                    "strict_hit": false,
+                    "loose_hit": true
+                },
+                {
+                    "store_id": "tesco-ovt-c0af80f8-44c2-40c0-9246-dceaa3eb02f3",
+                    "city": "Glasgow",
+                    "region": "Scotland",
+                    "best_match": null,
+                    "matched_candidate": null,
+                    "strict_hit": false,
+                    "loose_hit": false
+                },
+                {
+                    "store_id": "tesco-ovt-d9f58ecf-0799-45d8-ba74-3b213542aedf",
+                    "city": "Halifax",
+                    "region": "Yorkshire and The Humber",
+                    "best_match": null,
+                    "matched_candidate": null,
+                    "strict_hit": false,
+                    "loose_hit": false
+                },
+                {
+                    "store_id": "tesco-ovt-f3466af6-06b4-4b23-a48a-8d90fd68a189",
+                    "city": "Leicester",
+                    "region": "East Midlands",
+                    "best_match": null,
+                    "matched_candidate": null,
+                    "strict_hit": false,
+                    "loose_hit": false
+                },
+                {
+                    "store_id": "tesco-ovt-9f5d434d-083e-4951-b008-d8d7a52b18ce",
+                    "city": "Bedford",
+                    "region": "East of England",
+                    "best_match": null,
+                    "matched_candidate": null,
+                    "strict_hit": false,
+                    "loose_hit": false
+                },
+                {
+                    "store_id": "tesco-ovt-bd2b895d-abd3-43a2-8143-b4f482942e55",
+                    "city": "Abertillery",
+                    "region": "Wales",
+                    "best_match": null,
+                    "matched_candidate": null,
+                    "strict_hit": false,
+                    "loose_hit": false
+                },
+                {
+                    "store_id": "tesco-ovt-7db8030e-4062-4523-a204-bb82a4543379",
+                    "city": "Launceston",
+                    "region": "South West",
+                    "best_match": null,
+                    "matched_candidate": null,
+                    "strict_hit": false,
+                    "loose_hit": false
+                },
+                {
+                    "store_id": "tesco-ovt-bde9db7d-28be-4bcc-ab34-2a995c37a1cb",
+                    "city": "Romford",
+                    "region": "London",
+                    "best_match": null,
+                    "matched_candidate": null,
+                    "strict_hit": false,
+                    "loose_hit": false
+                },
+                {
+                    "store_id": "tesco-ovt-e9cc5332-9d4e-4978-88dd-a0f5182e6b48",
+                    "city": "Stalybridge",
+                    "region": "North West",
+                    "best_match": null,
+                    "matched_candidate": null,
+                    "strict_hit": false,
+                    "loose_hit": false
+                },
+                {
+                    "store_id": "tesco-ovt-d6609d04-9254-4b18-afd3-d5ede8a1b59e",
+                    "city": "London",
+                    "region": "London",
+                    "best_match": {
+                        "neid": "04042212589706048194",
+                        "name": "Tesco PLC",
+                        "flavor": "organization",
+                        "score": 0.90799403
+                    },
+                    "matched_candidate": "name+city",
+                    "strict_hit": false,
+                    "loose_hit": true
+                },
+                {
+                    "store_id": "tesco-ovt-74ded4e4-ee22-437a-9833-6c585cbe436f",
+                    "city": "Hounslow",
+                    "region": "London",
+                    "best_match": null,
+                    "matched_candidate": null,
+                    "strict_hit": false,
+                    "loose_hit": false
+                }
+            ]
+        },
+        {
+            "slug": "loblaw",
+            "name": "Loblaw",
+            "country": "CA",
+            "sample_size": 15,
+            "strict_hits": 0,
+            "loose_hits": 2,
+            "strict_rate": 0,
+            "loose_rate": 0.13333333333333333,
+            "elapsed_ms": 11676,
+            "sample": [
+                {
+                    "store_id": "loblaw-osm-node-221063335",
+                    "city": null,
+                    "region": "Quebec",
+                    "best_match": null,
+                    "matched_candidate": null,
+                    "strict_hit": false,
+                    "loose_hit": false
+                },
+                {
+                    "store_id": "loblaw-osm-node-825410728",
+                    "city": null,
+                    "region": "Ontario",
+                    "best_match": null,
+                    "matched_candidate": null,
+                    "strict_hit": false,
+                    "loose_hit": false
+                },
+                {
+                    "store_id": "loblaw-osm-node-1940980316",
+                    "city": null,
+                    "region": "Quebec",
+                    "best_match": null,
+                    "matched_candidate": null,
+                    "strict_hit": false,
+                    "loose_hit": false
+                },
+                {
+                    "store_id": "loblaw-osm-node-3306493403",
+                    "city": "North York",
+                    "region": "Ontario",
+                    "best_match": null,
+                    "matched_candidate": null,
+                    "strict_hit": false,
+                    "loose_hit": false
+                },
+                {
+                    "store_id": "loblaw-osm-node-4771874022",
+                    "city": null,
+                    "region": "British Columbia",
+                    "best_match": null,
+                    "matched_candidate": null,
+                    "strict_hit": false,
+                    "loose_hit": false
+                },
+                {
+                    "store_id": "loblaw-osm-node-7288257985",
+                    "city": null,
+                    "region": "Quebec",
+                    "best_match": null,
+                    "matched_candidate": null,
+                    "strict_hit": false,
+                    "loose_hit": false
+                },
+                {
+                    "store_id": "loblaw-osm-node-11417122413",
+                    "city": "Montréal",
+                    "region": "Quebec",
+                    "best_match": {
+                        "neid": "06177619967198474465",
+                        "name": "Provigo®",
+                        "flavor": "organization",
+                        "score": 0.85921776
+                    },
+                    "matched_candidate": "banner+city",
+                    "strict_hit": false,
+                    "loose_hit": true
+                },
+                {
+                    "store_id": "loblaw-osm-way-22942361",
+                    "city": null,
+                    "region": "Ontario",
+                    "best_match": null,
+                    "matched_candidate": null,
+                    "strict_hit": false,
+                    "loose_hit": false
+                },
+                {
+                    "store_id": "loblaw-osm-way-56006875",
+                    "city": "Saskatoon",
+                    "region": "Saskatchewan",
+                    "best_match": null,
+                    "matched_candidate": null,
+                    "strict_hit": false,
+                    "loose_hit": false
+                },
+                {
+                    "store_id": "loblaw-osm-way-115859855",
+                    "city": "Oshawa",
+                    "region": "Ontario",
+                    "best_match": null,
+                    "matched_candidate": null,
+                    "strict_hit": false,
+                    "loose_hit": false
+                },
+                {
+                    "store_id": "loblaw-osm-way-170242327",
+                    "city": "Toronto",
+                    "region": "Ontario",
+                    "best_match": {
+                        "neid": "02370413029320802934",
+                        "name": "Loblaw Companies Limited",
+                        "flavor": "organization",
+                        "score": 0.9022212
+                    },
+                    "matched_candidate": "name+city",
+                    "strict_hit": false,
+                    "loose_hit": true
+                },
+                {
+                    "store_id": "loblaw-osm-way-226499399",
+                    "city": null,
+                    "region": "Alberta",
+                    "best_match": null,
+                    "matched_candidate": null,
+                    "strict_hit": false,
+                    "loose_hit": false
+                },
+                {
+                    "store_id": "loblaw-osm-way-296328141",
+                    "city": null,
+                    "region": "Ontario",
+                    "best_match": null,
+                    "matched_candidate": null,
+                    "strict_hit": false,
+                    "loose_hit": false
+                },
+                {
+                    "store_id": "loblaw-osm-way-470022440",
+                    "city": null,
+                    "region": "Ontario",
+                    "best_match": null,
+                    "matched_candidate": null,
+                    "strict_hit": false,
+                    "loose_hit": false
+                },
+                {
+                    "store_id": "loblaw-osm-way-671687193",
+                    "city": "Whistler",
+                    "region": "British Columbia",
+                    "best_match": null,
+                    "matched_candidate": null,
+                    "strict_hit": false,
+                    "loose_hit": false
+                }
+            ]
+        }
+    ],
+    "overall": {
+        "sample": 105,
+        "strict": 1,
+        "loose": 7,
+        "strict_rate": 0.009523809523809525,
+        "loose_rate": 0.06666666666666667,
+        "elapsed_ms": 38965
+    }
+}

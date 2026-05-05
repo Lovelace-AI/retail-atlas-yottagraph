@@ -1,76 +1,63 @@
-# Retail Atlas
-
-## Vision
-
-Retail Atlas — a productized vertical application built on Elemental that
-lets retail CI / corp-dev / real-estate / merchandising teams overlay
-multiple retailers' store footprints on the same map, click any polygon or
-store dot to get live Elemental context, and compose cross-retailer
-analyses no comparable product (Placer, Advan, SafeGraph, Similarweb)
-delivers today.
-
-## Stack note (realized vs PRD)
-
-The PRD below was scoped to **Vite + React + Tailwind + shadcn/ui +
-Supabase + Deno edge functions**. The realized app uses the **Aether
-template**: Nuxt 3 (SPA) + Vue 3 + Vuetify 3 + TypeScript, Vercel +
-Nitro server routes, Auth0, Upstash Redis (KV), and optional Neon
-Postgres. Treat any reference to React / Tailwind / shadcn / Supabase as
-"the equivalent in our stack" — the architecture (data substrate, NEID
-resolution, layered map canvas, context panels, recipes) carries over
-unchanged; only the framework and component library differ. The
-`@lovelace/retail-map-core` npm package described in R2 is also
-aspirational at this phase: while we are a single tenant app, the
-shared logic lives in this repo (`scripts/`, `types/`, `composables/`).
-We will graduate it to a package once a second tenant or app needs the
-same surface.
-
 # Retail Atlas — PRD
+
+> Status: proposed. **Standalone app** — not a feature inside signalfromthenoise. Reuses the nowcast map + Elemental local-context pattern documented in [`RETAIL_MAP_DATA_SOURCES.md`](RETAIL_MAP_DATA_SOURCES.md), but is scoped, priced, pitched, and deployed as its own product.
+>
+> The SFTN nowcast demo proved one thing cleanly: a choropleth polygon that resolves to an Elemental NEID + a live MCP traversal is a differentiated surface for retail intelligence. Today that surface is a side panel under a nowcast chain. This PRD turns it into the whole product.
 
 ## Context
 
-Another app we built demonstrated that a five-layer composite (basemap silhouette → area polygons → choropleth fill → Elemental NEID halo → store dots) + a live MCP fan-out on click produces an interactive surface that none of the comparable products (Placer, Advan, SafeGraph, Similarweb, the panel vendors) deliver today. The reason is that the halo is keyed on a real entity graph — every tracked county / LAD / CMA is a NEID that resolves to events, articles, and economic concepts via Elemental. That substrate is what makes the map feel different from "another choropleth."
+SFTN's `NowcastCockpitMap` + `NowcastCountyContextPanel` pair demonstrated that a five-layer composite (basemap silhouette → area polygons → choropleth fill → Elemental NEID halo → store dots) + a live MCP fan-out on click produces an interactive surface that none of the comparable products (Placer, Advan, SafeGraph, Similarweb, the panel vendors) deliver today. The reason is that the halo is keyed on a real entity graph — every tracked county / LAD / CMA is a NEID that resolves to events, articles, and economic concepts via Elemental. That substrate is what makes the map feel different from "another choropleth."
 
-What this PRD proposes building as a distinct product:
+What SFTN does _not_ do, and what this PRD proposes building as a distinct product:
 
 1. Layer multiple retailers' store footprints on the same map as interchangeable overlays (not one-retailer-at-a-time).
 2. Resolve **per-store entities** (not just per-county), so the dots themselves are clickable context targets — store-level incidents, permits, openings, closures, local press.
 3. Compose **cross-retailer aggregates** — "show me every US county where Target opened a store and Dollar General closed one in the last 12 months," "rank CBSAs by event density per $ of retail square footage," "find counties where all big-box retailers have plateaued."
 4. Package the whole thing as a self-service canvas a retail analyst, real-estate investor, or CI buyer can open daily — not as a demo surface gated behind a nowcast chain.
 
-Retail Atlas is a _productized vertical application_ built on Elemental: it sells to retail CI / corp-dev / real-estate / merchandising teams directly, with a bounded feature set and a real subscription shape.
+The commercial shape is different from SFTN too. SFTN is a _rapid prototype that sells Elemental-as-platform_ — every chain run is a live proof-of-value demo for Elemental itself. Retail Atlas is a _productized vertical application_ built on Elemental: it sells to retail CI / corp-dev / real-estate / merchandising teams directly, with a bounded feature set and a real subscription shape.
 
 ## Goals
 
-1. Ship a standalone app at a dedicated domain whose home surface is a composable retail-store map: choose retailers, choose overlays, click any polygon or store dot to get live Elemental context.
-2. Extend the NEID resolution pattern to (a) every county a tracked retailer operates in (full coverage, not top-N) and (b) every **store** Elemental has coverage for.
+1. Ship a standalone app at a dedicated domain (e.g. `atlas.lovelace.ai`) whose home surface is a composable retail-store map: choose retailers, choose overlays, click any polygon or store dot to get live Elemental context.
+2. Extend the SFTN NEID resolution pattern from ~75 US counties / ~50 international areas to (a) every county a tracked retailer operates in (full coverage, not top-N) and (b) every **store** Elemental has coverage for.
 3. Make the canvas compositional — multiple retailer layers, multiple analysis overlays, multiple time windows — without requiring a "chain run" or any server-side orchestration for basic map interactions. Heavy-lift analysis fans out on demand.
 4. Deliver at least three named analysis recipes that aren't currently possible in any competing product: store-level incident feed, footprint-delta-between-retailers (opened vs closed per county in a window), and event-density-per-store-density choropleth.
+5. Keep the build lift small by lifting every reusable piece out of SFTN wholesale — the enrichment pipeline, the build scripts, the topojson, the Elemental MCP client, the NEID-resolution scripts — rather than re-implementing them.
 
-`d3-geo` + TopoJSON and MapLibre / deck.gl can be used.
+## Non-goals
+
+- Any chain orchestration / nowcast estimate math. That stays in SFTN. Retail Atlas renders and explores; it does not forecast.
+- Procuring premium feeds (Placer, Advan, SafeGraph, credit-card panels, imagery) for the MVP. These are composed in as upgrade layers with the same toggle-driven pattern PRD 19 / 20 established.
+- Replacing or refactoring SFTN. The two apps share vendored libraries (see R2 on packaging) but nothing in SFTN's runtime path changes.
+- Shipping a full CRUD admin UI for managing retailers / store rosters / NEID caches in MVP. Those stay file-based in the repo (same pattern as SFTN `data/retail_locations/`, `data/reference/county_neids.json`). A DB-backed admin surface is Phase 3+.
+- Building a mobile-first responsive UI. Desktop-first canvas — the map is dense and needs screen real estate; tablet fallback is acceptable but phone is out of scope.
+- Real-time event streaming. All event context is pulled on click via Elemental MCP; no subscriptions, no websockets, no push.
+- Writing our own map library. `d3-geo` + TopoJSON is the reference stack SFTN uses and it clears the bar. MapLibre / deck.gl are future considerations, not MVP.
 
 ## Locked-in decisions
 
-| #   | Decision                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        |
-| --- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| 1   | **Separate Git repo, separate Vercel / host project, separate Supabase project.** Shared code is distributed via an internal npm package (`@lovelace/retail-map-core`). Shared data (CSVs, NEID caches, topojson) lives in an internal data repo the map-core package reads from at build time.                                                                                                                                                                                                                                                                                 |
-| 2   | **Aether template**: Nuxt 3 (SPA) + Vue 3 + Vuetify 3 + TypeScript; Vercel + Nitro server routes; Auth0; Upstash Redis (KV) for prefs/state; optional Neon Postgres for app-specific relational data. Elemental MCP via the platform's standard `useElementalClient()` / server-side helpers.                                                                                                                                                                                                                                                                                   |
-| 3   | Atomic map unit is the **Store Record**: `{ store_id, retailer, retailer_slug, banner, format, status, country, lat, lng, address, city, region, postal_code, area_code, area_type, area_name, neid }` plus country-specific FIPS/LAD/CMA hierarchy fields. `neid` is populated when Elemental has a resolvable entity for that store; absence is fine (the store still renders as a dot). Canonical type lives in [`types/retail.ts`](types/retail.ts).                                                                                                                        |
-| 4   | Choropleth unit is the **Area Record**: `{ area_key, area_code, area_type, country, area_name, region, centroid, store_counts_by_retailer, total_stores, neid }`. `area_key = "{country}:{area_type}:{area_code}"` is the primary key and stable across countries (US county FIPS, UK LAD, CA CMA). NEID is required for an area to be interactive; without one, the polygon is rendered in the base palette but not clickable.                                                                                                                                                 |
-| 5   | **No DB-backed entity cache in MVP.** NEID lookups come from bundled JSON files (`area_neids.json`, `store_neids.json`) . If the hit-rate gate in R5 passes, the caches graduate to a DB table in Phase 3.                                                                                                                                                                                                                                                                                                                                                                      |
-| 6   | MVP ships **30 retailers** sourced from `data/retail_locations/` (~148k stores total): 26 US (big-box, grocery, dollar, drug, QSR, coffee, specialty, home-improvement), 3 UK (Tesco, Booker, One Stop), and 1 CA (Loblaw). The full list lives in [`scripts/lib/retailer-registry.ts`](scripts/lib/retailer-registry.ts). Additional retailers are unlocked by dropping a new CSV into `data/retail_locations/` and appending an entry to the registry; no other code changes. The map's default-on chips are scoped to a smaller curated subset (initially Target + Walmart). |
-| 7   | The app is called **Retail Atlas**. Route structure: `/` (landing) → `/atlas` (map canvas, the product) → `/atlas/store/:store_id`, `/atlas/area/:area_code`, `/atlas/retailer/:slug` (detail panes). No nested sub-routes deeper than two levels.                                                                                                                                                                                                                                                                                                                              |
-| 8   | Feature flag `VITE_ATLAS_BETA=true` gates the MVP build. Default off for any deploy that isn't the beta domain.                                                                                                                                                                                                                                                                                                                                                                                                                                                                 |
+| #   | Decision                                                                                                                                                                                                                                                                                                                                                              |
+| --- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| 1   | **Separate Git repo, separate Vercel / host project, separate Supabase project.** Shared code is distributed via an internal npm package (`@lovelace/retail-map-core`) that extracts the reusable pieces from SFTN in a one-time vendor step. Shared data (CSVs, NEID caches, topojson) lives in an internal data repo the map-core package reads from at build time. |
+| 2   | Stack mirrors SFTN for team velocity: Vite + React + TypeScript + Tailwind (frontend); Supabase + Deno edge functions (backend); Elemental MCP via the same `_shared/elemental.ts` helper shape. Deviations from SFTN get a written note in this PRD.                                                                                                                 |
+| 3   | Atomic map unit is the **Store Record**: `{ store_id, retailer, banner, format, lat, lng, address, area_code, area_type, country, neid? }`. `neid` is populated when Elemental has a resolvable entity for that store; absence is fine (the store still renders as a dot).                                                                                            |
+| 4   | Choropleth unit is the **Area Record**: `{ area_code, area_type, country, area_name, neid, centroid, store_counts_by_retailer }`. NEID is required for an area to be interactive; without one, the polygon is rendered in the base palette but not clickable.                                                                                                         |
+| 5   | **No DB-backed entity cache in MVP.** NEID lookups come from bundled JSON files (`area_neids.json`, `store_neids.json`) generated by the same family of scripts SFTN uses. If the hit-rate gate in R5 passes, the caches graduate to a DB table in Phase 3.                                                                                                           |
+| 6   | MVP ships **three retailers in the US** (Target, Walmart, Dollar General — already enriched in SFTN) and **two international** (Tesco UK, Loblaw CA — also already enriched). Additional retailers are unlocked by dropping a new CSV into the data repo and running the build scripts; no code changes.                                                              |
+| 7   | Auth: **Supabase Auth with invite-only signup** for MVP. No SSO. No tiers. Paid beta users are manually provisioned. Billing is out of scope for MVP; if the beta converts, Stripe is bolted on in a follow-up PRD.                                                                                                                                                   |
+| 8   | The app is called **Retail Atlas**. Route structure: `/` (landing) → `/atlas` (map canvas, the product) → `/atlas/store/:store_id`, `/atlas/area/:area_code`, `/atlas/retailer/:slug` (detail panes). No nested sub-routes deeper than two levels.                                                                                                                    |
+| 9   | Feature flag `VITE_ATLAS_BETA=true` gates the MVP build. Default off for any deploy that isn't the beta domain.                                                                                                                                                                                                                                                       |
 
 ## Phasing
 
 | Phase       | Scope                                                                                                                                                                                       | Effort            | Trigger                                                         |
 | ----------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------- | --------------------------------------------------------------- |
 | **Phase 0** | Elemental store-level coverage probe (R5.1) — run before committing to the rest of the PRD. If per-store hit-rate is under 30%, this phasing collapses and the product pivots to area-only. | ~2 days           | Immediate, blocking.                                            |
-| **Phase 1** | Repo + shared-package extraction + MVP map canvas (R1, R2, R3) with the five retailers. Area-level clicks only; no store-level NEIDs yet.                                                   | ~2 person-weeks   | Phase 0 result, regardless of outcome.                          |
+| **Phase 1** | Repo + shared-package extraction + MVP map canvas (R1, R2, R3) with the five SFTN-era retailers. Area-level clicks only; no store-level NEIDs yet.                                          | ~2 person-weeks   | Phase 0 result, regardless of outcome.                          |
 | **Phase 2** | Store-level NEID resolution + per-store context panel (R5, R6). Gated on Phase 0 hit-rate.                                                                                                  | ~1.5 person-weeks | Phase 0 hit-rate ≥ 30%.                                         |
 | **Phase 3** | Cross-retailer overlays + analysis recipes (R4, R7). The product differentiator.                                                                                                            | ~2 person-weeks   | Phase 1 lands and at least 3 beta users are active.             |
-| **Phase 4** | Premium-feed composition surface (R8) — panel, credit-card, imagery overlays with the same `available_in_production[]` pattern uses.                                                        | ~1 person-week    | First paid design-partner signals interest in feed composition. |
+| **Phase 4** | Premium-feed composition surface (R8) — panel, credit-card, imagery overlays with the same `available_in_production[]` pattern SFTN uses.                                                   | ~1 person-week    | First paid design-partner signals interest in feed composition. |
 | **Phase 5** | DB-backed entity + observation cache, admin UI, multi-tenant hardening (R9, R10).                                                                                                           | ~3 person-weeks   | Beta converts to paid.                                          |
 
 ## Definitions
@@ -139,8 +126,8 @@ MVP ships three canonical recipes (see R7); users can clone and tweak via URL pa
 
 | Tier                         | What Elemental resolves                                                      | How we use it                                                        |
 | ---------------------------- | ---------------------------------------------------------------------------- | -------------------------------------------------------------------- |
-| **Area**                     | County / LAD / CMA as `location` flavor entity                               | Choropleth click → `nowcast-county-context`-style fan-out.           |
-| **Retailer org**             | Retailer as `organization` flavor (provven via `getEntityByCik`)             | Global retailer event feed, roll-ups.                                |
+| **Area**                     | County / LAD / CMA as `location` flavor entity (proven in SFTN)              | Choropleth click → `nowcast-county-context`-style fan-out.           |
+| **Retailer org**             | Retailer as `organization` flavor (proven in SFTN via `getEntityByCik`)      | Global retailer event feed, roll-ups.                                |
 | **Store**                    | Individual store locations as `location` or `organization` flavors           | Per-dot click; gated on Phase 0 hit-rate.                            |
 | **Shopping center / anchor** | Malls, lifestyle centers, strip-mall anchors as `location` or `organization` | Composed with stores; one click surfaces co-tenant events. Phase 3+. |
 
@@ -198,48 +185,23 @@ flowchart LR
   panel --> supabase
 ```
 
-The diagram is intentionally three-boxed: (1) data repo (2) `@lovelace/retail-map-core` — (3) Retail Atlas app — the product surface that imports core and wires it to its own routing, auth, and edge functions.
+The diagram is intentionally three-boxed: (1) data repo — the stable substrate, same shape SFTN uses; (2) `@lovelace/retail-map-core` — the reusable library vendored out of SFTN's map code; (3) Retail Atlas app — the product surface that imports core and wires it to its own routing, auth, and edge functions.
 
 ## Requirements
 
 ### R1 — Data substrate (P0, Phase 1)
 
-#### R1.1 — Data location (realized)
+#### R1.1 — Data repo
 
-Rather than the standalone `lovelace-retail-data` npm package the PRD originally proposed, the realized MVP keeps the entire data substrate in this repo:
+New internal repo `lovelace-retail-data` housing:
 
-```
-data/retail_locations/                Source CSVs (committed)
-  {slug}_stores.csv                   30 enriched per-retailer rosters
-  _audit/{slug}_audit.json            Per-retailer geocode outlier reports
-  _source/                            Raw upstream pulls (e.g. walmart_ceo.csv)
+- `retail_locations/*.csv` — enriched per-retailer rosters (lift from SFTN; extend over time).
+- `topojson/*.topojson.json` — the three bundled boundary files SFTN already built.
+- `reference/` — CBSA crosswalk, FIPS lookups, currently-supported country list.
+- `neid_cache/` — `area_neids.json`, `store_neids.json`, `retailer_neids.json`.
+- `generated/` — the per-retailer summary JSONs the map consumes at runtime (`{slug}_store_locations.json`, `{slug}_county_summary.json`, `{slug}_area_summary.json`).
 
-scripts/                              Build pipeline (TypeScript, run via tsx)
-  build-retail-data.ts                Top-level: CSV → normalized JSON
-  lib/retailer-registry.ts            30-retailer registry (slug, name, country, color, schema)
-  lib/normalize.ts                    Schema-flavored normalizers (US-FIPS / UK-LAD / CA-CMA)
-
-types/retail.ts                       Canonical Store / Area / Retailer types
-
-public/data/retail_atlas/             Generated outputs (gitignored, rebuilt by `prebuild`)
-  manifest.json                       Generation timestamp + per-CSV sha256 + counts
-  retailers.json                      Index: slug, name, country, color, store_count, area_count
-  stores/{slug}.json                  StoreRecord[] per retailer (lazy-loaded by chip)
-  areas.json                          AreaRecord[] across all retailers (3,591 areas)
-
-data/neid_cache/                      (Phase 1+) area_neids.json, store_neids.json
-public/data/topojson/                 (Phase 1+) Bundled boundary files
-```
-
-The build pipeline runs automatically on Vercel via `prebuild` and on demand locally via `npm run build:data`. Source CSVs are committed; generated JSON is not (the build is deterministic and ~3 s, so regenerating is cheaper than carrying ~70 MB of diffs through git history). When a second app needs the same surface, the `scripts/` + `types/` directories graduate into a `@lovelace/retail-map-core` package per R2 — but until then this is the single source.
-
-Adding a new retailer:
-
-1. Drop the enriched CSV into `data/retail_locations/`.
-2. Append a `RetailerMeta` entry to `scripts/lib/retailer-registry.ts`.
-3. Run `npm run build:data` and verify the new `stores/{slug}.json` + updated `retailers.json` / `areas.json`.
-
-The schema flavors (`us-fips`, `uk-lad`, `ca-cma`) currently cover all 30 retailers. New flavors require a new normalizer in `scripts/lib/normalize.ts` plus a registry update.
+All generated files are committed (same pattern as SFTN's `public/data/`). The repo is packaged as an npm dependency (`@lovelace/retail-data`) consumed by both `@lovelace/retail-map-core` (build scripts) and the Retail Atlas app (runtime static assets copied into its `public/`).
 
 #### R1.2 — Supabase schema (minimal)
 
@@ -277,21 +239,23 @@ No other tables in Phase 1. Retailer rosters, NEID caches, and area summaries al
 
 #### R2.1 — `@lovelace/retail-map-core`
 
-A new internal npm package:
+A new internal npm package that vendors the following out of SFTN:
 
-| source                                                 | Moves to                            | Notes                                                                                                                                    |
-| ------------------------------------------------------ | ----------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------- |
-| `src/components/nowcast/NowcastCockpitMap.tsx`         | `core/MapCanvas.tsx`                | Rename, drop the nowcast-specific props (`retailer` becomes a required `retailers: string[]`), keep the five-layer render pipeline.      |
-| `src/components/nowcast/NowcastCountyContextPanel.tsx` | `core/AreaContextPanel.tsx`         | Becomes generic: takes `{ neid, area_type }` instead of `{ pinnedCountyFips, pinnedAreaCode }`.                                          |
-| `src/lib/api/nowcast-counties.ts`                      | `core/areas.ts`                     | Rename types (`RetailArea` stays); drop the-specific top-N arrays in favor of a data-driven loader reading from `@lovelace/retail-data`. |
-| `supabase/functions/_shared/elemental.ts`              | `core/elemental.ts`                 | Verbatim. The helper is already generic.                                                                                                 |
-| `supabase/functions/_shared/sse.ts`                    | `core/sse.ts`                       | Verbatim.                                                                                                                                |
-| `supabase/functions/nowcast-county-context/index.ts`   | `core/context-handler.ts`           | Extract the Deno-agnostic traversal logic; the edge-function wrapper stays in each app.                                                  |
-| `scripts/build-retailer-map-data.ts`                   | `core/scripts/build-map-data.ts`    | Verbatim.                                                                                                                                |
-| `scripts/expand-retailer-county-neids.ts`              | `core/scripts/expand-area-neids.ts` | Generalize to area_type param.                                                                                                           |
-| `scripts/expand-international-area-neids.ts`           | merge with above                    | Unified in one script.                                                                                                                   |
-| `scripts/lib/retail-stores-fips.ts`                    | `core/scripts/lib/fips-enrich.ts`   | Verbatim.                                                                                                                                |
-| `scripts/build-international-topojson.sh`              | `core/scripts/build-topojson.sh`    | Verbatim.                                                                                                                                |
+| SFTN source                                            | Moves to                            | Notes                                                                                                                                         |
+| ------------------------------------------------------ | ----------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------- |
+| `src/components/nowcast/NowcastCockpitMap.tsx`         | `core/MapCanvas.tsx`                | Rename, drop the nowcast-specific props (`retailer` becomes a required `retailers: string[]`), keep the five-layer render pipeline.           |
+| `src/components/nowcast/NowcastCountyContextPanel.tsx` | `core/AreaContextPanel.tsx`         | Becomes generic: takes `{ neid, area_type }` instead of `{ pinnedCountyFips, pinnedAreaCode }`.                                               |
+| `src/lib/api/nowcast-counties.ts`                      | `core/areas.ts`                     | Rename types (`RetailArea` stays); drop the SFTN-specific top-N arrays in favor of a data-driven loader reading from `@lovelace/retail-data`. |
+| `supabase/functions/_shared/elemental.ts`              | `core/elemental.ts`                 | Verbatim. The helper is already generic.                                                                                                      |
+| `supabase/functions/_shared/sse.ts`                    | `core/sse.ts`                       | Verbatim.                                                                                                                                     |
+| `supabase/functions/nowcast-county-context/index.ts`   | `core/context-handler.ts`           | Extract the Deno-agnostic traversal logic; the edge-function wrapper stays in each app.                                                       |
+| `scripts/build-retailer-map-data.ts`                   | `core/scripts/build-map-data.ts`    | Verbatim.                                                                                                                                     |
+| `scripts/expand-retailer-county-neids.ts`              | `core/scripts/expand-area-neids.ts` | Generalize to area_type param.                                                                                                                |
+| `scripts/expand-international-area-neids.ts`           | merge with above                    | Unified in one script.                                                                                                                        |
+| `scripts/lib/retail-stores-fips.ts`                    | `core/scripts/lib/fips-enrich.ts`   | Verbatim.                                                                                                                                     |
+| `scripts/build-international-topojson.sh`              | `core/scripts/build-topojson.sh`    | Verbatim.                                                                                                                                     |
+
+SFTN keeps its own copies in Phase 1 (don't refactor SFTN to consume the new package yet — that's a later clean-up). The vendor step is one-way until both codebases prove stable on their own.
 
 #### R2.2 — Package shape
 
@@ -307,7 +271,7 @@ A new internal npm package:
 └── README.md
 ```
 
-Dual-runtime: React components build to an ESM bundle for browsers; scripts and MCP handlers ship both Node (for Retail Atlas edge functions if we move to Fly / Vercel Functions) and Deno (for Supabase edge functions) entry points. existing `elemental.ts` is already Deno-first; Node compatibility is a ~30-line shim.
+Dual-runtime: React components build to an ESM bundle for browsers; scripts and MCP handlers ship both Node (for Retail Atlas edge functions if we move to Fly / Vercel Functions) and Deno (for Supabase edge functions) entry points. SFTN's existing `elemental.ts` is already Deno-first; Node compatibility is a ~30-line shim.
 
 #### R2.3 — Release cadence
 
@@ -319,9 +283,9 @@ The headline surface. Lives at `/atlas`.
 
 #### R3.1 — Layer system
 
-The five-layer composite generalizes to **N + 3** layers:
+The five-layer SFTN composite generalizes to **N + 3** layers:
 
-1. **Base country silhouette** (1 layer) — international markets only,
+1. **Base country silhouette** (1 layer) — international markets only, same as SFTN.
 2. **Administrative polygons** (1 layer) — county / LAD / CMA boundaries for whichever country the viewport is focused on.
 3. **Retailer choropleth layers** (1 per active retailer, up to 4 simultaneous) — store-count-per-area fill, color-coded per retailer.
 4. **NEID halo** (1 layer, merged across retailers) — every area with a resolved NEID + ≥1 active-retailer store gets the halo.
@@ -347,7 +311,7 @@ The five-layer composite generalizes to **N + 3** layers:
 
 #### R3.4 — Performance budget
 
-- Cold-load time to first interactive frame: ≤ 2.5 s on broadband.
+- Cold-load time to first interactive frame: ≤ 2.5 s on broadband (SFTN currently lands at ~1.8 s for a single-retailer US map; four retailers × cross-layer compositing pushes it up).
 - Hover latency: < 16 ms (one animation frame). Enforced via Chrome performance tests in CI.
 - Pan / zoom FPS: ≥ 50 on a 2020-vintage MacBook Air.
 
@@ -382,7 +346,7 @@ The defining technical risk for the product. Everything depends on Phase 0's out
 
 #### R5.1 — Phase 0 coverage probe
 
-Before committing to the Phase 2 build, run a scripted probe that samples 100 stores per retailer (~3,000 total across the 30 MVP retailers) and measures Elemental `elemental_get_entity` hit-rate with a battery of candidate queries:
+Before committing to the Phase 2 build, run a scripted probe that samples 100 stores per retailer per country (~1,000 total across the five MVP retailers) and measures Elemental `elemental_get_entity` hit-rate with a battery of candidate queries:
 
 ```
 candidates = [
@@ -408,34 +372,33 @@ Script: `core/scripts/probe-store-coverage.ts`. Emits a JSON report + a markdown
 
 Assuming Phase 0 ≥ 30%:
 
-- `scripts/expand-store-neids.ts` — iterates every store in every tracked retailer's normalized JSON, runs the candidate cascade, caches to `data/neid_cache/store_neids.json`. Keyed by `store_id`.
-- Concurrency budget: 4 parallel MCP calls, 200 ms politeness delay between batches.
-- The realized 30-retailer roster contains ~148k stores. At 4 parallel @ 500 ms / call average, the full run is ~5 hours. Re-runs are incremental (cache hits skip), so steady-state cost after the first sweep is dominated by net-new stores from monthly CSV refreshes.
-- Recommended ordering: resolve big-box + grocery + drug first (~30 retailers' worth of headline events), then QSR/coffee in a second pass since those tend to have lower per-store coverage and dominate the row count.
+- `core/scripts/expand-store-neids.ts` — iterates every store in every tracked retailer's CSV, runs the candidate cascade, caches to `neid_cache/store_neids.json`. Keyed by `store_id`.
+- Concurrency budget: 4 parallel MCP calls, 200 ms politeness delay between batches (same profile SFTN's area expanders use).
+- For Target (~2k stores) + Walmart (~4.6k) + DG (~20k) + Tesco (~4k) + Loblaw (~2.4k) = ~33k stores. At 4 parallel @ 500 ms / call average, the full run is ~70 minutes. Re-runs are incremental (cache hits skip).
 - Re-run cadence: monthly, or on any CSV refresh.
 
 #### R5.3 — Area NEID resolution expansion
 
-The Yottagraph NEID cache covers top-25 per retailer. Retail Atlas needs **every** area a tracked retailer operates in to be clickable. The realized 30-retailer roster (see `data/retail_locations/`) yields **3,591 unique areas** (US counties + UK LADs + CA CMAs), already aggregated by the build pipeline into `public/data/retail_atlas/areas.json` with cross-retailer `store_counts_by_retailer` rolled up. Spot checks per major retailer:
+The SFTN NEID cache covers top-25 per retailer. Retail Atlas needs **every** area a tracked retailer operates in to be clickable. At a glance, that's:
 
-| Retailer       | Areas covered (auto-aggregated) |
-| -------------- | ------------------------------- |
-| Walmart        | ~2,600 US counties              |
-| Dollar General | ~2,800 US counties              |
-| McDonald's     | ~2,500 US counties              |
-| Subway         | ~2,800 US counties              |
-| Starbucks      | ~1,500 US counties              |
-| Tesco          | ~350 UK LADs                    |
-| Loblaw         | ~80 CA CMAs                     |
+| Retailer       | SFTN coverage         | Atlas coverage needed |
+| -------------- | --------------------- | --------------------- |
+| Target         | 25 / ~570 US counties | 570                   |
+| Walmart        | 25 / ~2,600 counties  | 2,600                 |
+| Dollar General | 25 / ~2,800 counties  | 2,800                 |
+| Tesco          | 25 / ~350 LADs        | 350                   |
+| Loblaw         | 25 / ~155 CMAs        | 155                   |
 
-The exact per-retailer area counts emit in `retailers.json` after each `npm run build:data` run. `scripts/expand-area-neids.ts` (Phase 1) walks the union set in the same cache-driven mode; incremental re-runs after roster refreshes are cheap.
+Union is ~3,000 unique US counties + ~500 international areas. `expand-area-neids.ts` runs in the same cache-driven mode; incremental re-runs after roster refreshes are cheap.
 
 ### R6 — Live context panels (P0, Phase 1 for areas / Phase 2 for stores)
 
 #### R6.1 — Area Context Panel
 
+Port of SFTN's `NowcastCountyContextPanel`, generalized:
+
 - Takes `{ neid, area_type, area_name, country, retailers: string[] }`.
-- On mount, fires a Supabase edge function `atlas-area-context` that:
+- On mount, fires a Supabase edge function `atlas-area-context` (reimplementation of SFTN's `nowcast-county-context`) that:
     1. Starts an Elemental MCP session.
     2. Parallel: `elemental_get_events(area_neid)`, `elemental_get_related(area_neid, "article", 12)` → `getArticleProperties(…)`, `elemental_get_related(area_neid, "economic_concept", 8)`.
     3. For each active retailer, parallel: `getEntityByCik(retailer_cik)` → `elemental_get_events(retailer_neid)` (retailer-level events).
@@ -508,7 +471,7 @@ MVP premium feeds in Phase 4 (toggle-only, mocked until a design partner provisi
 - Planet / BlackSky — imagery. Adds parking-lot-fullness delta as a per-store icon state.
 - Panjiva / ImportGenius — customs / BoL. Feeds into the retailer-level context panel (upstream inventory signals).
 
-Toggle infrastructure and cost readout port directly from `available_in_production[]` pattern.
+Toggle infrastructure and cost readout port directly from SFTN's `available_in_production[]` pattern.
 
 ### R9 — Auth + access (P0, Phase 1 minimal; P1, Phase 5 full)
 
@@ -526,7 +489,7 @@ Toggle infrastructure and cost readout port directly from `available_in_producti
 
 ### R10 — Telemetry + observability (P0, Phase 1)
 
-- Every MCP call logged to `atlas_context_calls`
+- Every MCP call logged to `atlas_context_calls` (same shape SFTN uses for `provider_usage_events`, reduced).
 - Per-load performance marks sent to PostHog: time-to-first-render, time-to-first-interactive, panel-open-latency.
 - Error budget: 99% of area clicks resolve a panel in ≤ 8 s; violations paged via Sentry (edge-fn timeouts) and fronted by a graceful fallback message.
 - Weekly summary cron (Supabase scheduled fn): top-10 most-clicked areas, top-10 slowest tools, panel cache hit-rate, invite-request count.
@@ -535,9 +498,9 @@ Toggle infrastructure and cost readout port directly from `available_in_producti
 
 The Atlas UI emulates signalfromthenoise's layout + theming system wholesale. This keeps the build cheap (most of the tokens and components already exist in `@lovelace/retail-map-core`'s port), gives Lovelace a coherent product family look, and lets a single design pass serve both apps.
 
-#### R11.1 — Design language)
+#### R11.1 — Design language (port from SFTN)
 
-The following are lifted verbatim from [`src/index.css`](../../src/index.css) in the repo and shipped as part of `@lovelace/retail-map-core`'s styles entry point. Atlas imports them and only overrides retailer-specific accent tokens.
+The following are lifted verbatim from [`src/index.css`](../../src/index.css) in the SFTN repo and shipped as part of `@lovelace/retail-map-core`'s styles entry point. Atlas imports them and only overrides retailer-specific accent tokens.
 
 **Typography.**
 
@@ -548,22 +511,22 @@ The following are lifted verbatim from [`src/index.css`](../../src/index.css) in
 **Color tokens.** Every color in the product reads from a CSS custom property on `:root`. Tokens come in three layers:
 
 1. **Semantic base** — `--background`, `--foreground`, `--card`, `--card-foreground`, `--popover`, `--popover-foreground`, `--primary`, `--primary-foreground`, `--secondary`, `--muted`, `--muted-foreground`, `--accent`, `--accent-foreground`, `--destructive`, `--border`, `--input`, `--ring`, `--focus-outline`. shadcn/ui convention; every component pulls from these.
-2. **Product surfaces** — `--surface`, `--surface-1`, `--surface-2`, `--border-strong`, `--header-bg`, `--header-fg`. These layer the UI: page background → standard card → elevated card → rail / popover. The Atlas map canvas uses `--surface-2` for the legend backdrop and the control chips.
+2. **Product surfaces** — `--surface`, `--surface-1`, `--surface-2`, `--border-strong`, `--header-bg`, `--header-fg`. These layer the UI: page background → standard card → elevated card → rail / popover. The Atlas map canvas uses `--surface-2` for the legend backdrop and the control chips, matching the SFTN nowcast map.
 3. **Signal accents** — `--signal-green`, `--signal-amber`, `--signal-red`, `--signal-blue`, `--signal-purple`. Used for data visualization, status chips, and the choropleth ramps. Atlas introduces a fourth layer (retailer palette, below) but composes over these for all status and warning states.
 
-**Modes.** `data-mode="light"` / `data-mode="dark"` (or `.dark` class) toggles the full token set. Persisted per-user in localStorage. Default is `light`; ships with a global mode toggle in the sidebar footer and Atlas does the same.
+**Modes.** `data-mode="light"` / `data-mode="dark"` (or `.dark` class) toggles the full token set. Persisted per-user in localStorage. Default is `light`; SFTN ships with a global mode toggle in the sidebar footer and Atlas does the same.
 
-**Tenant palettes.** `data-tenant-palette="default" | "cyber" | "naval"` skins the entire app with an alternative brand tone. Atlas ships with the same three palettes (Signal Default / Cyber Green / Naval Academy) plus a fourth, **Atlas Graphite**, tuned for long-session analytical use (warm graphite surfaces, reduced saturation). Added to both `src/index.css` and `TENANT_PALETTE_VALUES` in `use-tenant-palette.ts`. Operation follows the pattern documented in [`TENANT_PALETTE_OPERATIONS.md`](TENANT_PALETTE_OPERATIONS.md).
+**Tenant palettes.** `data-tenant-palette="default" | "cyber" | "naval"` skins the entire app with an alternative brand tone. Atlas ships with the same three palettes SFTN has (Signal Default / Cyber Green / Naval Academy) plus a fourth, **Atlas Graphite**, tuned for long-session analytical use (warm graphite surfaces, reduced saturation). Added to both `src/index.css` and `TENANT_PALETTE_VALUES` in `use-tenant-palette.ts`. Operation follows the SFTN pattern documented in [`TENANT_PALETTE_OPERATIONS.md`](TENANT_PALETTE_OPERATIONS.md).
 
-**Terminal mode.** `.terminal` on `<html>` overrides every palette with monochrome amber-on-black + JetBrains Mono for everything including headings. Same boot sequence uses (`src/components/layout/TerminalBootSequence.tsx`). Activated by `g g t` keyboard combo; preserved across Atlas because the map renders cleanly in monochrome (amber halo + amber dots + amber polygon outlines reads surprisingly well).
+**Terminal mode.** `.terminal` on `<html>` overrides every palette with monochrome amber-on-black + JetBrains Mono for everything including headings. Same boot sequence SFTN uses (`src/components/layout/TerminalBootSequence.tsx`). Activated by `g g t` keyboard combo; preserved across Atlas because the map renders cleanly in monochrome (amber halo + amber dots + amber polygon outlines reads surprisingly well).
 
 **Density.** `data-density="comfortable" | "compact"` swaps a set of spacing + type + row-height tokens. Atlas defaults to `compact` on the map canvas (denser tooltips, smaller chips) and `comfortable` on detail pages.
 
 **Focus visibility.** WCAG 2.2 compliant — `:focus-visible` renders a 2px outline in `hsl(var(--focus-outline))`. Every interactive element (retailer chips, halo polygons, store dots via SVG `role=button`) must participate.
 
-#### R11.2 — Retailer palette layer
+#### R11.2 — Retailer palette layer (new on top of SFTN's)
 
-Atlas adds one layer that a per-retailer color channel for choropleth fills + dot colors + legend chips.
+Atlas adds one layer SFTN doesn't need: a per-retailer color channel for choropleth fills + dot colors + legend chips.
 
 ```
 --retailer-target:   hsl(0, 85%, 55%)
@@ -615,50 +578,53 @@ Defined at `:root`; the retailer chip component resolves `hsl(var(--retailer-{sl
 
 Annotated regions:
 
-- **Sidebar** (left, 240 px expanded / 56 px collapsed). . Nav items in MVP: Canvas, Saved recipes, Retailers, Docs, Settings. Collapse state persisted per user in localStorage ( `LS_KEY`). On narrow viewports it collapses to a top drawer.
-- **Header bar** (top, 48 px on mobile, embedded above main content on desktop). Background `hsl(var(--header-bg))`, foreground `hsl(var(--header-fg))`. Holds the wordmark, a beta chip, the palette switcher (`data-tenant-palette`), the mode toggle (`data-mode`), and user menu.
+- **Sidebar** (left, 240 px expanded / 56 px collapsed). Lifted directly from SFTN's `AppSidebar`. Nav items in MVP: Canvas, Saved recipes, Retailers, Docs, Settings. Collapse state persisted per user in localStorage (same pattern SFTN uses — `LS_KEY`). On narrow viewports it collapses to a top drawer.
+- **Header bar** (top, 48 px on mobile, embedded above main content on desktop). Background `hsl(var(--header-bg))`, foreground `hsl(var(--header-fg))`. Holds the wordmark, a beta chip, the palette switcher (`data-tenant-palette`), the mode toggle (`data-mode`), and user menu. Same layout as SFTN.
 - **Control rail** (top of canvas). Four horizontally-grouped controls: retailer chips, country selector, time window, overlay picker. Each is a `Card` with `--surface-2` fill and `--border` strokes. 12 px gap between groups, 8 px internal padding.
 - **Map canvas** (main). Full-bleed within the main content column; `min-height: calc(100vh - 200px)`. Responsive to sidebar collapse. Renders inside a `Card` with `--surface-1` fill and a 1 px `--border` stroke. Legend floats bottom-left with `--surface-2` backdrop + 90% opacity + 4 px blur. Pinned badge floats top-right.
-- **Context panel** (docked bottom, slides up on pin). 40% viewport height when open; `--surface-1` backdrop; tab strip uses `Tabs` component. Closes with `Esc` or an X button in the panel header. Same component shape as `NowcastCountyContextPanel`.
+- **Context panel** (docked bottom, slides up on pin). 40% viewport height when open; `--surface-1` backdrop; tab strip uses SFTN's `Tabs` component. Closes with `Esc` or an X button in the panel header. Same component shape as `NowcastCountyContextPanel`.
 - **Footer strip** (telemetry). Always visible when a user is in the canvas. Shows last MCP call latency, cache hit-rate for the session, pinned count. `--surface-2` fill, 32 px height, mono font.
 
-#### R11.4 — Component inventory )
+#### R11.4 — Component inventory (reuse from SFTN)
 
-All of these come directly from shadcn/ui + extensions and are already available in `@lovelace/retail-map-core`. Atlas imports them; no redesigns.
+All of these come directly from shadcn/ui + SFTN's extensions and are already available in `@lovelace/retail-map-core`. Atlas imports them; no redesigns.
 
-| Component                                           | source                                | Use in Atlas                                                   |
-| --------------------------------------------------- | ------------------------------------- | -------------------------------------------------------------- |
-| `Card` + `CardContent`                              | `@/components/ui/card`                | Every panel in the canvas.                                     |
-| `Button`                                            | `@/components/ui/button`              | Retailer chips, overlay picker trigger, context panel actions. |
-| `Badge`                                             | `@/components/ui/badge`               | Beta chip, retailer chip labels, status chips.                 |
-| `Tabs` / `TabsList` / `TabsTrigger` / `TabsContent` | `@/components/ui/tabs`                | Context panel sub-sections (events / articles / concepts).     |
-| `Select` / `SelectContent` / `SelectItem`           | `@/components/ui/select`              | Country selector, overlay picker.                              |
-| `Tooltip`                                           | `@/components/ui/tooltip`             | Hover tooltips on dots + polygons.                             |
-| `Dialog`                                            | `@/components/ui/dialog`              | Saved-recipe confirmation, premium-feed upgrade modals.        |
-| `Input` / `Label`                                   | `@/components/ui/{input,label}`       | Recipe naming, filter forms.                                   |
-| `ScrollArea`                                        | `@/components/ui/scroll-area`         | Context panel content overflow, ranked-areas table.            |
-| `Separator`                                         | `@/components/ui/separator`           | Subsection dividers in panels.                                 |
-| `AppSidebar`                                        | `@/components/layout/AppSidebar`      | Directly ported; route entries swapped for Atlas.              |
-| `AppLayout`                                         | `@/components/layout/AppLayout`       | Ported with `canvas` layout mode as the default.               |
-| `ModeQuickToggle`                                   | `@/components/layout/ModeQuickToggle` | Light / dark / terminal cycler in header.                      |
+| Component                                           | SFTN source                                | Use in Atlas                                                             |
+| --------------------------------------------------- | ------------------------------------------ | ------------------------------------------------------------------------ |
+| `Card` + `CardContent`                              | `@/components/ui/card`                     | Every panel in the canvas.                                               |
+| `Button`                                            | `@/components/ui/button`                   | Retailer chips, overlay picker trigger, context panel actions.           |
+| `Badge`                                             | `@/components/ui/badge`                    | Beta chip, retailer chip labels, status chips.                           |
+| `Tabs` / `TabsList` / `TabsTrigger` / `TabsContent` | `@/components/ui/tabs`                     | Context panel sub-sections (events / articles / concepts).               |
+| `Select` / `SelectContent` / `SelectItem`           | `@/components/ui/select`                   | Country selector, overlay picker.                                        |
+| `Tooltip`                                           | `@/components/ui/tooltip`                  | Hover tooltips on dots + polygons.                                       |
+| `Dialog`                                            | `@/components/ui/dialog`                   | Saved-recipe confirmation, premium-feed upgrade modals.                  |
+| `Input` / `Label`                                   | `@/components/ui/{input,label}`            | Recipe naming, filter forms.                                             |
+| `ScrollArea`                                        | `@/components/ui/scroll-area`              | Context panel content overflow, ranked-areas table.                      |
+| `Separator`                                         | `@/components/ui/separator`                | Subsection dividers in panels.                                           |
+| `AppSidebar`                                        | `@/components/layout/AppSidebar`           | Directly ported; route entries swapped for Atlas.                        |
+| `AppLayout`                                         | `@/components/layout/AppLayout`            | Ported with `canvas` layout mode as the default.                         |
+| `ModeQuickToggle`                                   | `@/components/layout/ModeQuickToggle`      | Light / dark / terminal cycler in header.                                |
+| `WordmarkLink`                                      | `@/components/brand/WordmarkLink`          | New Atlas wordmark + same link pattern.                                  |
+| `Wordmark` (logo)                                   | `@/components/brand/Wordmark`              | Replace SFTN SVG with an Atlas glyph (one-line deliverable from design). |
+| `TerminalBootSequence`                              | `@/components/layout/TerminalBootSequence` | Verbatim port.                                                           |
 
-| `TerminalBootSequence` | `@/components/layout/TerminalBootSequence` | Verbatim port. |
-
-Icon library: **lucide-react**. Atlas-specific icons we need beyond existing: `Map`, `Building`, `MapPin`, `Layers`, `Share2`, `Download` .
+Icon library: **lucide-react** (same as SFTN). Atlas-specific icons we need beyond SFTN's: `Map`, `Building`, `MapPin`, `Layers`, `Share2`, `Download` — all already imported in SFTN.
 
 #### R11.5 — Iconography + micro-interaction rules
+
+These mirror SFTN's tone:
 
 - **Hover transitions** — 150 ms ease-out on opacity / fill / stroke. No bounce, no spring.
 - **Pin transition** — 200 ms ease-out slide-up for the context panel (30 px translate + opacity).
 - **Loading state** — `Loader2` from lucide with `animate-spin` class. Panel skeleton uses `animate-pulse` on `--muted` blocks. Same pattern as `NowcastCountyContextPanel`.
 - **Error state** — `AlertTriangle` icon + `--destructive` color + concise one-line message + "retry" button. Never use the panel width for long stack traces; those go to browser console only.
-- **Success state** — no icon flourish. Silent success is rule (see `NowcastDemoResultPanel` for the pattern).
+- **Success state** — no icon flourish. Silent success is SFTN's rule (see `NowcastDemoResultPanel` for the pattern).
 - **Keyboard navigation** — `g h` → `/atlas`, `g s` → saved recipes, `n` → new recipe modal, `Esc` → clear pin, `Cmd/Ctrl + K` → command palette (Phase 3).
 - **Empty states** — always include one sentence of guidance + one clickable action, not a bare "no data" message. Example: "No area pinned — click any gold-haloed polygon to load local context."
 
 #### R11.6 — Shared stylesheet structure
 
-Atlas has its own `src/index.css`. The only delta is (a) the addition of the retailer palette variables (R11.2) and (b) the Atlas Graphite tenant palette block.
+Atlas has its own `src/index.css` mirroring SFTN's structure. The only delta is (a) the addition of the retailer palette variables (R11.2) and (b) the Atlas Graphite tenant palette block.
 
 ```
 src/index.css
@@ -678,7 +644,7 @@ src/index.css
 └── @layer utilities { … }
 ```
 
-Operation (palette switching, new palette addition, rollback) follows [`TENANT_PALETTE_OPERATIONS.md`](TENANT_PALETTE_OPERATIONS.md) exactly; Atlas ships its own `/admin/appearance` surface
+Operation (palette switching, new palette addition, rollback) follows [`TENANT_PALETTE_OPERATIONS.md`](TENANT_PALETTE_OPERATIONS.md) exactly; Atlas ships its own `/admin/appearance` surface that mirrors SFTN's one-to-one.
 
 #### R11.7 — Accessibility posture
 
@@ -705,18 +671,12 @@ Operation (palette switching, new palette addition, rollback) follows [`TENANT_P
 6. **Shopping-center / mall entity coverage in Elemental.** Phase 3 Recipe 3 and the Phase 2 fallback for stores-without-NEIDs both lean on this. A second probe script similar to R5.1 should run during Phase 1 to sanity-check coverage.
 7. **International expansion beyond UK + CA.** Mexico and Japan are the obvious next two (Walmart de Mexico, Seven & i) but require new topojson + new enrichment pipelines. Gate on beta traction.
 
-## Status
+## Appendix — Relationship to SFTN
 
-- **Stack**: Aether (Nuxt 3 + Vue 3 + Vuetify 3 + TS) scaffolded.
-- **Data substrate (R1)**: 30 retailer CSVs landed in `data/retail_locations/` (~148k stores). Build pipeline (`scripts/build-retail-data.ts`) normalizes the three schema flavors into `public/data/retail_atlas/{retailers,areas,stores/*}.json` and writes a `manifest.json` with source-CSV sha256s. Wired into `prebuild` for Vercel.
-- **Topojson boundaries**: US counties (us-atlas), UK LADs (ONS Dec 2024 BSC), CA CMAs (StatsCan 2021 CBF), world country outlines (world-atlas) committed to `public/data/topojson/`. Verified joins: walmart 1873/1873, target 659/659, dollargeneral 2805/2807, tesco 348/350, loblaw 129/129.
-- **Phase 0 (R5.1) — RAN, RESULT = RED.** Probe (`npm run probe:coverage`) sampled 7 retailers (walmart, target, costco, mcdonalds, starbucks, tesco, loblaw) × 15 stores each through `POST /entities/search` with city-first candidate patterns. Strict per-store hit-rate ≤ 7% on every retailer; overall **1% strict / 7% loose**. Per-store entities exist for flagship locations ("Seminole Walmart Supercenter", "St. Johns Walmart Supercenter", "Target SoHo", "San Francisco Costco", "Pike Place Starbucks") but coverage is sparse and naming varies between `organization` and `location` flavors. Most retailers return only the parent company. **Decision: cancel Phase 2 store-level NEID resolution; ship Phase 1 area-only and treat any per-store entities as opportunistic enrichment when they happen to exist for a clicked store.** Probe artifacts in `data/probes/`.
-- **Phase 1 (R2/R3/R6/R9/R10)**: next — map canvas at `/atlas` rendering the five-layer composite (basemap silhouette → area polygons → choropleth fill → NEID halo → store dots) over the topojson + Store/Area JSON we now have.
+Retail Atlas is _not_ a fork of SFTN. It shares three things, each with a clean interface:
 
-## Modules
+1. **Map + context rendering code**, extracted into `@lovelace/retail-map-core`. Both apps depend on the package; neither depends on the other's source tree.
+2. **Enriched retailer data**, distributed via the `@lovelace/retail-data` internal package. Same CSVs, same NEID caches, same topojson. SFTN's `public/data/` is re-pointed at the package in a follow-up; until then, SFTN continues to use its vendored copies.
+3. **Elemental MCP client**, vendored as the `core/elemental` module. Identical implementation; moved for reuse.
 
-| Module                    | Path(s)                                                                                                                     | Purpose                                                                                                                                                            |
-| ------------------------- | --------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| Retail data build         | `data/retail_locations/`, `scripts/build-retail-data.ts`, `scripts/lib/{retailer-registry,normalize}.ts`, `types/retail.ts` | Source-of-truth for the 30-retailer roster; CSV → unified Store/Area JSON; runs on `prebuild`.                                                                     |
-| Topojson fetch            | `scripts/fetch-topojson.ts`, `public/data/topojson/{us,uk,ca,world}/`                                                       | One-shot boundary bundling: us-atlas + world-atlas from npm, ONS LADs + StatsCan CMAs via paginated ArcGIS REST, simplified server-side. `npm run build:topojson`. |
-| Store-NEID coverage probe | `scripts/probe-store-coverage.ts`, `data/probes/`                                                                           | Phase 0 / R5.1 go/no-go gate. `npm run probe:coverage`. Result on file: RED, area-only.                                                                            |
+SFTN continues to be "the Elemental-platform proof-of-value demo surface." Retail Atlas is "the first vertical productization on top of Elemental." They coexist; they reinforce each other commercially (SFTN sells Elemental-the-platform, Atlas sells a vertical slice of what you can build on it); they never share runtime state.

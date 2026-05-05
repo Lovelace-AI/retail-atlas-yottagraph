@@ -122,13 +122,26 @@ interface Candidate {
 }
 
 function candidatesFor(store: StoreRecord, retailerName: string): Candidate[] {
+    // Empirically (see data/probes/), the Lovelace knowledge graph names
+    // store-level entities as "{City} {Retailer} {Format}" — e.g.
+    // "La Place Walmart Supercenter", "Broken Arrow Walmart Neighborhood
+    // Market", "San Francisco Costco". Lead with city-first patterns.
     const cands: Candidate[] = [];
     const number = store.store_id.split('-').slice(1).join('-');
     const city = store.city ?? '';
     const region = store.region ?? '';
     const address = store.address ?? '';
+    const fmt = store.format ?? '';
 
+    if (city && fmt)
+        cands.push({ label: 'city+name+fmt', query: `${city} ${retailerName} ${fmt}` });
+    if (city) cands.push({ label: 'city+name', query: `${city} ${retailerName}` });
     if (city) cands.push({ label: 'name+city', query: `${retailerName} ${city}` });
+    if (city && region && fmt)
+        cands.push({
+            label: 'name+fmt+city+region',
+            query: `${retailerName} ${fmt} ${city}, ${region}`,
+        });
     if (city && region)
         cands.push({ label: 'name+city+region', query: `${retailerName} ${city}, ${region}` });
     if (address && city)
