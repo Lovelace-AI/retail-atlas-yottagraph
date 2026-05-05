@@ -12,6 +12,7 @@
         "build": "NODE_ENV=production NODE_OPTIONS='--max-old-space-size=8192' nuxt build",
         "build:data": "tsx scripts/build-retail-data.ts",
         "build:topojson": "tsx scripts/fetch-topojson.ts",
+        "probe:coverage": "tsx scripts/probe-store-coverage.ts",
         "generate": "nuxt generate",
         "preview": "nuxt preview",
         "format": "prettier --write \"**/*.{js,ts,vue,json,md}\" --ignore-path .gitignore --ignore-path .prettierignore",
