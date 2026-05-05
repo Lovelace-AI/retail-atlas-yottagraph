@@ -2,7 +2,28 @@
 
 ## Vision
 
-Retail Atlast
+Retail Atlas — a productized vertical application built on Elemental that
+lets retail CI / corp-dev / real-estate / merchandising teams overlay
+multiple retailers' store footprints on the same map, click any polygon or
+store dot to get live Elemental context, and compose cross-retailer
+analyses no comparable product (Placer, Advan, SafeGraph, Similarweb)
+delivers today.
+
+## Stack note (realized vs PRD)
+
+The PRD below was scoped to **Vite + React + Tailwind + shadcn/ui +
+Supabase + Deno edge functions**. The realized app uses the **Aether
+template**: Nuxt 3 (SPA) + Vue 3 + Vuetify 3 + TypeScript, Vercel +
+Nitro server routes, Auth0, Upstash Redis (KV), and optional Neon
+Postgres. Treat any reference to React / Tailwind / shadcn / Supabase as
+"the equivalent in our stack" — the architecture (data substrate, NEID
+resolution, layered map canvas, context panels, recipes) carries over
+unchanged; only the framework and component library differ. The
+`@lovelace/retail-map-core` npm package described in R2 is also
+aspirational at this phase: while we are a single tenant app, the
+shared logic lives in this repo (`scripts/`, `types/`, `composables/`).
+We will graduate it to a package once a second tenant or app needs the
+same surface.
 
 # Retail Atlas — PRD
 
@@ -30,16 +51,16 @@ Retail Atlas is a _productized vertical application_ built on Elemental: it sell
 
 ## Locked-in decisions
 
-| #   | Decision                                                                                                                                                                                                                                                                                                  |
-| --- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| 1   | **Separate Git repo, separate Vercel / host project, separate Supabase project.** Shared code is distributed via an internal npm package (`@lovelace/retail-map-core`). Shared data (CSVs, NEID caches, topojson) lives in an internal data repo the map-core package reads from at build time.           |
-| 2   | Vite + React + TypeScript + Tailwind (frontend); Supabase + Deno edge functions (backend); Elemental MCP via the same `_shared/elemental.ts` helper shape. .                                                                                                                                              |
-| 3   | Atomic map unit is the **Store Record**: `{ store_id, retailer, banner, format, lat, lng, address, area_code, area_type, country, neid? }`. `neid` is populated when Elemental has a resolvable entity for that store; absence is fine (the store still renders as a dot).                                |
-| 4   | Choropleth unit is the **Area Record**: `{ area_code, area_type, country, area_name, neid, centroid, store_counts_by_retailer }`. NEID is required for an area to be interactive; without one, the polygon is rendered in the base palette but not clickable.                                             |
-| 5   | **No DB-backed entity cache in MVP.** NEID lookups come from bundled JSON files (`area_neids.json`, `store_neids.json`) . If the hit-rate gate in R5 passes, the caches graduate to a DB table in Phase 3.                                                                                                |
-| 6   | MVP ships **three retailers in the US** (Target, Walmart, Dollar General, store csvs can be provided) and **two international** (Tesco UK, Loblaw CA — also already enriched). Additional retailers are unlocked by dropping a new CSV into the data repo and running the build scripts; no code changes. |
-| 7   | The app is called **Retail Atlas**. Route structure: `/` (landing) → `/atlas` (map canvas, the product) → `/atlas/store/:store_id`, `/atlas/area/:area_code`, `/atlas/retailer/:slug` (detail panes). No nested sub-routes deeper than two levels.                                                        |
-| 8   | Feature flag `VITE_ATLAS_BETA=true` gates the MVP build. Default off for any deploy that isn't the beta domain.                                                                                                                                                                                           |
+| #   | Decision                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        |
+| --- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| 1   | **Separate Git repo, separate Vercel / host project, separate Supabase project.** Shared code is distributed via an internal npm package (`@lovelace/retail-map-core`). Shared data (CSVs, NEID caches, topojson) lives in an internal data repo the map-core package reads from at build time.                                                                                                                                                                                                                                                                                 |
+| 2   | **Aether template**: Nuxt 3 (SPA) + Vue 3 + Vuetify 3 + TypeScript; Vercel + Nitro server routes; Auth0; Upstash Redis (KV) for prefs/state; optional Neon Postgres for app-specific relational data. Elemental MCP via the platform's standard `useElementalClient()` / server-side helpers.                                                                                                                                                                                                                                                                                   |
+| 3   | Atomic map unit is the **Store Record**: `{ store_id, retailer, retailer_slug, banner, format, status, country, lat, lng, address, city, region, postal_code, area_code, area_type, area_name, neid }` plus country-specific FIPS/LAD/CMA hierarchy fields. `neid` is populated when Elemental has a resolvable entity for that store; absence is fine (the store still renders as a dot). Canonical type lives in [`types/retail.ts`](types/retail.ts).                                                                                                                        |
+| 4   | Choropleth unit is the **Area Record**: `{ area_key, area_code, area_type, country, area_name, region, centroid, store_counts_by_retailer, total_stores, neid }`. `area_key = "{country}:{area_type}:{area_code}"` is the primary key and stable across countries (US county FIPS, UK LAD, CA CMA). NEID is required for an area to be interactive; without one, the polygon is rendered in the base palette but not clickable.                                                                                                                                                 |
+| 5   | **No DB-backed entity cache in MVP.** NEID lookups come from bundled JSON files (`area_neids.json`, `store_neids.json`) . If the hit-rate gate in R5 passes, the caches graduate to a DB table in Phase 3.                                                                                                                                                                                                                                                                                                                                                                      |
+| 6   | MVP ships **30 retailers** sourced from `data/retail_locations/` (~148k stores total): 26 US (big-box, grocery, dollar, drug, QSR, coffee, specialty, home-improvement), 3 UK (Tesco, Booker, One Stop), and 1 CA (Loblaw). The full list lives in [`scripts/lib/retailer-registry.ts`](scripts/lib/retailer-registry.ts). Additional retailers are unlocked by dropping a new CSV into `data/retail_locations/` and appending an entry to the registry; no other code changes. The map's default-on chips are scoped to a smaller curated subset (initially Target + Walmart). |
+| 7   | The app is called **Retail Atlas**. Route structure: `/` (landing) → `/atlas` (map canvas, the product) → `/atlas/store/:store_id`, `/atlas/area/:area_code`, `/atlas/retailer/:slug` (detail panes). No nested sub-routes deeper than two levels.                                                                                                                                                                                                                                                                                                                              |
+| 8   | Feature flag `VITE_ATLAS_BETA=true` gates the MVP build. Default off for any deploy that isn't the beta domain.                                                                                                                                                                                                                                                                                                                                                                                                                                                                 |
 
 ## Phasing
 
@@ -183,17 +204,42 @@ The diagram is intentionally three-boxed: (1) data repo (2) `@lovelace/retail-ma
 
 ### R1 — Data substrate (P0, Phase 1)
 
-#### R1.1 — Data repo
+#### R1.1 — Data location (realized)
 
-New internal repo `lovelace-retail-data` housing:
+Rather than the standalone `lovelace-retail-data` npm package the PRD originally proposed, the realized MVP keeps the entire data substrate in this repo:
 
-- `retail_locations/*.csv` — enriched per-retailer rosters (lift from; extend over time).
-- `topojson/*.topojson.json` — the three bundled boundary files already built.
-- `reference/` — CBSA crosswalk, FIPS lookups, currently-supported country list.
-- `neid_cache/` — `area_neids.json`, `store_neids.json`, `retailer_neids.json`.
-- `generated/` — the per-retailer summary JSONs the map consumes at runtime (`{slug}_store_locations.json`, `{slug}_county_summary.json`, `{slug}_area_summary.json`).
+```
+data/retail_locations/                Source CSVs (committed)
+  {slug}_stores.csv                   30 enriched per-retailer rosters
+  _audit/{slug}_audit.json            Per-retailer geocode outlier reports
+  _source/                            Raw upstream pulls (e.g. walmart_ceo.csv)
 
-All generated files are committed (same pattern as `public/data/`). The repo is packaged as an npm dependency (`@lovelace/retail-data`) consumed by both `@lovelace/retail-map-core` (build scripts) and the Retail Atlas app (runtime static assets copied into its `public/`).
+scripts/                              Build pipeline (TypeScript, run via tsx)
+  build-retail-data.ts                Top-level: CSV → normalized JSON
+  lib/retailer-registry.ts            30-retailer registry (slug, name, country, color, schema)
+  lib/normalize.ts                    Schema-flavored normalizers (US-FIPS / UK-LAD / CA-CMA)
+
+types/retail.ts                       Canonical Store / Area / Retailer types
+
+public/data/retail_atlas/             Generated outputs (gitignored, rebuilt by `prebuild`)
+  manifest.json                       Generation timestamp + per-CSV sha256 + counts
+  retailers.json                      Index: slug, name, country, color, store_count, area_count
+  stores/{slug}.json                  StoreRecord[] per retailer (lazy-loaded by chip)
+  areas.json                          AreaRecord[] across all retailers (3,591 areas)
+
+data/neid_cache/                      (Phase 1+) area_neids.json, store_neids.json
+public/data/topojson/                 (Phase 1+) Bundled boundary files
+```
+
+The build pipeline runs automatically on Vercel via `prebuild` and on demand locally via `npm run build:data`. Source CSVs are committed; generated JSON is not (the build is deterministic and ~3 s, so regenerating is cheaper than carrying ~70 MB of diffs through git history). When a second app needs the same surface, the `scripts/` + `types/` directories graduate into a `@lovelace/retail-map-core` package per R2 — but until then this is the single source.
+
+Adding a new retailer:
+
+1. Drop the enriched CSV into `data/retail_locations/`.
+2. Append a `RetailerMeta` entry to `scripts/lib/retailer-registry.ts`.
+3. Run `npm run build:data` and verify the new `stores/{slug}.json` + updated `retailers.json` / `areas.json`.
+
+The schema flavors (`us-fips`, `uk-lad`, `ca-cma`) currently cover all 30 retailers. New flavors require a new normalizer in `scripts/lib/normalize.ts` plus a registry update.
 
 #### R1.2 — Supabase schema (minimal)
 
@@ -336,7 +382,7 @@ The defining technical risk for the product. Everything depends on Phase 0's out
 
 #### R5.1 — Phase 0 coverage probe
 
-Before committing to the Phase 2 build, run a scripted probe that samples 100 stores per retailer per country (~1,000 total across the five MVP retailers) and measures Elemental `elemental_get_entity` hit-rate with a battery of candidate queries:
+Before committing to the Phase 2 build, run a scripted probe that samples 100 stores per retailer (~3,000 total across the 30 MVP retailers) and measures Elemental `elemental_get_entity` hit-rate with a battery of candidate queries:
 
 ```
 candidates = [
@@ -362,24 +408,27 @@ Script: `core/scripts/probe-store-coverage.ts`. Emits a JSON report + a markdown
 
 Assuming Phase 0 ≥ 30%:
 
-- `core/scripts/expand-store-neids.ts` — iterates every store in every tracked retailer's CSV, runs the candidate cascade, caches to `neid_cache/store_neids.json`. Keyed by `store_id`.
-- Concurrency budget: 4 parallel MCP calls, 200 ms politeness delay between batches
-- For Target (~2k stores) + Walmart (~4.6k) + DG (~20k) + Tesco (~4k) + Loblaw (~2.4k) = ~33k stores. At 4 parallel @ 500 ms / call average, the full run is ~70 minutes. Re-runs are incremental (cache hits skip).
+- `scripts/expand-store-neids.ts` — iterates every store in every tracked retailer's normalized JSON, runs the candidate cascade, caches to `data/neid_cache/store_neids.json`. Keyed by `store_id`.
+- Concurrency budget: 4 parallel MCP calls, 200 ms politeness delay between batches.
+- The realized 30-retailer roster contains ~148k stores. At 4 parallel @ 500 ms / call average, the full run is ~5 hours. Re-runs are incremental (cache hits skip), so steady-state cost after the first sweep is dominated by net-new stores from monthly CSV refreshes.
+- Recommended ordering: resolve big-box + grocery + drug first (~30 retailers' worth of headline events), then QSR/coffee in a second pass since those tend to have lower per-store coverage and dominate the row count.
 - Re-run cadence: monthly, or on any CSV refresh.
 
 #### R5.3 — Area NEID resolution expansion
 
-The Yottagraph NEID cache covers top-25 per retailer. Retail Atlas needs **every** area a tracked retailer operates in to be clickable. At a glance, that's:
+The Yottagraph NEID cache covers top-25 per retailer. Retail Atlas needs **every** area a tracked retailer operates in to be clickable. The realized 30-retailer roster (see `data/retail_locations/`) yields **3,591 unique areas** (US counties + UK LADs + CA CMAs), already aggregated by the build pipeline into `public/data/retail_atlas/areas.json` with cross-retailer `store_counts_by_retailer` rolled up. Spot checks per major retailer:
 
-| Retailer       | Atlas coverage needed |
-| -------------- | --------------------- | ----- |
-| Target         | 25 / ~570 US counties | 570   |
-| Walmart        | 25 / ~2,600 counties  | 2,600 |
-| Dollar General | 25 / ~2,800 counties  | 2,800 |
-| Tesco          | 25 / ~350 LADs        | 350   |
-| Loblaw         | 25 / ~155 CMAs        | 155   |
+| Retailer       | Areas covered (auto-aggregated) |
+| -------------- | ------------------------------- |
+| Walmart        | ~2,600 US counties              |
+| Dollar General | ~2,800 US counties              |
+| McDonald's     | ~2,500 US counties              |
+| Subway         | ~2,800 US counties              |
+| Starbucks      | ~1,500 US counties              |
+| Tesco          | ~350 UK LADs                    |
+| Loblaw         | ~80 CA CMAs                     |
 
-Union is ~3,000 unique US counties + ~500 international areas. `expand-area-neids.ts` runs in the same cache-driven mode; incremental re-runs after roster refreshes are cheap.
+The exact per-retailer area counts emit in `retailers.json` after each `npm run build:data` run. `scripts/expand-area-neids.ts` (Phase 1) walks the union set in the same cache-driven mode; incremental re-runs after roster refreshes are cheap.
 
 ### R6 — Live context panels (P0, Phase 1 for areas / Phase 2 for stores)
 
@@ -658,8 +707,13 @@ Operation (palette switching, new palette addition, rollback) follows [`TENANT_P
 
 ## Status
 
-Project just created. Run `/build_my_app` in Cursor to start building.
+- **Stack**: Aether (Nuxt 3 + Vue 3 + Vuetify 3 + TS) scaffolded.
+- **Data substrate (R1)**: 30 retailer CSVs landed in `data/retail_locations/` (~148k stores). Build pipeline (`scripts/build-retail-data.ts`) normalizes the three schema flavors into `public/data/retail_atlas/{retailers,areas,stores/*}.json` and writes a `manifest.json` with source-CSV sha256s. Wired into `prebuild` for Vercel.
+- **Phase 0 (R5.1)**: not yet run — needed before committing to Phase 2.
+- **Phase 1 (R2/R3/R6/R9/R10)**: not yet started — next step.
 
 ## Modules
 
-_None yet — the agent will populate this as features are built._
+| Module            | Path(s)                                                                                                                     | Purpose                                                                                        |
+| ----------------- | --------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------- |
+| Retail data build | `data/retail_locations/`, `scripts/build-retail-data.ts`, `scripts/lib/{retailer-registry,normalize}.ts`, `types/retail.ts` | Source-of-truth for the 30-retailer roster; CSV → unified Store/Area JSON; runs on `prebuild`. |

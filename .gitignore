@@ -41,6 +41,9 @@ __pycache__/
 composables/generated/
 query/api/
 
+# Generated retail data (rebuilt by `npm run build:data` / `prebuild`)
+public/data/retail_atlas/
+
 # Avatar cache
 .cache/
 
