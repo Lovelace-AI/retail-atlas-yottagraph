@@ -41,6 +41,7 @@
         "localforage": "^1.10.0",
         "mitt": "^3.0.1",
         "prettier": "^3.5.3",
+        "topojson-client": "^3.1.0",
         "us-atlas": "^3.0.1",
         "vuetify": "^3.8.5",
         "world-atlas": "^2.0.2"
