@@ -1,0 +1,145 @@
+{
+    "slug": "publix",
+    "ts": 1777991338,
+    "n_total": 1461,
+    "n_us": 1461,
+    "n_census_matched": 1279,
+    "n_outliers": 12,
+    "n_overrides": 0,
+    "outlier_threshold_m": 5000.0,
+    "outliers": [
+        {
+            "store_id": "1370",
+            "url": "https://www.publix.com/",
+            "ceo_lat": 33.3532,
+            "ceo_lng": -86.6088,
+            "census_lat": 33.333878889185,
+            "census_lng": -86.675037090404,
+            "delta_m": 6517.1,
+            "address": "501 Chelsea Xrds, Chelsea, AL, 35043",
+            "tiebreaker": "parse_miss"
+        },
+        {
+            "store_id": "503",
+            "url": "https://www.publix.com/",
+            "ceo_lat": 33.7249,
+            "ceo_lng": -84.5082,
+            "census_lat": 33.730325280605,
+            "census_lng": -84.566803331418,
+            "delta_m": 5453.1,
+            "address": "3695 Cascade Rd SW, Atlanta, GA, 30331",
+            "tiebreaker": "parse_miss"
+        },
+        {
+            "store_id": "1233",
+            "url": "https://www.publix.com/",
+            "ceo_lat": 32.4729,
+            "ceo_lng": -83.706,
+            "census_lat": 32.489659836385,
+            "census_lng": -83.756530526955,
+            "delta_m": 5093.0,
+            "address": "275 Perry Pkwy, Perry, GA, 31069",
+            "tiebreaker": "parse_miss"
+        },
+        {
+            "store_id": "548",
+            "url": "https://www.publix.com/",
+            "ceo_lat": 34.0167,
+            "ceo_lng": -84.5493,
+            "census_lat": 33.893059952511,
+            "census_lng": -84.551368571922,
+            "delta_m": 13749.5,
+            "address": "50 Barrett Pkwy Ste 1000, Marietta, GA, 30066",
+            "tiebreaker": "parse_miss"
+        },
+        {
+            "store_id": "1411",
+            "url": "https://www.publix.com/",
+            "ceo_lat": 33.6345,
+            "ceo_lng": -84.0169,
+            "census_lat": 33.700151245658,
+            "census_lng": -84.00261307137,
+            "delta_m": 7418.9,
+            "address": "2159 Highway 20 SE, Conyers, GA, 30013",
+            "tiebreaker": "parse_miss"
+        },
+        {
+            "store_id": "1838",
+            "url": "https://www.publix.com/",
+            "ceo_lat": 33.9925,
+            "ceo_lng": -83.4385,
+            "census_lat": 34.06057307987,
+            "census_lng": -83.487528166816,
+            "delta_m": 8815.3,
+            "address": "5345 Jefferson Rd, Athens, GA, 30606",
+            "tiebreaker": "parse_miss"
+        },
+        {
+            "store_id": "2016",
+            "url": "https://www.publix.com/",
+            "ceo_lat": 31.8554,
+            "ceo_lng": -81.5724,
+            "census_lat": 31.795761686634,
+            "census_lng": -81.606949819853,
+            "delta_m": 7391.3,
+            "address": "1435 E Oglethorpe Hwy, Hinesville, GA, 31313",
+            "tiebreaker": "parse_miss"
+        },
+        {
+            "store_id": "700",
+            "url": "https://www.publix.com/",
+            "ceo_lat": 32.1579,
+            "ceo_lng": -80.7661,
+            "census_lat": 32.122270708777,
+            "census_lng": -80.801343399331,
+            "delta_m": 5167.9,
+            "address": "11 Palmetto Bay Rd, Hilton Head Island, SC, 29928",
+            "tiebreaker": "parse_miss"
+        },
+        {
+            "store_id": "1729",
+            "url": "https://www.publix.com/",
+            "ceo_lat": 29.9645,
+            "ceo_lng": -81.4882,
+            "census_lat": 29.938855478743,
+            "census_lng": -81.302450991231,
+            "delta_m": 18121.6,
+            "address": "170 Village Commons Dr, Saint Augustine, FL, 32092",
+            "tiebreaker": "parse_miss"
+        },
+        {
+            "store_id": "1357",
+            "url": "https://www.publix.com/",
+            "ceo_lat": 28.3822,
+            "ceo_lng": -81.6866,
+            "census_lat": 28.537534753409,
+            "census_lng": -81.738065592975,
+            "delta_m": 17990.3,
+            "address": "2430 US Highway 27, Clermont, FL, 34714",
+            "tiebreaker": "parse_miss"
+        },
+        {
+            "store_id": "1479",
+            "url": "https://www.publix.com/",
+            "ceo_lat": 33.8423,
+            "ceo_lng": -78.6582,
+            "census_lat": 33.813752806813,
+            "census_lng": -78.700850660118,
+            "delta_m": 5059.4,
+            "address": "1576 Highway 17 N, North Myrtle Beach, SC, 29582",
+            "tiebreaker": "parse_miss"
+        },
+        {
+            "store_id": "1262",
+            "url": "https://www.publix.com/",
+            "ceo_lat": 26.4924,
+            "ceo_lng": -81.8493,
+            "census_lat": 26.462212273222,
+            "census_lng": -81.704956662779,
+            "delta_m": 14753.7,
+            "address": "16980 Alico Mission Way Ste 403, Fort Myers, FL, 33908",
+            "tiebreaker": "parse_miss"
+        }
+    ],
+    "overrides": {}
+}

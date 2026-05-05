@@ -1,0 +1,12 @@
+{
+    "slug": "albertsons",
+    "ts": 1777991016,
+    "n_total": 367,
+    "n_us": 367,
+    "n_census_matched": 341,
+    "n_outliers": 0,
+    "n_overrides": 0,
+    "outlier_threshold_m": 5000.0,
+    "outliers": [],
+    "overrides": {}
+}

@@ -1,0 +1,301 @@
+store_number,slug,url,location_name,status,address_line1,city,county,state,region,postal_code,country_code,latitude,longitude,time_zone,format,total_building_area_sqft,main_voice_phone_number,state_fips,county_fips,tract_fips,block_fips,cbsa_fips,csa_fips,coord_source,fips_source
+7582,,,Urbandale Fast & Fresh #3,open,12905 Meredith Drive,Urbandale,,Iowa,IA,50323,US,41.6444,-93.7961,America/Chicago,,,515-705-0755,19,19153,19153011303,191530113032044,19780,218,ceo,census
+7538,,,Grimes Fast & Fresh #2,open,1701 SE 37th Street,Grimes,,Iowa,IA,50111,US,41.6591,-93.7764,America/Chicago,,,515-705-0753,19,19153,19153011303,191530113032011,19780,218,ceo,fcc
+7583,,,Urbandale Fast & Fresh #4,open,14200 Douglas Parkway,Urbandale,,Iowa,IA,50323,US,41.6292,-93.8144,America/Chicago,,,515-705-0760,19,19153,19153011304,191530113042015,19780,218,ceo,census
+7584,,,Urbandale Fast & Fresh #5,open,15501 Meredith Drive,Urbandale,,Iowa,IA,50323,US,41.6441,-93.8326,America/Chicago,,,515-705-0761,19,19049,19049050100,190490501002108,19780,218,ceo,census
+1224,,,Grimes,open,351 NE Gateway Drive,Grimes,,Iowa,IA,50111,US,41.6906,-93.7771,America/Chicago,,,515-224-7730,19,19153,19153011302,191530113021031,19780,218,ceo,census
+7580,,,Urbandale Fast & Fresh #1,open,9915 Douglas Ave,Urbandale,,Iowa,IA,50322,US,41.63,-93.7555,America/Chicago,,,515-695-3048,19,19153,19153010407,191530104072009,19780,218,ceo,census
+1759,,,Urbandale,open,8701 Douglas Ave,Urbandale,,Iowa,IA,50322,US,41.6307,-93.7393,America/Chicago,,,515-270-2572,19,19153,19153010407,191530104072000,19780,218,ceo,census
+7520,,,Clive Fast & Fresh,open,11925 Univeristy Ave,Clive,,Iowa,IA,50325,US,41.6011,-93.7822,America/Chicago,,,515-695-3043,19,19153,19153011203,191530112033005,19780,218,ceo,census
+7591,,,West Des Moines Fast & Fresh #2,open,9150 University Ave,West Des Moines,,Iowa,IA,50266,US,41.5996,-93.8325,America/Chicago,,,515-705-0765,19,19049,19049050813,190490508132002,19780,218,ceo,census
+1889,,,West Des Moines #3,open,1725 Jordan Creek Pkwy,West Des Moines,,Iowa,IA,50266,US,41.5983,-93.8079,America/Chicago,,,515-226-8753,19,19049,19049050813,190490508131004,19780,218,ceo,census
+1873,,,Waukee,open,1005 E Hickman Rd,Waukee,,Iowa,IA,50263,US,41.6174,-93.8543,America/Chicago,,,515-216-2760,19,19049,19049050803,190490508032039,19780,218,ceo,census
+1887,,,West Des Moines #1,open,1700 Valley West Dr,West Des Moines,,Iowa,IA,50266,US,41.5977,-93.7535,America/Chicago,,,515-223-4597,19,19153,19153011114,191530111141006,19780,218,ceo,census
+7082,,,West Des Moines Drugstore,open,1010 60th St,West Des Moines,,Iowa,IA,50266,US,41.5849,-93.7913,America/Chicago,,,515-440-1481,19,19049,19049050814,190490508141024,19780,218,ceo,census
+1318,,,Johnston,open,5750 Merle Hay Rd,Johnston,,Iowa,IA,50131,US,41.665,-93.6991,America/Chicago,,,515-270-9045,19,19153,19153011702,191530117021010,19780,218,ceo,census
+7540,,,Johnston Fast & Fresh,open,5169 Merle Hay Rd,Johnston,,Iowa,IA,50131,US,41.6542,-93.6969,America/Chicago,,,515-695-3047,19,19153,19153011702,191530117023015,19780,218,ceo,fcc
+7588,,,Waukee Fast & Fresh #2,open,155 W Hickman Road,Waukee,,Iowa,IA,50263,US,41.6155,-93.8764,America/Chicago,,,515-695-3144,19,19049,19049050902,190490509022007,19780,218,ceo,fcc
+1895,,,Windsor Heights,open,7101 University Ave,Windsor Heights,,Iowa,IA,50324,US,41.6009,-93.7156,America/Chicago,,,515-279-4225,19,19153,19153011201,191530112014015,19780,218,ceo,census
+7535,,,Des Moines Fast & Fresh,open,5801 Hickman Rd,Des Moines,,Iowa,IA,50322,US,41.6151,-93.6981,America/Chicago,,,515-279-0152,19,19153,19153000803,191530008033015,19780,218,ceo,census
+7587,,,Waukee Fast & Fresh #1,open,2855 Grand Prairie Pkwy,Waukee,,Iowa,IA,50263,US,41.5818,-93.8535,America/Chicago,,,515-695-3092,19,19049,19049050817,190490508171020,19780,218,ceo,census
+1886,,,West Des Moines Wall to Wall,open,375 S Jordan Creek Pkwy,West Des Moines,,Iowa,IA,50266,US,41.5634,-93.8106,America/Chicago,,,515-341-9900,19,19049,19049050815,190490508151014,19780,218,ceo,census
+7590,,,West Des Moines Fast & Fresh #1,open,425 S Jordan Creek Pkwy,West Des Moines,,Iowa,IA,50266,US,41.5627,-93.8103,America/Chicago,,,515-695-3091,19,19049,19049050815,190490508151014,19780,218,ceo,census
+1890,,,West Des Moines #4,open,555 S 51st St,West Des Moines,,Iowa,IA,50265,US,41.5613,-93.7747,America/Chicago,,,515-225-1193,19,19153,19153011027,191530110272000,19780,218,ceo,census
+1888,,,West Des Moines #2,open,1990 Grand Ave,West Des Moines,,Iowa,IA,50265,US,41.571,-93.7298,America/Chicago,,,515-223-8151,19,19153,19153011001,191530110011001,19780,218,ceo,census
+7592,,,West Des Moines Fast & Fresh #3,open,300 Grand Avenue,West Des Moines,,Iowa,IA,50265,US,41.5824,-93.7061,America/Chicago,,,515-705-0763,19,19153,19153011111,191530111111011,19780,218,ceo,census
+7031,,,Des Moines Drugstore,open,4100 University Ave,Des Moines,,Iowa,IA,50311,US,41.5998,-93.6732,America/Chicago,,,515-633-8603,19,19153,19153002800,191530028003003,19780,218,ceo,census
+1136,,,Des Moines #1,open,3330 Martin Luther K,Des Moines,,Iowa,IA,50310,US,41.6256,-93.6526,America/Chicago,,,515-255-0007,19,19153,19153000701,191530007012002,19780,218,ceo,census
+1023,,,Ankeny #2,open,2510 SW State St,Ankeny,,Iowa,IA,50023,US,41.705,-93.6233,America/Chicago,,,515-963-3130,19,19153,19153010205,191530102053096,19780,218,ceo,fcc
+1155,,,Des Moines #6,open,420 Court Ave,Des Moines,,Iowa,IA,50309,US,41.5844,-93.6223,America/Chicago,,,515-697-0360,19,19153,19153005101,191530051014040,19780,218,ceo,census
+1148,,,Des Moines #4,open,4605 Fleur Dr,Des Moines,,Iowa,IA,50321,US,41.5422,-93.6431,America/Chicago,,,515-285-7266,19,19153,19153004502,191530045021000,19780,218,ceo,census
+1250,,,Mail Order Pharmacy,open,4707 Fleur Drive,Des Moines,,Iowa,IA,50321,US,41.542,-93.6433,America/Chicago,,,844-733-2697,19,19153,19153004502,191530045021000,19780,218,ceo,census
+1022,,,Ankeny #1,open,410 N Ankeny Blvd,Ankeny,,Iowa,IA,50023,US,41.7346,-93.6021,America/Chicago,,,515-964-0900,19,19153,19153010205,191530102051021,19780,218,ceo,census
+1138,,,Des Moines #2,open,2540 E Euclid Ave,Des Moines,,Iowa,IA,50317,US,41.6285,-93.5697,America/Chicago,,,515-262-0640,19,19153,19153000201,191530002011004,19780,218,ceo,census
+7525,,,Cumming Fast & Fresh,open,5237 Cumming Ave,Cumming,,Iowa,IA,50061,US,41.4849,-93.7753,America/Chicago,,,515-461-2992,19,19181,19181020300,191810203002032,19780,218,ceo,fcc
+1142,,,Des Moines #3,open,3221 SE 14th St,Des Moines,,Iowa,IA,50320,US,41.5547,-93.5949,America/Chicago,,,515-243-7271,19,19153,19153003902,191530039021005,19780,218,ceo,census
+1151,,,Des Moines #5,open,1107 E Army Post Rd,Des Moines,,Iowa,IA,50315,US,41.5254,-93.6025,America/Chicago,,,515-285-6394,19,19153,19153004702,191530047021001,19780,218,ceo,census
+7505,,,Altoona Fast & Fresh,open,3950 Prairie Fire NW,Altoona,,Iowa,IA,50009,US,41.6519,-93.5093,America/Chicago,,,515-967-7575,19,19153,19153010602,191530106022010,19780,218,ceo,census
+1530,,,Pleasant Hill,open,4815 Maple Dr,Pleasant Hill,,Iowa,IA,50327,US,41.5972,-93.5196,America/Chicago,,,515-262-7956,19,19153,19153010803,191530108031033,19780,218,ceo,census
+1011,,,Altoona,open,108 8TH ST SW,Altoona,,Iowa,IA,50009,US,41.6426,-93.4664,America/Chicago,,,515-967-7676,19,19153,19153010708,191530107082015,19780,218,ceo,census
+1522,,,Perry,open,1215 141st St,Perry,,Iowa,IA,50220,US,41.8289,-94.1046,America/Chicago,,,515-465-5321,19,19049,19049050300,190490503001038,19780,218,ceo,fcc
+1271,,,Indianola,open,910 N Jefferson Way,Indianola,,Iowa,IA,50125,US,41.3687,-93.5569,America/Chicago,,,515-961-5329,19,19181,19181020702,191810207022005,19780,218,ceo,census
+1898,,,Winterset,open,923 N 1st St,Winterset,,Iowa,IA,50273,US,41.3427,-94.0125,America/Chicago,,,515-462-4235,19,19121,19121060200,191210602002004,19780,218,ceo,census
+1013,,,Ames #1,open,3800 Lincoln Way,Ames,,Iowa,IA,50014,US,42.0219,-93.6698,America/Chicago,,,515-292-5580,19,19169,19169001304,191690013044002,11180,218,ceo,census
+1018,,,Ames #2,open,640 Lincoln Way,Ames,,Iowa,IA,50010,US,42.0203,-93.6196,America/Chicago,,,515-232-1961,19,19169,19169001000,191690010004004,11180,218,ceo,census
+1038,,,Boone,open,1111 8th St,Boone,,Iowa,IA,50036,US,42.0647,-93.8764,America/Chicago,,,515-432-6065,19,19015,19015020200,190150202001143,11180,218,ceo,census
+1442,,,Nevada Dollar Fresh Market,open,1622 Fawcett Parkway,Nevada,,Iowa,IA,50201,US,42.0119,-93.4372,America/Chicago,,,515-215-6083,19,19169,19169010300,191690103001004,11180,218,ceo,census
+1297,,,Jefferson,open,106 W Washington St Ste 1,Jefferson,,Iowa,IA,50129,US,42.0176,-94.3757,America/Chicago,,,515-386-4153,19,19073,19073080200,190730802002024,,,ceo,census
+1449,,,Newton,open,1501 1st Ave E,Newton,,Iowa,IA,50208,US,41.699,-93.0353,America/Chicago,,,641-792-7030,19,19099,19099040400,190990404003001,19780,218,ceo,census
+1353,,,Knoxville,open,809 W Rock Island St,Knoxville,,Iowa,IA,50138,US,41.3258,-93.1072,America/Chicago,,,641-842-4717,19,19125,19125030401,191250304011024,37800,218,ceo,census
+1473,,,Osceola,open,510 W McLane St,Osceola,,Iowa,IA,50213,US,41.0291,-93.7731,America/Chicago,,,641-342-2125,19,19039,19039960100,190399601004033,,,ceo,census
+1516,,,Pella,open,118 SE 9th St,Pella,,Iowa,IA,50219,US,41.3961,-92.9023,America/Chicago,,,641-628-1590,19,19125,19125030202,191250302024013,37800,218,ceo,census
+1065,,,Chariton,open,2001 Court Ave,Chariton,,Iowa,IA,50049,US,41.0159,-93.323,America/Chicago,,,641-774-5051,19,19117,19117950300,191179503002002,,,ceo,census
+1095,,,Creston,open,600 Sheldon St,Creston,,Iowa,IA,50801,US,41.0522,-94.3735,America/Chicago,,,641-782-7023,19,19175,19175190200,191751902003001,,,ceo,census
+1403,,,Marshalltown,open,802 S Center St,Marshalltown,,Iowa,IA,50158,US,42.0391,-92.9109,America/Chicago,,,641-752-4525,19,19127,19127950900,191279509002001,32260,,ceo,census
+1235,,,Grinnell,open,320 West St S,Grinnell,,Iowa,IA,50112,US,41.7281,-92.7252,America/Chicago,,,641-236-6584,19,19157,19157370400,191573704002018,,,ceo,census
+1875,,,Webster City,open,823 2nd St,Webster City,,Iowa,IA,50595,US,42.4699,-93.8251,America/Chicago,,,515-832-3117,19,19079,19079960400,190799604005022,,,ceo,census
+1161,,,Eldora,open,1616 Edgington Ave,Eldora,,Iowa,IA,50627,US,42.3613,-93.1037,America/Chicago,,,641-858-2361,19,19083,19083480600,190834806003033,,,ceo,census
+1192,,,Fort Dodge,open,115 S 29TH ST STE A,Fort Dodge,,Iowa,IA,50501,US,42.5048,-94.1564,America/Chicago,,,515-573-4105,19,19187,19187000102,191870001024018,22700,,ceo,census
+1051,,,Carroll,open,905 W US Highway 30,Carroll,,Iowa,IA,51401,US,42.0702,-94.8773,America/Chicago,,,712-792-6333,19,19027,19027960300,190279603002035,16140,,ceo,census
+1389,,,Leon,open,1004 W 1st St,Leon,,Iowa,IA,50144,US,40.7404,-93.7578,America/Chicago,,,641-446-6132,19,19053,19053960300,190539603001008,,,ceo,census
+1026,,,Atlantic,open,1630 East 7th St,Atlantic,,Iowa,IA,50022,US,41.4047,-94.9896,America/Chicago,,,712-243-1278,19,19029,19029190400,190291904001010,,,ceo,census
+1481,,,Oskaloosa,open,110 S D Street,Oskaloosa,,Iowa,IA,52577,US,41.2949,-92.6487,America/Chicago,,,641-673-8663,19,19123,19123950700,191239507003015,36820,218,ceo,census
+1295,,,Iowa Falls,open,632 S Oak St,Iowa Falls,,Iowa,IA,50126,US,42.5087,-93.261,America/Chicago,,,641-648-4644,19,19083,19083480200,190834802001003,,,ceo,census
+7072,,,Toledo Dollar Fresh Market,open,1006 S County Rd,Toledo,,Iowa,IA,52342,US,41.9852,-92.5828,America/Chicago,,,641-484-2168,19,19171,19171290500,191712905003030,,,ceo,census
+1089,,,Corydon,open,105 E Jackson St,Corydon,,Iowa,IA,50060,US,40.7588,-93.3175,America/Chicago,,,641-872-1564,19,19185,19185070100,191850701003045,,,ceo,census
+1083,,,Corning,open,300 10th St,Corning,,Iowa,IA,50841,US,40.9921,-94.7326,America/Chicago,,,641-322-3010,19,19003,19003950200,190039502001051,,,ceo,census
+1009,,,Albia,open,301 Highway 34 W,Albia,,Iowa,IA,52531,US,41.0167,-92.813,America/Chicago,,,641-932-7131,19,19135,19135070200,191350702003022,,,ceo,fcc
+1417,,,Mt. Ayr,open,201 N. Fillmore Street,Mount Ayr,,Iowa,IA,50854,US,40.7163,-94.2391,America/Chicago,,,641-464-2121,19,19159,19159950200,191599502001069,,,ceo,census
+1376,,,Lamoni,open,720 E Main St,Lamoni,,Iowa,IA,50140,US,40.6237,-93.9247,America/Chicago,,,641-784-6981,19,19053,19053960200,190539602002009,,,ceo,census
+1247,,,Humboldt,open,611 10th Ave N,Humboldt,,Iowa,IA,50548,US,42.7327,-94.2169,America/Chicago,,,515-332-1498,19,19091,19091970300,190919703002003,,,ceo,census
+1241,,,Harlan,open,2003 Chatburn Ave,Harlan,,Iowa,IA,51537,US,41.6451,-95.3361,America/Chicago,,,712-755-2154,19,19165,19165960300,191659603002026,,,ceo,census
+1058,,,Centerville,open,609 N 18th St,Centerville,,Iowa,IA,52544,US,40.7376,-92.8666,America/Chicago,,,641-856-3277,19,19007,19007950300,190079503001012,,,ceo,census
+1239,,,Hampton Dollar Fresh Market,open,808 4th St SE,Hampton,,Iowa,IA,50441,US,42.7341,-93.2014,America/Chicago,,,641-456-3400,19,19069,19069360200,190693602001002,,,ceo,census
+1504,,,Ottumwa #1,open,1025 N Quincy Ave,Ottumwa,,Iowa,IA,52501,US,41.0153,-92.4398,America/Chicago,,,641-682-4516,19,19179,19179960600,191799606003022,36900,,ceo,census
+1030,,,Bedford,open,1604 Bent Street,Bedford,,Iowa,IA,50833,US,40.6763,-94.7263,America/Chicago,,,712-523-2193,19,19173,19173180200,191731802003003,,,ceo,census
+1124,,,Denison,open,1426 Broadway,Denison,,Iowa,IA,51442,US,42.0175,-95.3525,America/Chicago,,,712-263-6151,19,19047,19047070402,190470704024013,,,ceo,census
+7065,,,Ottumwa Drugstore,open,1140 N Jefferson St,Ottumwa,,Iowa,IA,52501,US,41.0267,-92.4009,America/Chicago,,,641-682-7716,19,19179,19179960400,191799604001013,36900,,ceo,census
+1544,,,Red Oak,open,1605 N Broadway St,Red Oak,,Iowa,IA,51566,US,41.0194,-95.2347,America/Chicago,,,712-623-4992,19,19137,19137960300,191379603002012,,,ceo,census
+1223,,,Grant City,open,111 E 2nd St,Grant City,,Missouri,MO,64456,US,40.4876,-94.4122,America/Chicago,,,660-564-3712,29,29227,29227960100,292279601002031,,,ceo,census
+1689,,,Unionville,open,2525 Main Street,Unionville,,Missouri,MO,63565,US,40.4766,-93.0136,America/Chicago,,,660-947-2427,29,29171,29171960200,291719602002048,,,ceo,census
+1071,,,Clarinda,open,1200 South 16th Street,Clarinda,,Iowa,IA,51632,US,40.727,-95.0357,America/Chicago,,,712-542-5142,19,19145,19145490500,191454905001050,,,ceo,census
+1052,,,Cedar Falls,open,6301 University Ave,Cedar Falls,,Iowa,IA,50613,US,42.5111,-92.4365,America/Chicago,,,319-266-7535,19,19013,19013002500,190130025003002,47940,,ceo,census
+1860,,,Waterloo #1,open,2834 Ansborough Ave,Waterloo,,Iowa,IA,50701,US,42.4716,-92.3772,America/Chicago,,,319-233-3266,19,19013,19013001501,190130015011018,47940,,ceo,census
+1866,,,Waterloo #3,open,1422 Flammang Dr,Waterloo,,Iowa,IA,50702,US,42.4586,-92.3279,America/Chicago,,,319-234-7523,19,19013,19013000900,190130009002074,47940,,ceo,census
+1825,,,Vinton Dollar Fresh Market,open,911 S K Ave,Vinton,,Iowa,IA,52349,US,42.1623,-92.0383,America/Chicago,,,319-318-5204,19,19011,19011960300,190119603001066,16300,168,ceo,census
+1036,,,Bethany,open,1104 S 25TH ST PO BOX 47,Bethany,,Missouri,MO,64424,US,40.2587,-94.0279,America/Chicago,,,660-425-6353,29,29081,29081950300,290819503003019,,,ceo,census
+1872,,,Waverly,open,1311 4th St SW,Waverly,,Iowa,IA,50677,US,42.7121,-92.4739,America/Chicago,,,319-352-1365,19,19017,19017004200,190170042002043,47940,,ceo,census
+1634,,,Storm Lake,open,1250 Lake Ave,Storm Lake,,Iowa,IA,50588,US,42.6533,-95.2029,America/Chicago,,,712-732-5628,19,19021,19021960500,190219605003005,44740,,ceo,census
+1007,,,Albany,open,703 E US Hwy 136,Albany,,Missouri,MO,64402,US,40.2565,-94.3254,America/Chicago,,,660-726-5816,29,29075,29075960100,290759601003006,,,ceo,census
+1218,,,Garner,open,255 W Hwy 18,Garner,,Iowa,IA,50438,US,43.1051,-93.6847,America/Chicago,,,641-923-2883,19,19081,19081270100,190812701003120,,,ceo,census
+1010,,,Algona,open,1500 Highway 169 N,Algona,,Iowa,IA,50511,US,43.0814,-94.2359,America/Chicago,,,515-295-3540,19,19109,19109950400,191099504001005,,,ceo,census
+1619,,,Shenandoah,open,500 S Fremont St,Shenandoah,,Iowa,IA,51601,US,40.7619,-95.3856,America/Chicago,,,712-246-1495,19,19071,19071970100,190719701001177,,,ceo,census
+1180,,,Fairfield,open,1300 W Burlington Ave,Fairfield,,Iowa,IA,52556,US,41.0061,-91.9794,America/Chicago,,,641-472-4119,19,19101,19101090302,191010903022001,,,ceo,fcc
+1410,,,Mason City #1,open,2400 4th St SW,Mason City,,Iowa,IA,50401,US,43.1494,-93.2354,America/Chicago,,,641-424-2605,19,19033,19033950202,190339502022011,32380,,ceo,census
+7056,,,Mason City Drugstore,open,875 4th St SW,Mason City,,Iowa,IA,50401,US,43.1478,-93.2141,America/Chicago,,,641-424-4181,19,19033,19033950300,190339503003010,32380,,ceo,census
+1406,,,Maryville,open,1217 S Main St,Maryville,,Missouri,MO,64468,US,40.3336,-94.8722,America/Chicago,,,660-582-2191,29,29147,29147470400,291474704002084,32340,,ceo,census
+1413,,,Mason City #2,open,551 S Illinois Ave,Mason City,,Iowa,IA,50401,US,43.1464,-93.1708,America/Chicago,,,641-424-9741,19,19033,19033951400,190339514002005,32380,,ceo,census
+7025,,,Cedar Rapids Drugstore #4,open,4825 Johnson Ave NW,Cedar Rapids,,Iowa,IA,52405,US,41.9676,-91.7329,America/Chicago,,,319-396-1939,19,19113,19113001004,191130010042013,16300,168,ceo,census
+1101,,,Council Bluffs #2,open,10 Hy-Vee Drive,Council Bluffs,,Iowa,IA,51503,US,41.2582,-95.8511,America/Chicago,,,712-322-9260,19,19155,19155030900,191550309002003,36540,420,ceo,fcc
+1667,,,Trenton,open,1617 E 9th St,Trenton,,Missouri,MO,64683,US,40.075,-93.6017,America/Chicago,,,660-359-2278,29,29079,29079960400,290799604003031,,,ceo,census
+1054,,,Cedar Rapids #1,open,1843 Johnson Ave NW,Cedar Rapids,,Iowa,IA,52405,US,41.974,-91.6985,America/Chicago,,,319-365-0477,19,19113,19113002300,191130023002014,16300,168,ceo,census
+7036,,,Emmetsburg Dollar Fresh Market,open,3402 Main Street,Emmetsburg,,Iowa,IA,50536,US,43.1111,-94.6936,America/Chicago,,,712-852-2084,19,19147,19147960300,191479603003006,,,ceo,census
+1064,,,Cedar Rapids #7,open,5050 Edgewood Rd NE,Cedar Rapids,,Iowa,IA,52411,US,42.0297,-91.6988,America/Chicago,,,319-378-0762,19,19113,19113000901,191130009011010,16300,168,ceo,census
+1850,,,Washington,open,528 Highway 1 S,Washington,,Iowa,IA,52353,US,41.3023,-91.7165,America/Chicago,,,319-653-5406,19,19183,19183960400,191839604003012,26980,168,ceo,census
+7020,,,Cedar Rapids Drugstore #1,open,1520 6th St SW,Cedar Rapids,,Iowa,IA,52404,US,41.9623,-91.6776,America/Chicago,,,319-363-9606,19,19113,19113002500,191130025002020,16300,168,ceo,census
+1092,,,Council Bluffs #1,open,2323 W Broadway,Council Bluffs,,Iowa,IA,51501,US,41.2614,-95.8794,America/Chicago,,,712-328-9792,19,19155,19155030602,191550306022004,36540,420,ceo,census
+1190,,,Forest City,open,315 US 69,Forest City,,Iowa,IA,50436,US,43.2668,-93.6306,America/Chicago,,,641-585-3775,19,19189,19189680300,191896803004006,,,ceo,census
+1056,,,Cedar Rapids #3,open,20 Wilson Ave SW,Cedar Rapids,,Iowa,IA,52404,US,41.957,-91.6586,America/Chicago,,,319-366-2700,19,19113,19113002600,191130026001018,16300,168,ceo,census
+7026,,,Cedar Rapids Drugstore #5,open,2001 Blairs Ferry Rd NE,Cedar Rapids,,Iowa,IA,52402,US,42.0343,-91.6691,America/Chicago,,,319-393-0539,19,19113,19113000213,191130002132020,16300,168,ceo,census
+1061,,,Cedar Rapids #5,open,3235 Oakland Rd NE,Cedar Rapids,,Iowa,IA,52402,US,42.0115,-91.6598,America/Chicago,,,319-366-7756,19,19113,19113000800,191130008004009,16300,168,ceo,census
+1085,,,Coralville #2,open,3285 Crosspark Road,Coralville,,Iowa,IA,52241,US,41.7222,-91.6041,America/Chicago,,,319-665-2220,19,19103,19103000305,191030003052002,26980,168,ceo,census
+1262,,,Independence Dollar Fresh Market,open,1975 Three Elms Road,Independence,,Iowa,IA,50644,US,42.4571,-91.8888,America/Chicago,,,319-332-1676,19,19019,19019950500,190199505004032,,,ceo,census
+1074,,,Charles City,open,901 Kelly St,Charles City,,Iowa,IA,50616,US,43.0673,-92.6752,America/Chicago,,,641-228-1726,19,19067,19067480500,190674805001006,,,ceo,fcc
+1080,,,Coralville #1,open,1914 8th St,Coralville,,Iowa,IA,52241,US,41.6821,-91.5916,America/Chicago,,,319-351-5523,19,19103,19103000307,191030003072003,26980,168,ceo,census
+7019,,,Cedar Rapids Drugstore #6,open,505 Boyson Rd NE,Cedar Rapids,,Iowa,IA,52402,US,42.0462,-91.6391,America/Chicago,,,319-294-9008,19,19113,19113000212,191130002122001,16300,168,ceo,census
+1063,,,Cedar Rapids #6,open,4035 Mount Vernon Rd SE,Cedar Rapids,,Iowa,IA,52403,US,41.9752,-91.6096,America/Chicago,,,319-365-4623,19,19113,19113002800,191130028001000,16300,168,ceo,census
+1396,,,Marion,open,3600 Business Hwy 151 E,Marion,,Iowa,IA,52302,US,42.0361,-91.572,America/Chicago,,,319-377-4803,19,19113,19113000102,191130001022003,16300,168,ceo,fcc
+7560,,,Marion Fast & Fresh,open,2790 7th Avenue,Marion,,Iowa,IA,52302,US,42.0335,-91.5824,America/Chicago,,,319-382-3591,19,19113,19113000400,191130004003043,16300,168,ceo,census
+1281,,,Iowa City #1,open,1720 Waterfront Dr,Iowa City,,Iowa,IA,52240,US,41.6425,-91.5294,America/Chicago,,,319-354-7601,19,19103,19103001802,191030018021009,26980,168,ceo,census
+1288,,,Iowa City #3,open,1125 N Dodge St,Iowa City,,Iowa,IA,52245,US,41.6764,-91.5189,America/Chicago,,,319-354-9223,19,19103,19103000100,191030001004024,26980,168,ceo,census
+1465,,,Omaha #1,open,5150 Center St,Omaha,,Nebraska,NE,68106,US,41.2423,-95.9945,America/Chicago,,,402-553-2664,31,31055,31055003600,310550036001023,36540,420,ceo,census
+1650,,,Tarkio,open,110 Chestnut St,Tarkio,,Missouri,MO,64491,US,40.4389,-95.3757,America/Chicago,,,660-736-4181,29,29005,29005950100,290059501003018,,,ceo,census
+1068,,,Cherokee,open,1300 N 2nd,Cherokee,,Iowa,IA,51012,US,42.7656,-95.551,America/Chicago,,,712-225-4139,19,19035,19035080101,190350801012014,,,ceo,census
+7042,,,Iowa City Drugstore,open,310 N 1st Ave,Iowa City,,Iowa,IA,52245,US,41.6661,-91.5013,America/Chicago,,,319-337-6424,19,19103,19103001300,191030013001009,26980,168,ceo,census
+1285,,,Iowa City #2,open,812 S 1st Ave,Iowa City,,Iowa,IA,52245,US,41.6512,-91.5008,America/Chicago,,,319-338-9758,19,19103,19103001400,191030014002012,26980,168,ceo,census
+1527,,,Plattsmouth,open,16418 Westside Drive,Plattsmouth,,Nebraska,NE,68048,US,41.0117,-95.9102,America/Chicago,,,402-298-7600,31,31025,31025965600,310259656001007,36540,420,ceo,census
+1459,,,Oelwein Dollar Fresh Market,open,1345 S Frederick Ave,Oelwein,,Iowa,IA,50662,US,42.6594,-91.9119,America/Chicago,,,319-283-7500,19,19065,19065080500,190650805001037,,,ceo,census
+1335,,,Kirksville,open,500 N Baltimore St,Kirksville,,Missouri,MO,63501,US,40.1978,-92.5699,America/Chicago,,,660-665-8335,29,29001,29001950900,290019509001009,28860,,ceo,census
+1470,,,Omaha #5,open,7910 Cass St,Omaha,,Nebraska,NE,68114,US,41.2651,-96.0392,America/Chicago,,,402-384-8668,31,31055,31055006606,310550066062000,36540,420,ceo,census
+1469,,,Omaha #3,open,8809 W Center Rd,Omaha,,Nebraska,NE,68124,US,41.2331,-96.0514,America/Chicago,,,402-384-9072,31,31055,31055006905,310550069051003,36540,420,ceo,census
+1467,,,Omaha #4,open,10808 Fort St,Omaha,,Nebraska,NE,68164,US,41.3081,-96.0826,America/Chicago,,,402-493-2089,31,31055,31055007310,310550073101002,36540,420,ceo,census
+1514,,,Papillion,open,11650 S 73rd St,Papillion,,Nebraska,NE,68046,US,41.1352,-96.0262,America/Chicago,,,402-597-5790,31,31153,31153010620,311530106202009,36540,420,ceo,census
+1513,,,Papillion Wall to Wall,open,7651 Towne Center Pkwy,Papillion,,Nebraska,NE,68046,US,41.133,-96.0288,America/Chicago,,,402-347-9700,31,31153,31153010620,311530106202010,36540,420,ceo,census
+1535,,,Omaha #6,open,9707 Q St,Omaha,,Nebraska,NE,68127,US,41.2037,-96.0633,America/Chicago,,,402-339-3047,31,31055,31055007466,310550074661000,36540,420,ceo,census
+1471,,,Omaha #8,open,747 N 132nd St,Omaha,,Nebraska,NE,68154,US,41.266,-96.1185,America/Chicago,,,402-493-2911,31,31055,31055007443,310550074432015,36540,420,ceo,census
+1636,,,Spencer,open,819 Grand Ave,Spencer,,Iowa,IA,51301,US,43.1463,-95.1452,America/Chicago,,,712-262-2443,19,19041,19041080301,190410803012065,43980,517,ceo,census
+1474,,,Omaha #10,open,3410 N 156th St,Omaha,,Nebraska,NE,68116,US,41.2898,-96.1604,America/Chicago,,,402-493-0390,31,31055,31055007471,310550074711000,36540,420,ceo,census
+1466,,,Omaha #2,open,14591 Stony Brook Blvd,Omaha,,Nebraska,NE,68137,US,41.1974,-96.1418,America/Chicago,,,402-697-0811,31,31055,31055007462,310550074621000,36540,420,ceo,census
+1433,,,Mt. Pleasant,open,1700 E Washington St,Mount Pleasant,,Iowa,IA,52641,US,40.9609,-91.5297,America/Chicago,,,319-385-2266,19,19087,19087970400,190879704004001,,,ceo,census
+1438,,,Nebraska City Dollar Fresh Market,open,1018 South 11th Street,Nebraska City,,Nebraska,NE,68410,US,40.6677,-95.8595,America/Chicago,,,402-873-6761,31,31131,31131966900,311319669001081,,,ceo,census
+1478,,,Omaha #11,open,1000 S 178th St,Omaha,,Nebraska,NE,68118,US,41.2494,-96.1931,America/Chicago,,,402-334-4444,31,31055,31055007524,310550075241032,36540,420,ceo,census
+1472,,,Omaha #9,open,17810 Welch Plz,Omaha,,Nebraska,NE,68135,US,41.207,-96.1941,America/Chicago,,,402-896-4168,31,31055,31055007452,310550074521014,36540,420,ceo,census
+1077,,,Chillicothe,open,1210 Washington St,Chillicothe,,Missouri,MO,64601,US,39.799,-93.5549,America/Chicago,,,660-646-3638,29,29117,29117480300,291174803003031,,,ceo,census
+1227,,,Gretna,open,10855 S 191 St,Gretna,,Nebraska,NE,68136,US,41.1501,-96.2132,America/Chicago,,,531-239-3850,31,31153,31153010632,311530106324049,36540,420,ceo,census
+7571,,,Omaha Fast & Fresh #2,open,20310 Vinton Street,Omaha,,Nebraska,NE,68130,US,41.2287,-96.2042,America/Chicago,,,402-537-5065,31,31055,31055007515,310550075151003,36540,420,ceo,census
+7570,,,Omaha Fast & Fresh #1,open,20410 George B. Lake Pkwy,Omaha,,Nebraska,NE,68022,US,41.198,-96.2352,America/Chicago,,,402-571-0860,31,31055,31055007509,310550075094068,36540,420,ceo,census
+1170,,,Estherville,open,1221 Central Ave,Estherville,,Iowa,IA,51334,US,43.4025,-94.8287,America/Chicago,,,712-362-7246,19,19063,19063070300,190630703003032,,,ceo,census
+1404,,,Manchester Dollar Fresh Market,open,1080 W Main Street,Manchester,,Iowa,IA,52057,US,42.4832,-91.4719,America/Chicago,,,563-822-1383,19,19055,19055950300,190559503005008,,,ceo,census
+1628,,,Spirit Lake,open,1500 18th St,Spirit Lake,,Iowa,IA,51360,US,43.4234,-95.1132,America/Chicago,,,712-336-4900,19,19059,19059450501,190594505011011,44020,517,ceo,census
+1185,,,Fremont,open,840 E 23rd St,Fremont,,Nebraska,NE,68025,US,41.4529,-96.4871,America/Chicago,,,402-727-6717,31,31053,31053963800,310539638002037,23340,420,ceo,census
+1428,,,Monticello Dollar Fresh Market,open,122 North Main Street,Monticello,,Iowa,IA,52310,US,42.2388,-91.1836,America/Chicago,,,319-814-1125,19,19105,19105070600,191050706003008,16300,168,ceo,census
+1552,,,St. Joseph,open,201 N Belt Hwy,Saint Joseph,,Missouri,MO,64506,US,39.7682,-94.801,America/Chicago,,,816-232-9750,29,29021,29021000701,290210007014007,41140,312,ceo,census
+1183,,,Fairmont,open,907 S State St,Fairmont,,Minnesota,MN,56031,US,43.6449,-94.4461,America/Chicago,,,507-238-4323,27,27091,27091790600,270917906001047,21860,,ceo,census
+1019,,,Albert Lea,open,2708 Bridge Ave,Albert Lea,,Minnesota,MN,56007,US,43.6846,-93.3578,America/Chicago,,,507-377-2257,27,27047,27047180500,270471805001009,10660,,ceo,census
+1614,,,Sioux City #2,open,4500 Sergeant Rd,Sioux City,,Iowa,IA,51106,US,42.4462,-96.3477,America/Chicago,,,712-274-1036,19,19193,19193002102,191930021024007,43580,512,ceo,census
+7060,,,Muscatine Mainstreet,open,510 E 6th St,Muscatine,,Iowa,IA,52761,US,41.4269,-91.0435,America/Chicago,,,563-263-6461,19,19139,19139050800,191390508003025,34700,209,ceo,census
+1437,,,Muscatine,open,2400 2nd Ave,Muscatine,,Iowa,IA,52761,US,41.4504,-91.0363,America/Chicago,,,563-264-2420,19,19139,19139050700,191390507004020,34700,209,ceo,census
+1615,,,Sioux City #3,open,3301 Gordon Dr,Sioux City,,Iowa,IA,51105,US,42.4888,-96.3633,America/Chicago,,,712-234-1960,19,19193,19193001802,191930018021006,43580,512,ceo,census
+1382,,,LeMars,open,1201 12th Ave SW,Le Mars,,Iowa,IA,51031,US,42.7786,-96.1835,America/Chicago,,,712-546-7816,19,19149,19149970200,191499702001013,30180,512,ceo,census
+1181,,,Falls City Dollar Fresh Market,open,1300 Stone St,Falls City,,Nebraska,NE,68355,US,40.0581,-95.6038,America/Chicago,,,402-245-3774,31,31147,31147968600,311479686004071,,,ceo,fcc
+1094,,,Cresco Dollar Fresh Market,open,22422 Highway 9,Cresco,,Iowa,IA,52136,US,43.3704,-92.1315,America/Chicago,,,563-547-4169,19,19089,19089960100,190899601002016,,,ceo,fcc
+1027,,,Austin,open,1307 18th Ave NW,Austin,,Minnesota,MN,55912,US,43.683,-92.9907,America/Chicago,,,507-437-7625,27,27099,27099000100,270990001001081,12380,462,ceo,census
+1202,,,Fort Madison,open,2606 Avenue L,Fort Madison,,Iowa,IA,52627,US,40.6257,-91.3433,America/Chicago,,,319-372-5841,19,19111,19111490200,191114902003027,22800,161,ceo,census
+1620,,,South Sioux City,open,2501 Cornhusker Dr,South Sioux City,,Nebraska,NE,68776,US,42.4659,-96.4277,America/Chicago,,,402-494-4675,31,31043,31043010300,310430103001030,43580,512,ceo,fcc
+1610,,,Sioux City #1,open,2827 Hamilton Blvd,Sioux City,,Iowa,IA,51104,US,42.5205,-96.419,America/Chicago,,,712-277-8120,19,19193,19193000900,191930009002004,43580,512,ceo,census
+1480,,,Orange City Dollar Fresh Market,open,1301 8th Street SE,Orange City,,Iowa,IA,51041,US,42.998,-96.0417,America/Chicago,,,712-707-2003,19,19167,19167070601,191670706011000,,,ceo,census
+1573,,,Sheldon,open,1989 Park St,Sheldon,,Iowa,IA,51201,US,43.1869,-95.8318,America/Chicago,,,712-324-2516,19,19141,19141490300,191414903001004,,,ceo,census
+1163,,,Dyersville,open,1201 12th Ave SE,Dyersville,,Iowa,IA,52040,US,42.4749,-91.1106,America/Chicago,,,563-875-2700,19,19061,19061010500,190610105003015,20220,,ceo,census
+1044,,,Burlington #2,open,3140 Agency St,Burlington,,Iowa,IA,52601,US,40.816,-91.1368,America/Chicago,,,319-753-1616,19,19057,19057000300,190570003004000,15460,161,ceo,census
+7090,,,West Point Dollar Fresh Market,open,500 Plaza Dr,West Point,,Nebraska,NE,68788,US,41.8579,-96.7062,America/Chicago,,,402-372-0186,31,31039,31039972800,310399728001025,,,ceo,fcc
+1324,,,Keokuk,open,3111 Main St,Keokuk,,Iowa,IA,52632,US,40.4162,-91.4027,America/Chicago,,,319-524-2902,19,19111,19111490700,191114907001003,22800,161,ceo,census
+1042,,,Burlington #1,open,939 Angular St,Burlington,,Iowa,IA,52601,US,40.8015,-91.1108,America/Chicago,,,319-752-3657,19,19057,19057000500,190570005002000,15460,161,ceo,census
+1120,,,Decorah,open,915 SHORT ST #107,Decorah,,Iowa,IA,52101,US,43.2907,-91.7968,America/Chicago,,,563-387-6010,19,19191,19191950300,191919503003042,,,ceo,census
+1622,,,Sioux Center,open,1951 S Main Ave,Sioux Center,,Iowa,IA,51250,US,43.0562,-96.1772,America/Chicago,,,712-722-2601,19,19167,19167070701,191670707011024,,,ceo,census
+1386,,,Lincoln #2,open,1601 North 84th St,Lincoln,,Nebraska,NE,68505,US,40.8295,-96.6082,America/Chicago,,,402-467-5505,31,31109,31109001102,311090011022026,30700,339,ceo,census
+1390,,,Lincoln #5,open,7151 Stacy Lane,Lincoln,,Nebraska,NE,68516,US,40.7678,-96.6225,America/Chicago,,,402-489-4244,31,31109,31109003723,311090037232011,30700,339,ceo,census
+1385,,,Lincoln #1,open,5010 O St,Lincoln,,Nebraska,NE,68510,US,40.8146,-96.6502,America/Chicago,,,402-483-7707,31,31109,31109001002,311090010021007,30700,339,ceo,census
+1387,,,Lincoln #3,open,5020 N 27th St,Lincoln,,Nebraska,NE,68521,US,40.862,-96.6813,America/Chicago,,,402-477-4764,31,31109,31109002900,311090029002013,30700,339,ceo,census
+1874,,,Waukon Dollar Fresh Market,open,819 11th Ave SW,Waukon,,Iowa,IA,52172,US,43.258,-91.4872,America/Chicago,,,563-568-5100,19,19005,19005960300,190059603003017,,,ceo,census
+1388,,,Lincoln #4,open,6001 Village Dr,Lincoln,,Nebraska,NE,68516,US,40.7523,-96.6669,America/Chicago,,,402-421-2462,31,31109,31109003708,311090037083003,30700,339,ceo,census
+1407,,,Maquoketa Dollar Fresh Market,open,102 W. Carlisle,Maquoketa,,Iowa,IA,52060,US,42.0504,-90.6667,America/Chicago,,,563-748-0384,19,19097,19097950500,190979505004010,,,ceo,census
+1897,,,Worthington,open,1235 OXFORD ST PO BOX 489,Worthington,,Minnesota,MN,56187,US,43.6326,-95.596,America/Chicago,,,507-372-7354,27,27105,27105105400,271051054001038,49380,,ceo,census
+1109,,,Davenport #5,open,2351 W Locust St,Davenport,,Iowa,IA,52804,US,41.5367,-90.6123,America/Chicago,,,563-324-9948,19,19163,19163011100,191630111002013,19340,209,ceo,census
+1106,,,Davenport #2,open,2200 W Kimberly Rd,Davenport,,Iowa,IA,52806,US,41.5611,-90.6094,America/Chicago,,,563-391-0213,19,19163,19163012701,191630127012010,19340,209,ceo,census
+1167,,,Eldridge,open,425 E Le Claire Rd,Eldridge,,Iowa,IA,52748,US,41.654,-90.5773,America/Chicago,,,563-285-7740,19,19163,19163010201,191630102013014,19340,209,ceo,census
+1892,,,Windom,open,192 10th St,Windom,,Minnesota,MN,56101,US,43.8673,-95.1146,America/Chicago,,,507-831-2786,27,27033,27033270400,270332704003013,,,ceo,census
+1160,,,Dubuque #2,open,2395 NW Arterial,Dubuque,,Iowa,IA,52002,US,42.5167,-90.744,America/Chicago,,,563-583-2199,19,19061,19061001103,190610011031001,20220,,ceo,census
+1415,,,Milan,open,201 10th Ave W,Milan,,Illinois,IL,61264,US,41.4439,-90.57,America/Chicago,,,309-787-0273,17,17161,17161024300,171610243002091,19340,209,ceo,census
+1549,,,Rock Island,open,2930 18th Ave,Rock Island,,Illinois,IL,61201,US,41.4922,-90.5591,America/Chicago,,,309-793-0684,17,17161,17161023200,171610232001000,19340,209,ceo,census
+1159,,,Dubuque #1,open,3500 Dodge St,Dubuque,,Iowa,IA,52003,US,42.4911,-90.7233,America/Chicago,,,563-583-5204,19,19061,19061001202,190610012021021,20220,,ceo,census
+1107,,,Davenport #3,open,1823 E Kimberly Rd,Davenport,,Iowa,IA,52807,US,41.5551,-90.5489,America/Chicago,,,563-359-9323,19,19163,19163013000,191630130002005,19340,209,ceo,census
+7530,,,Davenport Fast & Fresh #1,open,3200 E Kimberly Rd,Davenport,,Iowa,IA,52807,US,41.5538,-90.5267,America/Chicago,,,563-359-4258,19,19163,19163012902,191630129022003,19340,209,ceo,census
+1511,,,Owatonna,open,1620 S Cedar Ave,Owatonna,,Minnesota,MN,55060,US,44.0673,-93.2283,America/Chicago,,,507-451-0138,27,27147,27147960600,271479606001022,36940,378,ceo,census
+1108,,,Davenport #4,open,4064 E 53rd St,Davenport,,Iowa,IA,52807,US,41.5773,-90.5137,America/Chicago,,,563-355-5540,19,19163,19163012901,191630129011012,19340,209,ceo,census
+7531,,,Davenport Fast & Fresh #2,open,4631 E 53rd Street,Davenport,,Iowa,IA,52807,US,41.5744,-90.5051,America/Chicago,,,563-391-0810,19,19163,19163012902,191630129021001,19340,209,ceo,census
+1384,,,Liberty,open,109 N Blue Jay Dr,Liberty,,Missouri,MO,64068,US,39.2454,-94.4488,America/Chicago,,,816-792-3210,29,29047,29047020802,290470208022004,28140,312,ceo,census
+1162,,,Dubuque #3,open,400 S Locust St,Dubuque,,Iowa,IA,52003,US,42.4869,-90.6633,America/Chicago,,,563-583-6148,19,19061,19061000100,190610001002010,20220,,ceo,census
+1037,,,Bettendorf,open,2900 Devils Glen Rd,Bettendorf,,Iowa,IA,52722,US,41.5536,-90.4846,America/Chicago,,,563-332-8496,19,19163,19163013705,191630137051013,19340,209,ceo,census
+1416,,,Moline #1,open,4218 Avenue of the Cities,Moline,,Illinois,IL,61265,US,41.4881,-90.4759,America/Chicago,,,309-762-0200,17,17161,17161021200,171610212002004,19340,209,ceo,fcc
+7046,,,Kasson,open,19 2nd Ave NW,Kasson,,Minnesota,MN,55944,US,44.0305,-92.7516,America/Chicago,,,507-634-2731,27,27039,27039950500,270399505002052,40340,462,ceo,census
+1320,,,Kansas City #1,open,8301 N Saint Clair Ave,Kansas City,,Missouri,MO,64151,US,39.2453,-94.6454,America/Chicago,,,816-505-1000,29,29165,29165030207,291650302076001,28140,312,ceo,census
+1219,,,Gladstone,open,7117 N Prospect Ave,Gladstone,,Missouri,MO,64119,US,39.2232,-94.5465,America/Chicago,,,816-452-6500,29,29047,29047021104,290470211041000,28140,312,ceo,census
+1393,,,Mankato #1,open,410 S Riverfront Dr,Mankato,,Minnesota,MN,56001,US,44.1659,-94.0066,America/Chicago,,,507-625-1107,27,27013,27013170700,270131707001004,31860,359,ceo,census
+1533,,,Quincy #1,open,1400 Harrison St,Quincy,,Illinois,IL,62301,US,39.9126,-91.3932,America/Chicago,,,217-224-9442,17,17001,17001001002,170010010022004,39500,448,ceo,census
+1394,,,Mankato #2,open,2010 Adams St,Mankato,,Minnesota,MN,56001,US,44.1713,-93.9452,America/Chicago,,,507-625-9070,27,27013,27013170200,270131702003068,31860,359,ceo,census
+1534,,,Quincy #2,open,3700 Broadway St,Quincy,,Illinois,IL,62305,US,39.9337,-91.3568,America/Chicago,,,217-228-1060,17,17001,17001001100,170010011001004,39500,448,ceo,census
+1600,,,Silvis,open,2001 5th St,Silvis,,Illinois,IL,61282,US,41.4898,-90.4218,America/Chicago,,,309-792-1507,17,17161,17161020301,171610203012003,19340,209,ceo,census
+1322,,,Kansas City #3,open,5330 NW 64th St,Kansas City,,Missouri,MO,64151,US,39.2113,-94.6419,America/Chicago,,,816-505-1311,29,29165,29165030103,291650301031002,28140,312,ceo,fcc
+1547,,,Rochester #1,open,500 Crossroads Dr SW,Rochester,,Minnesota,MN,55902,US,44.0051,-92.4703,America/Chicago,,,507-289-7500,27,27109,27109001100,271090011001006,40340,462,ceo,census
+1555,,,Rochester #3,open,1315 6th St NW,Rochester,,Minnesota,MN,55901,US,44.0298,-92.4815,America/Chicago,,,507-288-8233,27,27109,27109000500,271090005002008,40340,462,ceo,census
+1556,,,Rochester #4,open,4221 W Circle Dr NW,Rochester,,Minnesota,MN,55901,US,44.0656,-92.5262,America/Chicago,,,507-292-6000,27,27109,27109001403,271090014031009,40340,462,ceo,census
+1820,,,Vermillion,open,525 W Cherry St,Vermillion,,South Dakota,SD,57069,US,42.788,-96.9407,America/Chicago,,,605-624-5574,46,46027,46027965700,460279657003014,46820,,ceo,census
+1548,,,Rochester #2,open,500 37th St NW,Rochester,,Minnesota,MN,55901,US,44.0602,-92.4697,America/Chicago,,,507-289-1815,27,27109,27109001503,271090015031003,40340,462,ceo,census
+1260,,,Independence #1,open,1525 E 23rd St S,Independence,,Missouri,MO,64055,US,39.0771,-94.3936,America/Chicago,,,816-836-1177,29,29095,29095012300,290950123002000,28140,312,ceo,census
+1215,,,Galesburg #1,open,1975 National Boulevard,Galesburg,,Illinois,IL,61401,US,40.9716,-90.3807,America/Chicago,,,309-344-1100,17,17095,17095000400,170950004003005,23660,,ceo,census
+1420,,,Macomb,open,1600 E Jackson St,Macomb,,Illinois,IL,61455,US,40.4602,-90.6482,America/Chicago,,,309-837-9917,17,17109,17109010600,171090106002016,31380,,ceo,census
+1458,,,Oak Grove,open,503 S. Broadway,Oak Grove,,Missouri,MO,64075,US,39.0113,-94.1281,America/Chicago,,,816-625-9098,29,29095,29095014004,290950140042004,28140,312,ceo,census
+1261,,,Independence #2,open,4545 S Noland Rd,Independence,,Missouri,MO,64055,US,39.0373,-94.4139,America/Chicago,,,816-478-6557,29,29095,29095014501,290950145011017,28140,312,ceo,census
+1177,,,Faribault,open,1920 Grant St NW,Faribault,,Minnesota,MN,55021,US,44.2949,-93.2977,America/Chicago,,,507-334-2085,27,27131,27131070901,271310709013046,22060,378,ceo,census
+1033,,,Blue Springs,open,625 SW US Highway 40,Blue Springs,,Missouri,MO,64014,US,39.0107,-94.2712,America/Chicago,,,816-224-4288,29,29095,29095014128,290950141282013,28140,312,ceo,census
+1441,,,New Ulm,open,2015 S Broadway St,New Ulm,,Minnesota,MN,56073,US,44.2934,-94.4394,America/Chicago,,,507-354-8255,27,27015,27015960102,270159601021044,35580,359,ceo,census
+1078,,,Columbus,open,3010 23rd St,Columbus,,Nebraska,NE,68601,US,41.4407,-97.3643,America/Chicago,,,402-563-4524,31,31141,31141965302,311419653021023,18100,,ceo,census
+7079,,,Saint Peter,open,1002 Old Minnesota Ave,Saint Peter,,Minnesota,MN,56082,US,44.3485,-93.9551,America/Chicago,,,507-519-1910,27,27103,27103480300,271034803003040,31860,359,ceo,census
+1216,,,Galesburg #2,open,2030 E Main St,Galesburg,,Illinois,IL,61401,US,40.9461,-90.3397,America/Chicago,,,309-342-1615,17,17095,17095001100,170950011001002,23660,,ceo,census
+1075,,,Clinton,open,901 S 4th St,Clinton,,Iowa,IA,52732,US,41.8367,-90.1918,America/Chicago,,,563-243-6162,19,19045,19045000200,190450002001003,17540,209,ceo,census
+1542,,,Raytown,open,9400 E State Rte 350,Raytown,,Missouri,MO,64133,US,38.9937,-94.4696,America/Chicago,,,816-358-9940,29,29095,29095012600,290950126003013,28140,312,ceo,census
+1460,,,Norfolk #1,open,120 E Norfolk Ave,Norfolk,,Nebraska,NE,68701,US,42.0317,-97.4049,America/Chicago,,,402-379-1706,31,31119,31119960600,311199606001039,35740,,ceo,census
+1422,,,Mission,open,6655 Martway St,Mission,,Kansas,KS,66202,US,39.0202,-94.6632,America/Chicago,,,913-831-4447,20,20091,20091050302,200910503022003,28140,312,ceo,census
+1217,,,Geneseo Dollar Fresh Market,open,2181 S. Oakwood Ave.,Geneseo,,Illinois,IL,61254,US,41.4336,-90.1592,America/Chicago,,,309-944-2770,17,17073,17073030301,170730303013023,19340,209,ceo,census
+1532,,,Prairie Village,open,7620 State Line Rd,Prairie Village,,Kansas,KS,66208,US,38.9901,-94.6095,America/Chicago,,,913-383-8303,20,20091,20091051500,200910515004012,28140,312,ceo,census
+1560,,,Shawnee,open,13550 W 63rd St,Shawnee,,Kansas,KS,66216,US,39.0159,-94.7435,America/Chicago,,,913-962-2252,20,20091,20091052308,200910523081009,28140,312,ceo,census
+1461,,,Norfolk #2,open,2107 Taylor Ave,Norfolk,,Nebraska,NE,68701,US,42.0266,-97.4408,America/Chicago,,,402-371-7071,31,31119,31119960801,311199608012019,35740,,ceo,census
+1380,,,Lees Summit #1,open,301 NE Rice Rd,Lee's Summit,,Missouri,MO,64086,US,38.9188,-94.3598,America/Chicago,,,816-524-5760,29,29095,29095013801,290950138012010,28140,312,ceo,census
+1383,,,Lenexa,open,13400 W 87th Parkway,Lenexa,,Kansas,KS,66215,US,38.9723,-94.7413,America/Chicago,,,913-438-8308,20,20091,20091052417,200910524172008,28140,312,ceo,census
+1243,,,Harrisburg,open,201 E Willow Street,Harrisburg,,South Dakota,SD,57032,US,43.4314,-96.7008,America/Chicago,,,605-213-2222,46,46083,46083010107,460830101072009,43620,,ceo,census
+1508,,,Overland Park #1,open,8501 W 95th St,Overland Park,,Kansas,KS,66212,US,38.9555,-94.684,America/Chicago,,,913-894-1983,20,20091,20091051804,200910518041013,28140,312,ceo,census
+1381,,,Lees Summit #2,open,310 SW Ward Rd,Lee's Summit,,Missouri,MO,64081,US,38.9098,-94.3974,America/Chicago,,,816-554-2200,29,29095,29095013708,290950137081000,28140,312,ceo,census
+1638,,,Sioux Falls #6,open,1231 E 57th St,Sioux Falls,,South Dakota,SD,57108,US,43.4986,-96.7087,America/Chicago,,,605-271-7171,46,46083,46083010111,460830101112000,43620,,ceo,census
+1624,,,Sioux Falls #1,open,1601 S Sycamore Ave,Sioux Falls,,South Dakota,SD,57110,US,43.5307,-96.6725,America/Chicago,,,605-334-4570,46,46099,46099001804,460990018042011,43620,,ceo,census
+1464,,,Olathe #2,open,18101 W 119th St,Olathe,,Kansas,KS,66061,US,38.9111,-94.7952,America/Chicago,,,913-393-4150,20,20091,20091052905,200910529051020,28140,312,ceo,census
+1637,,,Sioux Falls #5,open,3020 E 10th St,Sioux Falls,,South Dakota,SD,57103,US,43.5478,-96.6881,America/Chicago,,,605-336-8947,46,46099,46099000405,460990004051008,43620,,ceo,census
+1896,,,Winona,open,1475 Service Dr,Winona,,Minnesota,MN,55987,US,44.0472,-91.6782,America/Chicago,,,507-452-5411,27,27169,27169670302,271696703022023,49100,462,ceo,fcc
+1632,,,Sioux Falls #3,open,3000 S Minnesota Ave,Sioux Falls,,South Dakota,SD,57105,US,43.5175,-96.7283,America/Chicago,,,605-334-7231,46,46099,46099001501,460990015013000,43620,,ceo,census
+1509,,,Overland Park #2,open,8900 W 135 St,Overland Park,,Kansas,KS,66221,US,38.8853,-94.6884,America/Chicago,,,913-685-3500,20,20091,20091053110,200910531101012,28140,312,ceo,census
+1655,,,Tea,open,725 E 1st St,Tea,,South Dakota,SD,57064,US,43.4451,-96.8274,America/Chicago,,,605-213-2121,46,46083,46083010115,460830101151077,43620,,ceo,census
+1631,,,Sioux Falls #2,open,4101 S Louise Ave,Sioux Falls,,South Dakota,SD,57106,US,43.5081,-96.7738,America/Chicago,,,605-361-0313,46,46099,46099001109,460990011092025,43620,,ceo,census
+1845,,,Warrensburg,open,410 E. Young Ave,Warrensburg,,Missouri,MO,64093,US,38.7703,-93.7306,America/Chicago,,,660-429-1188,29,29101,29101960600,291019606003000,47660,312,ceo,census
+1440,,,New Prague,open,200 10th Ave S.E.,New Prague,,Minnesota,MN,56071,US,44.5421,-93.5623,America/Chicago,,,952-758-2790,27,27079,27079950101,270799501011044,33460,378,ceo,fcc
+1633,,,Sioux Falls #4,open,1900 S Marion Rd,Sioux Falls,,South Dakota,SD,57106,US,43.5277,-96.7891,America/Chicago,,,605-361-3442,46,46099,46099001107,460990011071002,43620,,ceo,census
+1034,,,Belton,open,1307 East North Ave,Belton,,Missouri,MO,64012,US,38.812,-94.5134,America/Chicago,,,816-318-0400,29,29037,29037061300,290370613006000,28140,312,ceo,census
+1463,,,Olathe #1,open,14955 W 151st St,Olathe,,Kansas,KS,66062,US,38.8526,-94.7587,America/Chicago,,,913-780-9339,20,20091,20091053425,200910534252001,28140,312,ceo,census
+1076,,,Columbia #1,open,3100 W Broadway,Columbia,,Missouri,MO,65203,US,38.9534,-92.3836,America/Chicago,,,573-447-0133,29,29019,29019001201,290190012014003,17860,190,ceo,census
+1355,,,La Crosse,open,4200 STATE ROAD 16,La Crosse,,Wisconsin,WI,54601,US,43.8697,-91.1954,America/Chicago,,,608-668-6600,55,55063,55063010500,550630105001096,29100,317,ceo,fcc
+1082,,,Columbia #3,open,25 Conley Road,Columbia,,Missouri,MO,65201,US,38.9497,-92.2963,America/Chicago,,,573-442-7703,29,29019,29019001001,290190010012021,17860,190,ceo,census
+1899,,,Yankton,open,2100 Broadway Ave,Yankton,,South Dakota,SD,57078,US,42.8912,-97.3955,America/Chicago,,,605-665-3412,46,46135,46135966302,461359663021028,49460,,ceo,census
+1377,,,Lawrence #1,open,3504 Clinton Parkway,Lawrence,,Kansas,KS,66047,US,38.9442,-95.2805,America/Chicago,,,785-832-0044,20,20045,20045000797,200450007972012,29940,312,ceo,census
+1081,,,Columbia #2,open,405 E Nifong Blvd,Columbia,,Missouri,MO,65201,US,38.912,-92.3336,America/Chicago,,,573-442-8595,29,29019,29019001105,290190011051013,17860,190,ceo,census
+1894,,,York Dollar Fresh Market,open,220 East Nobes Road,York,,Nebraska,NE,68467,US,40.857,-97.5913,America/Chicago,,,402-745-6414,31,31185,31185969800,311859698003070,,,ceo,census
+1047,,,Canton,open,825 N Main St,Canton,,Illinois,IL,61520,US,40.5675,-90.0341,America/Chicago,,,309-647-0712,17,17057,17057953300,170579533003004,15900,427,ceo,census
+1658,,,Topeka,open,2951 SW Wanamaker Rd,Topeka,,Kansas,KS,66614,US,39.0122,-95.764,America/Chicago,,,785-272-1763,20,20177,20177003605,201770036051000,45820,,ceo,census
+7550,,,Lakeville Fast & Fresh,open,17380 Cedar Ave,Lakeville,,Minnesota,MN,55044,US,44.6976,-93.2168,America/Chicago,,,952-997-2661,27,27037,27037060830,270370608302008,33460,378,ceo,census
+1356,,,Lakeville,open,16150 Pilot Knob Rd,Lakeville,,Minnesota,MN,55044,US,44.7149,-93.1759,America/Chicago,,,952-423-9340,27,27037,27037060831,270370608312006,33460,378,ceo,census
+1559,,,Savage,open,6150 Egan Dr,Savage,,Minnesota,MN,55378,US,44.7479,-93.3573,America/Chicago,,,952-228-2550,27,27139,27139080209,271390802093012,33460,378,ceo,census
+1562,,,Shakopee,open,1451 Adams St South,Shakopee,,Minnesota,MN,55379,US,44.7796,-93.5396,America/Chicago,,,952-403-1520,27,27139,27139080600,271390806003011,33460,378,ceo,census
+1400,,,Marshall,open,900 E Main Street,Marshall,,Minnesota,MN,56258,US,44.4377,-95.7781,America/Chicago,,,507-532-2247,27,27083,27083360500,270833605001023,32140,,ceo,census
+1165,,,Eagan,open,1500 Central Park Cmns Dr,Eagan,,Minnesota,MN,55121,US,44.8346,-93.1717,America/Chicago,,,651-405-3660,27,27037,27037060725,270370607251007,33460,378,ceo,census
+1520,,,Peoria #2,open,7610 N Orange Prairie Rd,Peoria,,Illinois,IL,61615,US,40.7806,-89.6783,America/Chicago,,,309-589-1001,17,17143,17143004101,171430041011023,37900,427,ceo,census
+1090,,,Cottage Grove,open,7280 E Point Douglas Rd S,Cottage Grove,,Minnesota,MN,55016,US,44.8309,-92.958,America/Chicago,,,651-458-7000,27,27163,27163071208,271630712082011,33460,378,ceo,census
+1398,,,Manhattan,open,601 3rd Pl,Manhattan,,Kansas,KS,66502,US,39.1848,-96.5603,America/Chicago,,,785-587-8609,20,20161,20161000801,201610008014011,31740,,ceo,census
+1519,,,Peoria #1,open,4125 N Sheridan Rd Unit20,Peoria,,Illinois,IL,61614,US,40.7384,-89.6055,America/Chicago,,,309-686-5920,17,17143,17143002300,171430023002000,37900,427,ceo,census
+1303,,,Jefferson City,open,3721 W Truman Blvd,Jefferson City,,Missouri,MO,65109,US,38.5879,-92.2537,America/Chicago,,,573-893-2505,29,29051,29051010802,290510108022010,27620,190,ceo,census
+1298,,,Jacksonville,open,1255 West Morton Ave,Jacksonville,,Illinois,IL,62650,US,39.7211,-90.252,America/Chicago,,,217-243-8615,17,17137,17137952000,171379520002033,27300,522,ceo,census
+1462,,,Oakdale,open,7180 10th St N,Oakdale,,Minnesota,MN,55128,US,44.9645,-92.961,America/Chicago,,,651-714-3160,27,27163,27163070912,271630709122000,33460,378,ceo,census
+1531,,,Plymouth,open,16705 County Road 24,Plymouth,,Minnesota,MN,55447,US,45.0193,-93.4928,America/Chicago,,,763-383-7060,27,27053,27053026611,270530266111000,33460,378,ceo,census
+1545,,,Robbinsdale,open,3505 Bottineau Blvd,Robbinsdale,,Minnesota,MN,55422,US,45.0196,-93.3275,America/Chicago,,,612-287-7200,27,27053,27053021400,270530214001001,33460,378,ceo,fcc
+1439,,,New Hope,open,8200 42nd Ave N,New Hope,,Minnesota,MN,55427,US,45.0348,-93.3839,America/Chicago,,,763-531-7460,27,27053,27053021503,270530215031008,33460,378,ceo,census
+1402,,,Maplewood,open,2501 White Bear Ave,Maplewood,,Minnesota,MN,55109,US,45.0164,-93.0216,America/Chicago,,,651-747-3500,27,27123,27123042401,271230424011000,33460,378,ceo,census
+1039,,,Brookings,open,790 22nd Ave S,Brookings,,South Dakota,SD,57006,US,44.2981,-96.7698,America/Chicago,,,605-692-7317,46,46011,46011959000,460119590001009,15100,,ceo,census
+1401,,,Maple Grove,open,18755 70th Way North,Maple Grove,,Minnesota,MN,55311,US,45.0826,-93.5178,America/Chicago,,,763-494-5300,27,27053,27053026722,270530267222001,33460,378,ceo,fcc
+1184,,,Fitchburg,open,2920 Fitchrona Rd,Fitchburg,,Wisconsin,WI,53719,US,43.0135,-89.4795,America/Chicago,,,608-273-5120,55,55025,55025010702,550250107025002,31540,357,ceo,census
+1643,,,Spring Lake Park,open,8155 Highway 65 NE,Spring Lake Park,,Minnesota,MN,55432,US,45.1166,-93.2392,America/Chicago,,,763-792-8440,27,27003,27003051001,270030510011008,33460,378,ceo,census
+1040,,,Brooklyn Park,open,9409 Zane Ave North,Brooklyn Park,,Minnesota,MN,55443,US,45.1243,-93.3572,America/Chicago,,,763-488-4500,27,27053,27053026812,270530268126003,33460,378,ceo,fcc
+1392,,,Madison #2,open,675 S Whitney Way,Madison,,Wisconsin,WI,53711,US,43.0506,-89.4717,America/Chicago,,,608-277-6735,55,55025,55025000402,550250004022018,31540,357,ceo,census
+1482,,,Oregon,open,787 N Main Street Ste 1,Oregon,,Wisconsin,WI,53575,US,42.9381,-89.3847,America/Chicago,,,608-835-3939,55,55025,55025012502,550250125021020,31540,357,ceo,census
+1525,,,Peru,open,1651 Midtown Rd,Peru,,Illinois,IL,61354,US,41.3477,-89.1272,America/Chicago,,,815-223-5219,17,17099,17099963000,170999630002001,36837,176,ceo,census
+1221,,,Grand Island,open,115 Wilmar Ave,Grand Island,,Nebraska,NE,68803,US,40.9179,-98.3799,America/Chicago,,,308-381-3678,31,31079,31079000700,310790007003008,24260,,ceo,fcc
+1166,,,Eau Claire,open,2424 E Clairemont Ave,Eau Claire,,Wisconsin,WI,54701,US,44.7958,-91.4654,America/Chicago,,,715-598-9525,55,55035,55035000700,550350007006024,20740,232,ceo,fcc
+1475,,,Osage Beach,open,929 Highway D,Osage Beach,,Missouri,MO,65065,US,38.1618,-92.6042,America/Chicago,,,573-302-7977,29,29029,29029950201,290299502011002,,,ceo,census
+1391,,,Madison #1,open,3801 E Washington Ave,Madison,,Wisconsin,WI,53704,US,43.1187,-89.3209,America/Chicago,,,608-244-4696,55,55025,55025002603,550250026032020,31540,357,ceo,census
+1640,,,Springfield IL,open,2115 S MacArthur Blvd,Springfield,,Illinois,IL,62704,US,39.7762,-89.6697,America/Chicago,,,217-726-1001,17,17167,17167002100,171670021004000,44100,522,ceo,census
+1296,,,Janesville,open,2500 Humes Rd,Janesville,,Wisconsin,WI,53545,US,42.7172,-88.9922,America/Chicago,,,608-371-6780,55,55105,55105000700,551050007001010,27500,357,ceo,census
+1642,,,Sycamore,open,2700 Dekalb Ave,Sycamore,,Illinois,IL,60178,US,41.9588,-88.7187,America/Chicago,,,815-756-6174,17,17037,17037000800,170370008002012,16980,176,ceo,census
+1035,,,Bloomington,open,1403 N Veterans Parkway,Bloomington,,Illinois,IL,61704,US,40.4975,-88.9504,America/Chicago,,,309-663-3050,17,17113,17113001106,171130011061003,14010,145,ceo,census
+1871,,,Watertown,open,1320 9th Ave SE,Watertown,,South Dakota,SD,57201,US,44.8884,-97.0939,America/Chicago,,,605-882-3311,46,46029,46029954501,460299545012020,47980,,ceo,census
+1323,,,Kearney,open,5212 3rd Ave,Kearney,,Nebraska,NE,68845,US,40.7259,-99.0868,America/Chicago,,,308-236-0020,31,31019,31019969204,310199692041023,28260,,ceo,census
+1546,,,Ripon,open,1188 W FOND DU LAC ST,Ripon,,Wisconsin,WI,54971,US,43.8564,-88.8623,America/Chicago,,,920-748-5498,55,55039,55039041600,550390416001016,22540,,ceo,census
+1245,,,Holdrege,open,1419 Burlington St,Holdrege,,Nebraska,NE,68949,US,40.449,-99.3796,America/Chicago,,,308-999-2010,31,31137,31137967100,311379671004027,,,ceo,census
+1876,,,Wausau,open,220 S 18th Ave,Wausau,,Wisconsin,WI,54401,US,44.962,-89.658,America/Chicago,,,715-845-8846,55,55073,55073000500,550730005003025,48140,554,ceo,census
+1644,,,Springfield MO #2,open,2150 E Sunshine St,Springfield,,Missouri,MO,65804,US,37.1808,-93.2528,America/Chicago,,,417-444-6860,29,29077,29077005700,290770057002004,44180,,ceo,census
+1641,,,Springfield MO #1,open,1720 W Battlefield Rd,Springfield,,Missouri,MO,65807,US,37.1589,-93.3152,America/Chicago,,,417-881-1950,29,29077,29077001402,290770014021006,44180,,ceo,census
+1025,,,Ashwaubenon,open,2395 S ONEIDA ST STE 100,Ashwaubenon,,Wisconsin,WI,54304,US,44.4862,-88.0667,America/Chicago,,,920-305-7010,55,55009,55009021303,550090213034007,24580,267,ceo,census

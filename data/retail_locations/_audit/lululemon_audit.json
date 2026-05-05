@@ -1,0 +1,24 @@
+{
+    "slug": "lululemon",
+    "ts": 1777991705,
+    "n_total": 477,
+    "n_us": 477,
+    "n_census_matched": 379,
+    "n_outliers": 1,
+    "n_overrides": 0,
+    "outlier_threshold_m": 5000.0,
+    "outliers": [
+        {
+            "store_id": "birchrun-outlet",
+            "url": "https://shop.lululemon.com/stores/us/birch-run/birch-run-premium-outlets-pop-up",
+            "ceo_lat": 43.25,
+            "ceo_lng": -83.7128,
+            "census_lat": 43.248485027284,
+            "census_lng": -83.779962008249,
+            "delta_m": 5442.2,
+            "address": "12150 Beyer Rd, Birch Run, MI, US, 48415",
+            "tiebreaker": "no_overture_match"
+        }
+    ],
+    "overrides": {}
+}
