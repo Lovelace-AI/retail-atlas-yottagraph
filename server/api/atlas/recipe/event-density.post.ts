@@ -3,8 +3,8 @@
  *
  * For each of the top-K areas (by total store count) in the requested country
  * with a resolved Elemental NEID and at least one active-retailer store,
- * fan out `elemental_get_events(area_neid, time_range, limit: 50)` and score
- * each area as `events_per_store = events.length / total_stores`.
+ * fan out `elemental_get_events(area_neid, time_range)` and score each area
+ * as `events_per_store = event_count / total_stores`.
  *
  * Diverging-around-median color scale so the visual midpoint is "typical
  * density"; areas substantially above/below pop. Domain capped at the 95th
@@ -13,6 +13,13 @@
  * Top-K substitutes "viewport-clipped" since the canvas is currently
  * fit-to-country (no zoom). When zoom lands, swap K-by-store-count for an
  * actual viewport bbox filter; the response shape stays identical.
+ *
+ * R-009 (2026-05): MCP `elemental_get_events` returns `total === min(real,
+ * limit)`, so we can't tell apart 50 vs 500 events with a single low-limit
+ * call. We do an adaptive two-pass: a cheap fast call (limit = 50) for
+ * every area, then a deep follow-up (limit = 500) only for areas that
+ * tripped the cap. Most areas (typically 80%+) take the fast path, so
+ * extra latency is concentrated on dense counties where the data exists.
  */
 
 import { existsSync, readFileSync } from 'node:fs';
@@ -38,7 +45,8 @@ interface RequestBody {
 
 const TOP_K = 100;
 const CONCURRENCY = 4;
-const PER_AREA_LIMIT = 50;
+const PER_AREA_LIMIT_FAST = 50;
+const PER_AREA_LIMIT_DEEP = 500;
 
 interface MCPGetEventsResult {
     events?: Array<{
@@ -198,25 +206,56 @@ async function runEventDensity(body: RequestBody, retailers: string[]): Promise<
 
     const timeRange = timeRangeFor(body.time_window);
 
-    // 2. Fan out via one MCP session.
+    // 2. Fan out via one MCP session. Two-pass: cheap fast call first, deep
+    //    follow-up only for the areas that hit the fast-pass ceiling.
     const eventsPerArea = await withElementalMcp(async (client) => {
         return flightedMap(candidates, CONCURRENCY, async (a, i) => {
-            const args: Record<string, unknown> = {
+            const fastArgs: Record<string, unknown> = {
                 entity: a.neid as string,
-                limit: PER_AREA_LIMIT,
+                limit: PER_AREA_LIMIT_FAST,
             };
-            if (timeRange) args.time_range = timeRange;
-            const r = await tracedToolCall(client, `events:${i}:${a.area_key}`, args, tool_calls);
-            const count = r?.events?.length ?? 0;
-            return { area: a, count };
+            if (timeRange) fastArgs.time_range = timeRange;
+            const fast = await tracedToolCall(
+                client,
+                `events:fast:${i}:${a.area_key}`,
+                fastArgs,
+                tool_calls
+            );
+            const fastCount = fast?.events?.length ?? 0;
+
+            // If the fast pass didn't trip the cap, take its count as truth.
+            if (fastCount < PER_AREA_LIMIT_FAST) {
+                return { area: a, count: fastCount, capped: false };
+            }
+
+            // Deep follow-up: re-query with a higher cap to get the real number.
+            const deepArgs: Record<string, unknown> = {
+                entity: a.neid as string,
+                limit: PER_AREA_LIMIT_DEEP,
+            };
+            if (timeRange) deepArgs.time_range = timeRange;
+            const deep = await tracedToolCall(
+                client,
+                `events:deep:${i}:${a.area_key}`,
+                deepArgs,
+                tool_calls
+            );
+            const deepCount = deep?.events?.length ?? fastCount;
+            return {
+                area: a,
+                count: deepCount,
+                capped: deepCount >= PER_AREA_LIMIT_DEEP,
+            };
         });
     });
 
     // 3. Score = events / total_stores. Compute domain stats around the median
     //    so "typical density" sits at the visual midpoint.
     const rawScores: { area: AreaRecord; score: number; count: number }[] = [];
-    for (const { area: a, count } of eventsPerArea) {
+    let cappedAreas = 0;
+    for (const { area: a, count, capped } of eventsPerArea) {
         if (a.total_stores <= 0) continue;
+        if (capped) cappedAreas += 1;
         rawScores.push({ area: a, score: count / a.total_stores, count });
     }
     const scoreValues = rawScores.map((r) => r.score);
@@ -241,5 +280,6 @@ async function runEventDensity(body: RequestBody, retailers: string[]): Promise<
         scores,
         tool_calls,
         truncated: candidates.length >= TOP_K,
+        capped_areas: cappedAreas,
     };
 }

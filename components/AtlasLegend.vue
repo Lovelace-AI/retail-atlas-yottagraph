@@ -34,6 +34,17 @@
                 <div v-if="recipeData?.truncated" class="muted mono notice">
                     top-K subset (rural areas omitted)
                 </div>
+                <div
+                    v-if="
+                        recipe === 'event_density' &&
+                        recipeData?.capped_areas &&
+                        recipeData.capped_areas > 0
+                    "
+                    class="muted mono notice"
+                >
+                    {{ recipeData.capped_areas }} area{{ recipeData.capped_areas === 1 ? '' : 's' }}
+                    capped at ≥500 events
+                </div>
             </div>
 
             <div class="legend-section">

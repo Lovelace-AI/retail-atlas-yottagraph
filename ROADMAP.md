@@ -25,6 +25,7 @@ Deferred work, anchored to [`DESIGN.md`](DESIGN.md) and [`design/RETAIL_ATLAS_PR
 | **R-001 / R-007** — KV cache + telemetry                 | SHIPPED. Cache wraps all three fan-out routes; telemetry list + summary endpoint live.                  |
 | **R-002 / R-013** — Saved recipes + admin telemetry page | SHIPPED.                                                                                                |
 | **R12** — Documentation                                  | SHIPPED. README + DATA + COVERAGE + RECIPES. COVERAGE auto-regenerated from probe + cache reports.      |
+| **R-009** — Lift R7.1 event cap                          | SHIPPED. Adaptive two-pass (50→500) breaks leader-board ties for dense counties.                        |
 | **Phase 4 R8** — Premium feeds                           | NOT STARTED.                                                                                            |
 | **Phase 5 R9.2 / saved state / DB cache**                | NOT STARTED.                                                                                            |
 
@@ -102,12 +103,12 @@ These weren't on the user's flagged list but were called out as "out of scope / 
 - **Why:** [`design/RECIPES.md`](design/RECIPES.md) summary applies here too: probed `elemental_get_schema(article)` — articles carry 13 properties but `published_at` is rarely populated and there's no URL property at all. The MCP server's `resolution.skipped` confirms this isn't fuzzy-match miss.
 - **Re-open trigger:** If/when the upstream NewsData ingestion adds canonical URL or richer published-at fields. Track via a periodic re-probe with `scripts/probe-article-properties.ts` (rebuild from git history if needed).
 
-### R-009 · Lift R7.1's per-area event cap
+### R-009 · Lift R7.1's per-area event cap — SHIPPED
 
 - **PRD:** Extension of R7.1.
-- **Status:** `Queued, low priority`.
-- **Today:** [`server/api/atlas/recipe/event-density.post.ts`](server/api/atlas/recipe/event-density.post.ts) caps each `elemental_get_events` call at `limit: 50`. Top counties (DC, Manhattan, Ventura, Fulton) all hit ceiling and tie at the leader board.
-- **Plan sketch:** Either (a) raise the cap to 200+ at the cost of fan-out latency, or (b) fall back to `elemental_get_events(area, …, total_only: true)` if such a flag exists; check the MCP `elemental_get_events` schema. Cap of 50 is fine until users complain about leader-board ties.
+- **Status:** `Shipped`.
+- **Probe:** [`scripts/probe-event-total.ts`](scripts/probe-event-total.ts) (`npm run probe:event-total`) confirmed `total === min(real_count, limit)` on MCP `elemental_get_events`, so the obvious `total_only: true` path doesn't exist. Dropping limit to 1 would still report total=1.
+- **Where it landed:** Adaptive two-pass in [`server/api/atlas/recipe/event-density.post.ts`](server/api/atlas/recipe/event-density.post.ts). Fast call at `limit: 50` for every area; deep follow-up at `limit: 500` only for areas that hit the fast cap. Adds `capped_areas` to `RecipeResult` and surfaces the count as a legend caveat. Most areas stay on the fast path; dense counties get accurate counts up to 500. See updated [`design/RECIPES.md`](design/RECIPES.md) R7.1 section.
 
 ### R-010 · Hover tooltips upgraded from native SVG to Vuetify
 

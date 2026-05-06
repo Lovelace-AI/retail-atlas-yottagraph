@@ -169,6 +169,9 @@ export interface RecipeResult {
     scores: RecipeAreaScore[];
     /** True when the result is a top-K subset (e.g. event-density fan-out). */
     truncated?: boolean;
+    /** Number of areas whose event count was still ceiling-capped after the
+     *  deep follow-up call (R7.1). Display as a "≥{cap}" caveat in the legend. */
+    capped_areas?: number;
     /** Per-tool MCP fan-out timing (Step 2/3 only). */
     tool_calls?: RecipeToolCall[];
     /** Server-side KV cache hit (PRD R6.3). The composable also has a

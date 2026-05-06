@@ -30,12 +30,15 @@ The `AtlasRankingTable` mounts when this recipe is active and shows the top 25 a
 Diverging-around-median fan-out via Elemental.
 
 1. Server reads `areas.json`, filters to the requested country, NEID-resolved areas with at least one active-retailer store. Sorts by `total_stores` desc, takes top **K = 100** (substitutes "viewport-clipped" until zoom lands; flagged via `truncated: true`).
-2. Inside one MCP session, `elemental_get_events(area_neid, time_range, limit: 50)` runs at concurrency 4 — ~7 s end-to-end on the typical sample.
-3. `score = events.length / total_stores`. Domain capped at the 95th percentile so a single outlier doesn't crush the ramp; midpoint at the median so "typical density" sits visually neutral.
+2. Inside one MCP session, an **adaptive two-pass** fan-out runs at concurrency 4:
+    - **Fast pass**: `elemental_get_events(area_neid, time_range, limit: 50)` for every area.
+    - **Deep follow-up**: any area whose fast pass returned exactly 50 events (cap-tripped) is re-queried with `limit: 500`. The deep count replaces the fast count for scoring.
+    - Areas still capped at ≥500 are tallied into `capped_areas` on the response and surfaced in the legend as "{N} areas capped at ≥500 events".
+3. `score = event_count / total_stores`. Domain capped at the 95th percentile so a single outlier doesn't crush the ramp; midpoint at the median so "typical density" sits visually neutral.
 
-Time windows: `30 / 90 / 365 / all` (translate to `time_range: { after }` on the server). Module-level cache in the composable for one hour keyed by `(country, retailers_hash, time_window)`.
+Time windows: `30 / 90 / 365 / all` (translate to `time_range: { after }` on the server). Module-level cache in the composable for one hour keyed by `(country, retailers_hash, time_window)`; server-side KV cache also for one hour.
 
-**Caveat**: the per-area cap of 50 events means the most-populous counties tend to all hit the ceiling, so ranking among the top _N_ leaders is an indistinguishable tie. Differentiation is sharper in the long tail.
+**Why the two-pass**: probed (`scripts/probe-event-total.ts`) — MCP returns `total === min(real_count, limit)`, so a single low-limit call can't distinguish 50-event areas from 500-event areas. The fast/deep split keeps the typical 80%+ of areas on the cheap path while letting dense counties separate properly. Latency: ~7 s when no areas trip the cap, ~10–15 s when many do.
 
 ## R7.2 — Opens − closes delta
 
