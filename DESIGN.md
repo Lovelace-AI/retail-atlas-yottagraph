@@ -707,6 +707,8 @@ Operation (palette switching, new palette addition, rollback) follows [`TENANT_P
 
 ## Status
 
+> Deferred work and post-Phase-3 backlog live in [`ROADMAP.md`](ROADMAP.md).
+
 - **Stack**: Aether (Nuxt 3 + Vue 3 + Vuetify 3 + TS) scaffolded.
 - **Data substrate (R1)**: 30 retailer CSVs landed in `data/retail_locations/` (~148k stores). Build pipeline (`scripts/build-retail-data.ts`) normalizes the three schema flavors into `public/data/retail_atlas/{retailers,areas,stores/*}.json` and writes a `manifest.json` with source-CSV sha256s. Wired into `prebuild` for Vercel.
 - **Topojson boundaries**: US counties (us-atlas), UK LADs (ONS Dec 2024 BSC), CA CMAs (StatsCan 2021 CBF), world country outlines (world-atlas) committed to `public/data/topojson/`. Verified joins: walmart 1873/1873, target 659/659, dollargeneral 2805/2807, tesco 348/350, loblaw 129/129.
