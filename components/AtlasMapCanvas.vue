@@ -39,8 +39,9 @@
             </g>
 
             <!-- Layer 4: NEID halo (PRD R3.1) — gold outline on areas with a
-                 resolved Elemental NEID and >=1 active-retailer store. -->
-            <g class="layer-halo" pointer-events="none">
+                 resolved Elemental NEID and >=1 active-retailer store. Hidden
+                 when the rail's "NEID halo" switch is off. -->
+            <g v-if="showHalo" class="layer-halo" pointer-events="none">
                 <path
                     v-for="feat in haloFeatures"
                     :key="`halo-${feat.id}`"
@@ -108,8 +109,16 @@
     const loading = ref(true);
     const error = ref<string | null>(null);
 
-    const { country, activeRetailers, pinned, hoveredAreaKey, pinArea, pinStore, clearPin } =
-        useAtlasState();
+    const {
+        country,
+        activeRetailers,
+        pinned,
+        hoveredAreaKey,
+        showHalo,
+        pinArea,
+        pinStore,
+        clearPin,
+    } = useAtlasState();
     const {
         loadRetailers,
         loadAreas,

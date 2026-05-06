@@ -39,6 +39,9 @@ const _timeWindow = ref<AtlasTimeWindow>('365');
 const _overlay = ref<AtlasOverlay>('none');
 const _pinned = ref<Pinned>(null);
 const _hoveredAreaKey = ref<string | null>(null);
+// Layer toggles. PRD R3.1 names the NEID halo as layer 4 of the composite;
+// users can hide it when the gold glow competes with overlays they care about.
+const _showHalo = ref<boolean>(true);
 
 export function useAtlasState() {
     return {
@@ -48,6 +51,7 @@ export function useAtlasState() {
         overlay: _overlay,
         pinned: _pinned,
         hoveredAreaKey: _hoveredAreaKey,
+        showHalo: _showHalo,
 
         /**
          * Toggle a retailer slug in/out of the active set.

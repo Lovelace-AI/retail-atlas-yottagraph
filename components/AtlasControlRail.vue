@@ -87,6 +87,21 @@
                 style="min-width: 180px"
             />
         </v-card>
+
+        <!-- Layers (NEID halo + future toggles) -->
+        <v-card class="rail-card" variant="outlined" density="compact">
+            <div class="rail-card-label">Layers</div>
+            <v-switch
+                v-model="showHalo"
+                density="compact"
+                hide-details
+                color="warning"
+                inset
+                :label="'NEID halo'"
+                aria-label="Toggle gold glow on Elemental-resolved areas"
+                class="halo-switch"
+            />
+        </v-card>
     </div>
 </template>
 
@@ -97,7 +112,7 @@
     import { useAtlasState } from '~/composables/useAtlasState';
     import type { RetailerSummary } from '~/types/retail';
 
-    const { country, activeRetailers, timeWindow, overlay, setCountry, toggleRetailer } =
+    const { country, activeRetailers, timeWindow, overlay, showHalo, setCountry, toggleRetailer } =
         useAtlasState();
     const { loadRetailers, retailers, retailersLoading } = useAtlasData();
 
@@ -181,5 +196,10 @@
     .muted {
         color: rgba(255, 255, 255, 0.4);
         font-size: 0.75em;
+    }
+
+    .halo-switch :deep(.v-label) {
+        font-size: 0.8rem;
+        opacity: 0.85;
     }
 </style>
