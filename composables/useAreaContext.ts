@@ -1,5 +1,7 @@
 import { ref, shallowRef } from 'vue';
 
+import { useAtlasTelemetry } from './useAtlasTelemetry';
+
 /**
  * Elemental fan-out for a clicked area (PRD R6.1).
  *
@@ -100,6 +102,7 @@ export function useAreaContext() {
                 economic_concepts: ContextConcept[];
                 retailer_events: Record<string, ContextEvent[]>;
                 elapsed_ms: number;
+                cache_hit?: boolean;
             }>('/api/atlas/area-context', {
                 method: 'POST',
                 body: {
@@ -114,8 +117,16 @@ export function useAreaContext() {
                 economic_concepts: res.economic_concepts ?? [],
                 retailer_events: res.retailer_events ?? {},
                 elapsed_ms: res.elapsed_ms ?? 0,
-                cache_hit: false,
+                // Server-side KV cache hit (R-001). The session cache short-
+                // circuited above already; this branch only fires on a miss.
+                cache_hit: res.cache_hit ?? false,
             };
+            useAtlasTelemetry().record({
+                endpoint: 'area-context',
+                cache_hit: res.cache_hit ?? false,
+                elapsed_ms: res.elapsed_ms ?? 0,
+                ts: Date.now(),
+            });
             _cache.value = {
                 ..._cache.value,
                 [key]: { data: data.value, fetched_at: Date.now() },

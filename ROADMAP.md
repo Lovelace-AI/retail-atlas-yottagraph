@@ -21,6 +21,7 @@ Deferred work, anchored to [`DESIGN.md`](DESIGN.md) and [`design/RETAIL_ATLAS_PR
 | **Phase 1 R6** — Live area context fan-out | SHIPPED via MCP (events + articles + concepts + retailer events).                                     |
 | **Phase 2** — Store-level NEID resolution  | CANCELLED per Phase 0.                                                                                |
 | **Phase 3 R4/R7** — Recipes + URL sync     | SHIPPED. Three recipes (co-occurrence, event-density, opens-closes) + `?r=&f=&t=&c=&p=&halo=` sync.   |
+| **R-001 / R-007** — KV cache + telemetry   | SHIPPED. Cache wraps all three fan-out routes; telemetry list + summary endpoint live.                |
 | **Phase 4 R8** — Premium feeds             | NOT STARTED.                                                                                          |
 | **Phase 5 R9.2 / saved state / DB cache**  | NOT STARTED.                                                                                          |
 
@@ -30,14 +31,12 @@ Deferred work, anchored to [`DESIGN.md`](DESIGN.md) and [`design/RETAIL_ATLAS_PR
 
 These are the five out-of-scope items the user called out explicitly when closing the R7 plan. Track here so they don't get lost.
 
-### R-001 · Server-side KV cache of recipe + area-context results
+### R-001 · Server-side KV cache of recipe + area-context results — SHIPPED
 
 - **PRD:** R6.3.
-- **Status:** `Queued`.
-- **Effort:** ~half a day.
-- **Today:** module-level cache lives in [`composables/useAtlasRecipe.ts`](composables/useAtlasRecipe.ts) and [`composables/useAreaContext.ts`](composables/useAreaContext.ts) for one hour, scoped to the page session. Different users running the same recipe each pay the MCP fan-out cost.
-- **Plan sketch:** Upstash Redis is already provisioned (see `utils/kvPrefsStore.ts`). Add a `withKvCache(key, ttl_seconds, fn)` helper in `server/utils/`; wrap the three recipe routes + `area-context.post.ts`. Key by sha256 of `(recipe, country, retailers_sorted, time_window)` for recipes, and `(area_neid, retailers_hash)` for area context. Surface `cache_hit: boolean` in the response (already in the type). Track hit-rate in `tool_calls`.
-- **Watch out for:** Vercel cold processes evict module-level state at ~10-minute idle, so users behind the same edge might still see fan-outs. KV makes that consistent.
+- **Status:** `Shipped` (commit `9b5e93d`).
+- **Where it landed:** [`server/utils/atlasKv.ts`](server/utils/atlasKv.ts) — `withKvCache(opts, fn)` read-through helper using Upstash via the existing `getRedis()`. Wired into all three fan-out routes ([`area-context.post.ts`](server/api/atlas/area-context.post.ts), [`recipe/event-density.post.ts`](server/api/atlas/recipe/event-density.post.ts), [`recipe/opens-closes.post.ts`](server/api/atlas/recipe/opens-closes.post.ts)) with TTLs 1 h, 1 h, 6 h respectively. Cache key is sha256-truncated and array-input-sorted so `[a,b]` and `[b,a]` collapse. Each route returns `cache_hit` + `cache_age_ms` in its response.
+- **Graceful degrade:** when `KV_REST_API_URL` / `KV_REST_API_TOKEN` are unset, `getRedis()` returns null and `withKvCache` bypasses to `fn()` directly; `cache_hit` is always false. Verified locally.
 
 ### R-002 · Saved recipes per user
 
@@ -87,13 +86,13 @@ These weren't on the user's flagged list but were called out as "out of scope / 
 - **Plan sketch:** Use `elemental_get_entity` per event-NEID with a richer property fetch and look for explicit location-flavored relationships, OR run a secondary pass through a real NER model (spaCy / OpenAI / etc.) on the description string with the area-name list as an anchor vocabulary. Reject candidates that look like company names (cross-check against `retailer_neids.json`). See [`design/RECIPES.md`](design/RECIPES.md) for the full caveat list.
 - **Effort:** ~3 days for an MCP-side fix if Lovelace can promote location attribution; ~1 person-week for in-app NER.
 
-### R-007 · Telemetry persistence (R10)
+### R-007 · Telemetry persistence (R10) — SHIPPED
 
-- **PRD:** R10 — every MCP call logged to `atlas_context_calls` (PRD's Supabase table; we'd use Postgres or an Upstash list).
-- **Status:** `Queued`.
-- **Today:** `tool_calls: { tool, ms, ok }[]` is on every endpoint response and rendered in the panel footer for the current click. Nothing persists. No weekly summary cron.
-- **Plan sketch:** Either (a) `LPUSH` per call to an Upstash list with a 30-day expiry, plus a small `/api/atlas/telemetry/summary` route that does the analyst aggregations on read; or (b) a Neon Postgres `atlas_context_calls` table (per PRD) when Postgres is provisioned. Send the same payload from each Nitro recipe + area-context route.
-- **PostHog:** PRD R10 also calls for browser perf marks (TTFR, panel-open-latency). That's a separate slice — drop a tiny `usePerfMarks` composable that emits PostHog events.
+- **PRD:** R10.
+- **Status:** `Shipped` (commit `1203a5b`).
+- **Where it landed:** [`server/utils/atlasKv.ts`](server/utils/atlasKv.ts) `logToolCalls()` — fire-and-forget LPUSH to a 10k-cap Upstash list keyed `atlas:tel:v1`. All three fan-out routes call it post-response with sanitized request dimensions (no NEIDs). [`server/api/atlas/telemetry/summary.get.ts`](server/api/atlas/telemetry/summary.get.ts) reads + aggregates: count, cache_hit_rate, p50/p95 latency overall + per endpoint, top retailers, recent 50 raw entries. Auth-gated by Auth0 cookie. Session-level surface in the footer strip via [`composables/useAtlasTelemetry.ts`](composables/useAtlasTelemetry.ts) — shows cache-hit-rate + last latency for the current page session.
+- **Deferred slice:** PostHog browser perf marks (TTFR, panel-open-latency) — see new entry **R-012** below.
+- **Deferred slice:** Admin dashboard page rendering the summary endpoint — see new entry **R-013** below.
 
 ### R-008 · Article publication date / URL
 
@@ -124,6 +123,20 @@ These weren't on the user's flagged list but were called out as "out of scope / 
 - **Plan sketch:** Add a `<canvas>` overlay sibling to the SVG. Project per-store coords through the same `d3.geoPath()` projection. Hit-test on click via reverse geometry (find nearest dot). Switch when stores per viewport > N.
 
 ---
+
+### R-012 · PostHog client-side perf marks
+
+- **PRD:** R10 — PRD calls for time-to-first-render, time-to-first-interactive, and panel-open-latency in PostHog.
+- **Status:** `Queued`.
+- **Today:** Server-side latency is captured (R-007). Client-side TTFR / panel-open-latency are not.
+- **Plan sketch:** Tiny `usePerfMarks` composable that wraps `performance.mark` / `performance.measure` and posts to PostHog (or any analytics provider) on key UI events: first canvas render, first context-panel open, recipe selection. ~half-day with the right SDK in place.
+
+### R-013 · Admin telemetry dashboard page
+
+- **PRD:** R10 — "Weekly summary cron: top-10 most-clicked areas, top-10 slowest tools, panel cache hit-rate, invite-request count".
+- **Status:** `Queued, blocked-on-design`.
+- **Today:** [`/api/atlas/telemetry/summary`](server/api/atlas/telemetry/summary.get.ts) returns the data; nobody renders it.
+- **Plan sketch:** New `pages/admin/telemetry.vue` (RBAC-gated when Phase 5 auth lands; for now any logged-in user can hit it since auth is single-role per PRD R9.1). Vuetify table + a couple of `chroma-js`-backed sparklines. Half-day max.
 
 ## Won't-fix / cancelled
 

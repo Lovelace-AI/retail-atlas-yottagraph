@@ -13,9 +13,18 @@
                 {{ totalActiveStores.toLocaleString() }} stores ·
                 {{ totalActiveAreas.toLocaleString() }} areas
             </span>
-            <span class="mono muted">
-                <v-icon icon="mdi-flag-checkered" size="x-small" class="mr-1" />
-                Phase 1 · area-only context · per-store NEID resolution skipped (RED)
+            <span v-if="telemetrySummary.count > 0" class="mono muted">
+                <v-icon icon="mdi-database-clock" size="x-small" class="mr-1" />
+                cache:
+                {{ Math.round(telemetrySummary.cache_hit_rate * 100) }}% ({{
+                    telemetrySummary.count
+                }}
+                sample{{ telemetrySummary.count === 1 ? '' : 's' }})
+                <span v-if="telemetrySummary.last_ms != null">
+                    · last
+                    {{ formatLatency(telemetrySummary.last_ms) }}
+                    {{ telemetrySummary.last_cache_hit ? '✓' : '' }}
+                </span>
             </span>
             <span class="mono muted ml-auto">
                 {{
@@ -38,6 +47,7 @@
     import AtlasRankingTable from '~/components/AtlasRankingTable.vue';
     import { useAtlasData } from '~/composables/useAtlasData';
     import { useAtlasState } from '~/composables/useAtlasState';
+    import { useAtlasTelemetry } from '~/composables/useAtlasTelemetry';
     import { useAtlasUrlSync } from '~/composables/useAtlasUrlSync';
 
     // Map canvas is the landing surface. `/atlas` is preserved as a route
@@ -60,10 +70,16 @@
 
     const { activeRetailers, country, overlay, pinned, clearPin } = useAtlasState();
     const { retailers, areas } = useAtlasData();
+    const { summary: telemetrySummary } = useAtlasTelemetry();
 
     // Bind atlas state to URL query params (R7.4). Two-way: state→URL on
     // every change (replace, not push), URL→state on mount + back-button.
     useAtlasUrlSync();
+
+    function formatLatency(ms: number): string {
+        if (ms < 1000) return `${ms}ms`;
+        return `${(ms / 1000).toFixed(1)}s`;
+    }
 
     const totalActiveStores = computed(() => {
         const list = retailers.value ?? [];

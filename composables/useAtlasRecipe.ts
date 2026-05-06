@@ -11,6 +11,7 @@ import type {
 
 import { useAtlasData } from './useAtlasData';
 import { useAtlasState } from './useAtlasState';
+import { useAtlasTelemetry } from './useAtlasTelemetry';
 
 /**
  * R7 — Analysis-recipe state and computation.
@@ -199,6 +200,19 @@ export function useAtlasRecipe() {
                 ..._cache.value,
                 [key]: { data: result, fetched_at: Date.now() },
             };
+            // Record server-side cache hit / latency for the footer strip.
+            // R7.3 (co_occurrence) is pure client compute — no server hit to
+            // record, so we skip it.
+            if (r === 'event_density' || r === 'opens_minus_closes') {
+                const totalMs = result.tool_calls?.reduce((sum, t) => sum + (t.ms ?? 0), 0) ?? 0;
+                useAtlasTelemetry().record({
+                    endpoint:
+                        r === 'event_density' ? 'recipe:event-density' : 'recipe:opens-closes',
+                    cache_hit: result.cache_hit ?? false,
+                    elapsed_ms: totalMs,
+                    ts: Date.now(),
+                });
+            }
         } catch (err) {
             _error.value = (err as Error).message;
         } finally {
