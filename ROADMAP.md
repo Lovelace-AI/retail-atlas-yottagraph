@@ -39,14 +39,12 @@ These are the five out-of-scope items the user called out explicitly when closin
 - **Where it landed:** [`server/utils/atlasKv.ts`](server/utils/atlasKv.ts) — `withKvCache(opts, fn)` read-through helper using Upstash via the existing `getRedis()`. Wired into all three fan-out routes ([`area-context.post.ts`](server/api/atlas/area-context.post.ts), [`recipe/event-density.post.ts`](server/api/atlas/recipe/event-density.post.ts), [`recipe/opens-closes.post.ts`](server/api/atlas/recipe/opens-closes.post.ts)) with TTLs 1 h, 1 h, 6 h respectively. Cache key is sha256-truncated and array-input-sorted so `[a,b]` and `[b,a]` collapse. Each route returns `cache_hit` + `cache_age_ms` in its response.
 - **Graceful degrade:** when `KV_REST_API_URL` / `KV_REST_API_TOKEN` are unset, `getRedis()` returns null and `withKvCache` bypasses to `fn()` directly; `cache_hit` is always false. Verified locally.
 
-### R-002 · Saved recipes per user
+### R-002 · Saved recipes per user — SHIPPED
 
 - **PRD:** R7.4 / Phase 5.
-- **Status:** `Queued` (Phase 5 per PRD, but trivially shippable now).
-- **Effort:** half-day to a day.
-- **Today:** `useAtlasUrlSync` makes the URL the canonical recipe state — copy/paste is the only "save". No per-user storage of named recipes.
-- **Plan sketch:** Add a `Pref<SavedRecipe[]>` (see [`composables/usePrefsStore.ts`](composables/usePrefsStore.ts) — KV-backed). Store the URL-encoded query plus a user-supplied label. Add a "Save view" button to the rail next to `AtlasShareButton`; add a "Saved views" submenu in the user menu of [`components/AppHeader.vue`](components/AppHeader.vue). Per-user, no sharing semantics yet.
-- **Phase-5 expansion:** When multi-tenant lands, recipes graduate from `Pref<>` to a `atlas_saved_recipes` Postgres table per PRD R1.2.
+- **Status:** `Shipped` (this commit).
+- **Where it landed:** [`composables/useSavedRecipes.ts`](composables/useSavedRecipes.ts) — `Pref<SavedRecipe[]>` keyed at `/users/{userId}/apps/retail-atlas/saved-recipes`, KV-backed via the existing prefs store. Each entry snapshots `route.query` (the URL form already produced by `useAtlasUrlSync`), so restoring is just `router.replace({ query })` and the existing URL→state hydration plays it back. [`components/AtlasSavedMenu.vue`](components/AtlasSavedMenu.vue) renders a bookmark-icon `v-menu` in the rail next to the share button: lists existing saves with a one-line summary + delete affordance, plus a "Save current view" dialog with a sensible default label derived from the active recipe + retailers + country.
+- **Phase-5 expansion path:** When multi-tenant lands, the same shape graduates to a Postgres `atlas_saved_recipes` table per PRD R1.2. No client-side change needed if we keep the `SavedRecipe` shape stable.
 
 ### R-003 · Map zoom/pan + true viewport-clipping
 

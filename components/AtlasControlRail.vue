@@ -103,9 +103,11 @@
             />
         </v-card>
 
-        <!-- Share — copies the current URL (already encodes recipe + filters
-             via useAtlasUrlSync) to the clipboard. -->
+        <!-- Saved views (R-002) + Share. The share button copies the URL
+             that's already encoded by useAtlasUrlSync; the saved-views menu
+             snapshots that same URL into a Pref-backed per-user list. -->
         <div class="share-slot">
+            <AtlasSavedMenu />
             <AtlasShareButton />
         </div>
     </div>
@@ -114,6 +116,7 @@
 <script setup lang="ts">
     import { computed, onMounted } from 'vue';
 
+    import AtlasSavedMenu from '~/components/AtlasSavedMenu.vue';
     import AtlasShareButton from '~/components/AtlasShareButton.vue';
     import { useAtlasData } from '~/composables/useAtlasData';
     import { useAtlasState } from '~/composables/useAtlasState';
@@ -213,5 +216,8 @@
     .share-slot {
         align-self: center;
         margin-left: auto;
+        display: flex;
+        align-items: center;
+        gap: 4px;
     }
 </style>
