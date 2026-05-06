@@ -39,7 +39,7 @@ import { join } from 'node:path';
 
 import type { Client } from '@modelcontextprotocol/sdk/client/index.js';
 
-import { kvKeyFor, withKvCache } from '../../utils/atlasKv';
+import { kvKeyFor, logToolCalls, withKvCache } from '../../utils/atlasKv';
 import { unwrapToolResult, withElementalMcp } from '../../utils/elementalMcp';
 
 interface ContextEvent {
@@ -308,9 +308,22 @@ export default defineEventHandler(async (event): Promise<AreaContextResponse> =>
         async () => runAreaContextFanOut(body.area_neid, retailerOrgs)
     );
 
+    const total_ms = Date.now() - t0;
+
+    // Fire-and-forget telemetry (R-007). Never blocks the response.
+    void logToolCalls({
+        ts: new Date().toISOString(),
+        endpoint: 'area-context',
+        request: { retailers: [...retailers].sort(), retailer_count: retailers.length },
+        cache_hit,
+        cache_age_ms,
+        tool_calls: data.fanout_tool_calls,
+        total_ms,
+    });
+
     return {
         ...data,
-        elapsed_ms: Date.now() - t0,
+        elapsed_ms: total_ms,
         tool_calls: data.fanout_tool_calls,
         cache_hit,
         cache_age_ms,

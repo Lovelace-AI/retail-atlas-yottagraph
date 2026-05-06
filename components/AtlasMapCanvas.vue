@@ -150,12 +150,68 @@
         outline: Feature | null;
     }
 
+    /**
+     * Drop degenerate rings from a Polygon / MultiPolygon. Some upstream
+     * boundary files (notably the Statistics Canada CMA TopoJSON we fetch
+     * for `CA`) contain MultiPolygons with hundreds of zero-area "islands"
+     * that are just a single point repeated. d3-geo's spherical Mercator
+     * treats those as ambiguous-winding polygons and projects them as the
+     * entire visible hemisphere — every `.area-path` ends up filling the
+     * whole canvas, so the map renders as a solid block instead of a set
+     * of admin polygons. Filtering rings to {min 4 unique points, non-zero
+     * planar area} restores normal rendering without re-running the build.
+     */
+    function ringIsDegenerate(ring: number[][]): boolean {
+        if (!ring || ring.length < 4) return true;
+        const seen = new Set<string>();
+        for (const [x, y] of ring) seen.add(`${x},${y}`);
+        if (seen.size < 3) return true;
+        let area = 0;
+        for (let i = 0, n = ring.length - 1; i < n; i++) {
+            const [x1, y1] = ring[i];
+            const [x2, y2] = ring[i + 1];
+            area += x1 * y2 - x2 * y1;
+        }
+        return Math.abs(area) < 1e-12;
+    }
+
+    function cleanFeature(f: Feature): Feature | null {
+        const g = f.geometry as any;
+        if (!g) return null;
+        if (g.type === 'Polygon') {
+            const rings = (g.coordinates as number[][][]).filter(
+                (r, i) => i > 0 || !ringIsDegenerate(r)
+            );
+            if (rings.length === 0 || ringIsDegenerate(rings[0])) return null;
+            return { ...f, geometry: { type: 'Polygon', coordinates: rings } } as Feature;
+        }
+        if (g.type === 'MultiPolygon') {
+            const polys = (g.coordinates as number[][][][])
+                .filter((p) => p.length > 0 && !ringIsDegenerate(p[0]))
+                .map((p) => p.filter((r, i) => i === 0 || !ringIsDegenerate(r)));
+            if (polys.length === 0) return null;
+            if (polys.length === 1) {
+                return { ...f, geometry: { type: 'Polygon', coordinates: polys[0] } } as Feature;
+            }
+            return { ...f, geometry: { type: 'MultiPolygon', coordinates: polys } } as Feature;
+        }
+        return f;
+    }
+
     function decodeCountry(): CountryData | null {
         if (!topology.value) return null;
         const objKey = topologyObjectKey(country.value);
         const obj = topology.value.objects[objKey];
         if (!obj) return null;
-        const polygons = feature(topology.value, obj as any) as unknown as FeatureCollection;
+        const raw = feature(topology.value, obj as any) as unknown as FeatureCollection;
+        const cleaned = raw.features
+            .map((f) => cleanFeature(f as Feature))
+            .filter((f): f is Feature => f !== null);
+        const polygons: FeatureCollection = { type: 'FeatureCollection', features: cleaned };
+        // eslint-disable-next-line no-console
+        console.warn(
+            `[atlas-cleanup] ${country.value} kept ${cleaned.length}/${raw.features.length} features`
+        );
         // For US, derive nation outline from the states layer; for UK / CA the
         // file only contains the admin layer, so we approximate the outline
         // via the merged mesh of the admin polygons.

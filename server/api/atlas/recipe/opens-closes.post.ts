@@ -39,7 +39,7 @@ import type {
     RecipeResult,
     RecipeToolCall,
 } from '../../../../types/retail';
-import { kvKeyFor, withKvCache } from '../../../utils/atlasKv';
+import { kvKeyFor, logToolCalls, withKvCache } from '../../../utils/atlasKv';
 import { unwrapToolResult, withElementalMcp } from '../../../utils/elementalMcp';
 
 interface RequestBody {
@@ -189,10 +189,26 @@ export default defineEventHandler(async (event): Promise<RecipeResult> => {
         time_window: body.time_window,
     });
 
+    const t0 = Date.now();
     const { data, cache_hit, cache_age_ms } = await withKvCache<RecipeResult>(
         { key: cacheKey, ttlSeconds: 6 * 60 * 60 },
         async () => runOpensCloses(body, retailers)
     );
+
+    void logToolCalls({
+        ts: new Date().toISOString(),
+        endpoint: 'recipe:opens-closes',
+        request: {
+            country: body.country,
+            time_window: body.time_window,
+            retailers: [...retailers].sort(),
+            retailer_count: retailers.length,
+        },
+        cache_hit,
+        cache_age_ms,
+        tool_calls: data.tool_calls ?? [],
+        total_ms: Date.now() - t0,
+    });
 
     return { ...data, cache_hit, cache_age_ms };
 });
