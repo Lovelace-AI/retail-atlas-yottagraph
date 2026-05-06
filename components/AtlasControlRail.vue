@@ -102,12 +102,19 @@
                 class="halo-switch"
             />
         </v-card>
+
+        <!-- Share — copies the current URL (already encodes recipe + filters
+             via useAtlasUrlSync) to the clipboard. -->
+        <div class="share-slot">
+            <AtlasShareButton />
+        </div>
     </div>
 </template>
 
 <script setup lang="ts">
     import { computed, onMounted } from 'vue';
 
+    import AtlasShareButton from '~/components/AtlasShareButton.vue';
     import { useAtlasData } from '~/composables/useAtlasData';
     import { useAtlasState } from '~/composables/useAtlasState';
     import type { RetailerSummary } from '~/types/retail';
@@ -201,5 +208,10 @@
     .halo-switch :deep(.v-label) {
         font-size: 0.8rem;
         opacity: 0.85;
+    }
+
+    .share-slot {
+        align-self: center;
+        margin-left: auto;
     }
 </style>

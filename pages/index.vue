@@ -38,6 +38,7 @@
     import AtlasRankingTable from '~/components/AtlasRankingTable.vue';
     import { useAtlasData } from '~/composables/useAtlasData';
     import { useAtlasState } from '~/composables/useAtlasState';
+    import { useAtlasUrlSync } from '~/composables/useAtlasUrlSync';
 
     // Map canvas is the landing surface. `/atlas` is preserved as a route
     // alias so any pre-existing links (deep-linked retailer chips, prior
@@ -59,6 +60,10 @@
 
     const { activeRetailers, country, overlay, pinned, clearPin } = useAtlasState();
     const { retailers, areas } = useAtlasData();
+
+    // Bind atlas state to URL query params (R7.4). Two-way: state→URL on
+    // every change (replace, not push), URL→state on mount + back-button.
+    useAtlasUrlSync();
 
     const totalActiveStores = computed(() => {
         const list = retailers.value ?? [];
