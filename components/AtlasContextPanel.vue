@@ -21,7 +21,28 @@
 
             <v-tabs v-model="tab" density="compact" color="primary" align-tabs="start">
                 <v-tab value="overview">Overview</v-tab>
-                <v-tab value="events" :disabled="!areaPin"> Area events </v-tab>
+                <v-tab value="events" :disabled="!areaPin">
+                    Area events
+                    <v-chip
+                        v-if="contextData?.area_events.length"
+                        size="x-small"
+                        class="ml-2"
+                        variant="tonal"
+                    >
+                        {{ contextData.area_events.length }}
+                    </v-chip>
+                </v-tab>
+                <v-tab value="retailer_events" :disabled="!areaPin || !hasRetailerEvents">
+                    Retailer events
+                    <v-chip
+                        v-if="totalRetailerEvents > 0"
+                        size="x-small"
+                        class="ml-2"
+                        variant="tonal"
+                    >
+                        {{ totalRetailerEvents }}
+                    </v-chip>
+                </v-tab>
                 <v-tab value="articles" :disabled="!areaPin">
                     Articles
                     <v-chip
@@ -146,12 +167,89 @@
 
                     <v-window-item value="events">
                         <div v-if="contextLoading" class="muted">Loading events…</div>
+                        <div v-else-if="contextError" class="error-msg">
+                            {{ contextError }}
+                        </div>
+                        <div
+                            v-else-if="contextData && contextData.area_events.length"
+                            class="event-list"
+                        >
+                            <div
+                                v-for="ev in contextData.area_events"
+                                :key="ev.neid || ev.summary"
+                                class="event-row"
+                            >
+                                <div class="event-meta mono muted">
+                                    <span v-if="ev.ts">{{ ev.ts }}</span>
+                                    <span v-else>—</span>
+                                    <span v-if="ev.kind" class="event-kind">{{ ev.kind }}</span>
+                                    <span
+                                        v-if="ev.likelihood"
+                                        class="event-likelihood"
+                                        :class="`likelihood-${(ev.likelihood || '').toLowerCase()}`"
+                                    >
+                                        {{ ev.likelihood }}
+                                    </span>
+                                </div>
+                                <div class="event-summary">{{ ev.summary }}</div>
+                            </div>
+                        </div>
                         <div v-else class="muted-block">
-                            <v-icon icon="mdi-information" size="small" class="mr-2" />
-                            Event traversal requires the Elemental MCP tool
-                            <code class="mono">elemental_get_events</code>; it isn't exposed via the
-                            REST gateway used here. The Nitro endpoint will surface area events once
-                            we wire the MCP transport in Phase 1.5.
+                            No area events returned. This area may not have any tracked events in
+                            the time window, or its NEID may not yet be resolved (run
+                            <code class="mono">npm run expand:areas</code>).
+                        </div>
+                    </v-window-item>
+
+                    <v-window-item value="retailer_events">
+                        <div v-if="contextLoading" class="muted">Loading retailer events…</div>
+                        <div v-else-if="contextError" class="error-msg">
+                            {{ contextError }}
+                        </div>
+                        <div
+                            v-else-if="
+                                contextData && Object.keys(contextData.retailer_events).length > 0
+                            "
+                        >
+                            <div
+                                v-for="(events, slug) in contextData.retailer_events"
+                                :key="slug"
+                                class="retailer-events-group"
+                            >
+                                <div class="retailer-events-header">
+                                    <span
+                                        class="chip-dot"
+                                        :style="{ background: retailerColor(slug) }"
+                                    />
+                                    <span class="retailer-name">{{ retailerName(slug) }}</span>
+                                    <span class="mono muted">
+                                        {{ events.length || 'no events' }}
+                                    </span>
+                                </div>
+                                <div v-if="events.length" class="event-list">
+                                    <div
+                                        v-for="ev in events"
+                                        :key="ev.neid || ev.summary"
+                                        class="event-row"
+                                        :style="{
+                                            borderLeftColor: retailerColor(slug),
+                                        }"
+                                    >
+                                        <div class="event-meta mono muted">
+                                            <span v-if="ev.ts">{{ ev.ts }}</span>
+                                            <span v-else>—</span>
+                                            <span v-if="ev.kind" class="event-kind">
+                                                {{ ev.kind }}
+                                            </span>
+                                        </div>
+                                        <div class="event-summary">{{ ev.summary }}</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div v-else class="muted-block">
+                            No retailer events. Toggle a retailer chip with a resolved org NEID to
+                            see corporate-level events.
                         </div>
                     </v-window-item>
                     <v-window-item value="articles">
@@ -163,22 +261,26 @@
                             v-else-if="contextData && contextData.area_articles.length"
                             class="article-list"
                         >
-                            <a
+                            <component
+                                :is="a.url ? 'a' : 'div'"
                                 v-for="a in contextData.area_articles"
                                 :key="a.neid"
-                                :href="a.url || '#'"
-                                target="_blank"
-                                rel="noopener"
+                                :href="a.url || undefined"
+                                :target="a.url ? '_blank' : undefined"
+                                :rel="a.url ? 'noopener' : undefined"
                                 class="article-row"
+                                :class="{ 'article-row-link': !!a.url }"
                             >
                                 <div class="article-title">{{ a.title }}</div>
                                 <div class="article-meta mono muted">
                                     <span v-if="a.published_at">{{ a.published_at }}</span>
                                     <span v-else>—</span>
+                                    <span v-if="a.publisher" class="dot-sep">·</span>
+                                    <span v-if="a.publisher">{{ a.publisher }}</span>
                                     <span class="dot-sep">·</span>
                                     <span>{{ a.neid.slice(0, 12) }}…</span>
                                 </div>
-                            </a>
+                            </component>
                         </div>
                         <div v-else class="muted-block">
                             No articles linked to this area yet, or the area NEID hasn't been
@@ -265,6 +367,23 @@
             if (c > 0) out[slug] = c;
         }
         return out;
+    });
+
+    const totalRetailerEvents = computed(() => {
+        const m = contextData.value?.retailer_events ?? {};
+        let n = 0;
+        for (const slug of Object.keys(m)) {
+            n += (m[slug] ?? []).length;
+        }
+        return n;
+    });
+
+    const hasRetailerEvents = computed(() => {
+        const list = retailers.value as RetailerSummary[] | null;
+        if (!list) return false;
+        return activeRetailers.value.some((slug) =>
+            list.find((r) => r.slug === slug && r.org_neid)
+        );
     });
 
     function retailerName(slug: string): string {
@@ -472,7 +591,11 @@
         transition: background 150ms ease-out;
     }
 
-    .article-row:hover {
+    .article-row.article-row-link {
+        cursor: pointer;
+    }
+
+    .article-row.article-row-link:hover {
         background: rgba(255, 255, 255, 0.04);
     }
 
@@ -495,6 +618,82 @@
 
     .concept-list {
         padding-top: 8px;
+    }
+
+    .event-list {
+        display: flex;
+        flex-direction: column;
+        gap: 6px;
+        padding-top: 8px;
+    }
+
+    .event-row {
+        padding: 8px 10px;
+        border-radius: 4px;
+        background: rgba(255, 255, 255, 0.02);
+        border-left: 3px solid rgba(255, 255, 255, 0.15);
+    }
+
+    .event-meta {
+        display: flex;
+        gap: 8px;
+        align-items: center;
+        font-size: 0.7rem;
+        margin-bottom: 3px;
+    }
+
+    .event-kind {
+        text-transform: uppercase;
+        letter-spacing: 0.08em;
+        font-size: 0.65rem;
+        padding: 1px 6px;
+        background: rgba(255, 255, 255, 0.06);
+        border-radius: 2px;
+        color: rgba(255, 255, 255, 0.7);
+    }
+
+    .event-likelihood {
+        font-size: 0.65rem;
+        padding: 1px 6px;
+        border-radius: 2px;
+        text-transform: lowercase;
+    }
+
+    .likelihood-confirmed {
+        background: rgba(63, 234, 0, 0.12);
+        color: #7eea50;
+    }
+
+    .likelihood-ongoing {
+        background: rgba(0, 59, 255, 0.12);
+        color: #6090ff;
+    }
+
+    .likelihood-likely {
+        background: rgba(255, 215, 0, 0.12);
+        color: #f5d000;
+    }
+
+    .likelihood-speculative {
+        background: rgba(255, 92, 0, 0.12);
+        color: #f5945c;
+    }
+
+    .event-summary {
+        font-size: 0.875rem;
+        line-height: 1.45;
+    }
+
+    .retailer-events-group {
+        margin-bottom: 16px;
+    }
+
+    .retailer-events-header {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        margin-bottom: 6px;
+        font-size: 0.85rem;
     }
 
     .error-msg {

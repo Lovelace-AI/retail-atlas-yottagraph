@@ -1,0 +1,212 @@
+{
+    "walmart": {
+        "neid": "00183501313607800924",
+        "name": "Walmart Inc.",
+        "score": 0.9999999,
+        "matched_query": "Walmart Inc.",
+        "resolved_at": "2026-05-06T02:52:49.655Z"
+    },
+    "target": {
+        "neid": "06540589491244829530",
+        "name": "Target Corporation",
+        "score": 0.99999964,
+        "matched_query": "Target Corporation",
+        "resolved_at": "2026-05-06T02:52:51.958Z"
+    },
+    "costco": {
+        "neid": "08704837087179871155",
+        "name": "Costco Wholesale Corporation",
+        "score": 1,
+        "matched_query": "Costco Wholesale Corporation",
+        "resolved_at": "2026-05-06T02:52:53.347Z"
+    },
+    "kohls": {
+        "neid": "02536396868320396814",
+        "name": "Kohl's Corporation",
+        "score": 0.9999999,
+        "matched_query": "Kohl's Corporation",
+        "resolved_at": "2026-05-06T02:52:54.678Z"
+    },
+    "home_depot": {
+        "neid": "07877936924083156360",
+        "name": "The Home Depot, Inc.",
+        "score": 1,
+        "matched_query": "The Home Depot, Inc.",
+        "resolved_at": "2026-05-06T02:52:55.415Z"
+    },
+    "lowes": {
+        "neid": "06717425681394921975",
+        "name": "Lowe's Companies, Inc.",
+        "score": 1.0000001,
+        "matched_query": "Lowe's Companies, Inc.",
+        "resolved_at": "2026-05-06T02:52:55.985Z"
+    },
+    "kroger": {
+        "neid": "01504284816507286463",
+        "name": "The Kroger Co.",
+        "score": 1.0000001,
+        "matched_query": "The Kroger Co.",
+        "resolved_at": "2026-05-06T02:52:58.128Z"
+    },
+    "albertsons": {
+        "neid": "00746755380379956554",
+        "name": "Albertsons Companies, Inc.",
+        "score": 1.0000001,
+        "matched_query": "Albertsons Companies, Inc.",
+        "resolved_at": "2026-05-06T02:52:58.719Z"
+    },
+    "publix": {
+        "neid": "07805016938837963125",
+        "name": "Publix Super Markets, Inc.",
+        "score": 0.9999994,
+        "matched_query": "Publix Super Markets, Inc.",
+        "resolved_at": "2026-05-06T02:53:02.320Z"
+    },
+    "aldi": {
+        "neid": "08314611281697807508",
+        "name": "Aldi Group",
+        "score": 0.9999999,
+        "matched_query": "ALDI",
+        "resolved_at": "2026-05-06T02:53:03.081Z"
+    },
+    "hy_vee": {
+        "neid": "04140450180328122935",
+        "name": "Hy-Vee, Inc.",
+        "score": 1.0000004,
+        "matched_query": "Hy-Vee, Inc.",
+        "resolved_at": "2026-05-06T02:53:04.360Z"
+    },
+    "whole_foods": {
+        "neid": "05295388371903151172",
+        "name": "Whole Foods Market Inc.",
+        "score": 1.0000002,
+        "matched_query": "Whole Foods Market",
+        "resolved_at": "2026-05-06T02:53:05.076Z"
+    },
+    "trader_joes": {
+        "neid": "01564099943338265387",
+        "name": "Trader Joe's Co.",
+        "score": 1,
+        "matched_query": "Trader Joe's",
+        "resolved_at": "2026-05-06T02:53:06.565Z"
+    },
+    "dollargeneral": {
+        "neid": "02070303497596472121",
+        "name": "Dollar General Corporation",
+        "score": 1.0000006,
+        "matched_query": "Dollar General Corporation",
+        "resolved_at": "2026-05-06T02:53:07.239Z"
+    },
+    "dollar_tree": {
+        "neid": "02303759068279354923",
+        "name": "Dollar Tree, Inc.",
+        "score": 1.0000002,
+        "matched_query": "Dollar Tree, Inc.",
+        "resolved_at": "2026-05-06T02:53:09.059Z"
+    },
+    "family_dollar": {
+        "neid": "04545185627976716551",
+        "name": "Family Dollar Stores, Inc.",
+        "score": 1.0000001,
+        "matched_query": "Family Dollar Stores, Inc.",
+        "resolved_at": "2026-05-06T02:53:09.863Z"
+    },
+    "cvs": {
+        "neid": "01875778411857501512",
+        "name": "CVS Health Corporation",
+        "score": 1,
+        "matched_query": "CVS Health Corporation",
+        "resolved_at": "2026-05-06T02:53:12.273Z"
+    },
+    "walgreens": {
+        "neid": "00658600491251816740",
+        "name": "Walgreens Boots Alliance, Inc.",
+        "score": 1.0000005,
+        "matched_query": "Walgreens Boots Alliance, Inc.",
+        "resolved_at": "2026-05-06T02:53:13.111Z"
+    },
+    "mcdonalds": {
+        "neid": "00088825367017563609",
+        "name": "McDonald's Corporation",
+        "score": 1.0000001,
+        "matched_query": "McDonald's Corporation",
+        "resolved_at": "2026-05-06T02:53:13.235Z"
+    },
+    "subway": {
+        "neid": "00200351864555714536",
+        "name": "Subway IP LLC",
+        "score": 0.9999999,
+        "matched_query": "Subway IP LLC",
+        "resolved_at": "2026-05-06T02:53:13.915Z"
+    },
+    "chick_fil_a": {
+        "neid": "03755598766390423643",
+        "name": "Chick-fil-A, Inc.",
+        "score": 0.9999995,
+        "matched_query": "Chick-fil-A, Inc.",
+        "resolved_at": "2026-05-06T02:53:15.069Z"
+    },
+    "chipotle": {
+        "neid": "01419696910153505500",
+        "name": "Chipotle Mexican Grill, Inc.",
+        "score": 1.0000001,
+        "matched_query": "Chipotle Mexican Grill, Inc.",
+        "resolved_at": "2026-05-06T02:53:15.836Z"
+    },
+    "starbucks": {
+        "neid": "09179645699895803808",
+        "name": "Starbucks Corporation",
+        "score": 0.9999999,
+        "matched_query": "Starbucks Corporation",
+        "resolved_at": "2026-05-06T02:53:16.364Z"
+    },
+    "dunkin_donuts": {
+        "neid": "07403585156199657270",
+        "name": "Dunkin' Brands Group, Inc.",
+        "score": 0.99999976,
+        "matched_query": "Dunkin' Brands",
+        "resolved_at": "2026-05-06T02:53:18.119Z"
+    },
+    "planet_fitness": {
+        "neid": "05804494414640518906",
+        "name": "Planet Fitness, Inc.",
+        "score": 1.0000002,
+        "matched_query": "Planet Fitness, Inc.",
+        "resolved_at": "2026-05-06T02:53:18.822Z"
+    },
+    "lululemon": {
+        "neid": "08016528823221398967",
+        "name": "Lululemon Athletica Inc.",
+        "score": 1.0000002,
+        "matched_query": "lululemon athletica inc.",
+        "resolved_at": "2026-05-06T02:53:19.496Z"
+    },
+    "tesco": {
+        "neid": "04042212589706048194",
+        "name": "Tesco PLC",
+        "score": 1.0000002,
+        "matched_query": "Tesco PLC",
+        "resolved_at": "2026-05-06T02:53:20.444Z"
+    },
+    "booker": {
+        "neid": "01219319639364111140",
+        "name": "Booker",
+        "score": 1.0000008,
+        "matched_query": "Booker",
+        "resolved_at": "2026-05-06T02:53:22.140Z"
+    },
+    "onestop": {
+        "neid": "06878918399616010082",
+        "name": "One Stop",
+        "score": 1,
+        "matched_query": "One Stop",
+        "resolved_at": "2026-05-06T02:53:23.493Z"
+    },
+    "loblaw": {
+        "neid": "02370413029320802934",
+        "name": "Loblaw Companies Limited",
+        "score": 1,
+        "matched_query": "Loblaw Companies Limited",
+        "resolved_at": "2026-05-06T02:53:24.079Z"
+    }
+}

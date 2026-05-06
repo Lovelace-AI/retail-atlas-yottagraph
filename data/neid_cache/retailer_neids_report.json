@@ -1,0 +1,22 @@
+{
+    "generated_at": "2026-05-06T02:53:24.080Z",
+    "min_score": 0.95,
+    "total_retailers": 30,
+    "resolved": 30,
+    "unresolved": [],
+    "elapsed_ms": 38140,
+    "by_country": {
+        "US": {
+            "total": 26,
+            "resolved": 26
+        },
+        "UK": {
+            "total": 3,
+            "resolved": 3
+        },
+        "CA": {
+            "total": 1,
+            "resolved": 1
+        }
+    }
+}

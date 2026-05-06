@@ -1,7 +1,7 @@
 /**
  * POST /api/atlas/area-context — fans out a clicked area's NEID into the
- * Lovelace knowledge graph and returns the data the AtlasContextPanel
- * renders.
+ * Lovelace knowledge graph via the Elemental MCP server and returns the
+ * data the AtlasContextPanel renders.
  *
  * Request body:
  *   {
@@ -21,27 +21,32 @@
  *   }
  *
  * Implementation notes:
- *   - Calls go through the gateway proxy (`X-Api-Key` from runtimeConfig)
- *     so we don't need a per-user Auth0 token here.
- *   - Articles + economic concepts are fetched via `/elemental/find` with
- *     a `linked` expression (graph-layer traversal). Article display data
- *     comes from `/elemental/entities/properties` for PIDs 8 (name),
- *     115 (title), 132 (homeUrl), 146 (date).
- *   - Events are not exposed via REST; the MCP tool `elemental_get_events`
- *     is the canonical surface. Until we wire the MCP path through Nitro,
- *     events return [] and the panel renders an "Events require MCP"
- *     placeholder. The endpoint shape is final, only the implementation is
- *     stubbed.
- *   - Retailer-events similarly require per-retailer org NEIDs which we
- *     don't currently track. They'll graduate when the registry gains a
- *     `cik` or `org_neid` field per retailer.
+ *   - Uses the MCP transport (`server/utils/elementalMcp.ts`). One session
+ *     opened per request, all tool calls run in parallel inside it, session
+ *     closed before returning. Per-request lifecycle is the simplest model;
+ *     panel-open latency is well within the PRD R3.4 8s error budget.
+ *   - `elemental_get_events` is MCP-only (no REST equivalent). `_get_related`
+ *     gets articles + economic concepts with the right properties already
+ *     resolved (no PID hunting; PRD R6.1 step 2 + 3).
+ *   - Per-retailer events (PRD R6.1 step 3) require an `org_neid` per
+ *     retailer; we look it up in `data/neid_cache/retailer_neids.json`
+ *     populated by `scripts/expand-retailer-neids.ts`. Slugs without a
+ *     resolved org NEID return an empty event array under their slug key.
  */
+
+import { existsSync, readFileSync } from 'node:fs';
+import { join } from 'node:path';
+
+import type { Client } from '@modelcontextprotocol/sdk/client/index.js';
+
+import { unwrapToolResult, withElementalMcp } from '../../utils/elementalMcp';
 
 interface ContextEvent {
     neid: string;
     summary: string;
     ts?: string | null;
     kind?: string | null;
+    likelihood?: string | null;
 }
 
 interface ContextArticle {
@@ -78,215 +83,265 @@ interface AreaContextResponse {
     tool_calls: ToolCall[];
 }
 
-interface FindResponse {
-    op_id?: string;
-    eids?: string[];
-}
-
-interface PropertiesResponse {
-    op_id?: string;
-    values?: Array<{
-        eid: string;
-        pid: string | number;
-        value: unknown;
-        recorded_at?: string;
-    }>;
-}
-
-const FID_ARTICLE = 12;
-const FID_ECONOMIC_CONCEPT = 18;
-
-// Property IDs (small integers — safe to use as JS numbers).
-const PID_NAME = 8;
-const PID_TITLE = 115;
-const PID_HOME_URL = 132;
-const PID_DATE = 146;
-
 const ARTICLE_LIMIT = 12;
 const CONCEPT_LIMIT = 8;
+const AREA_EVENT_LIMIT = 12;
+const RETAILER_EVENT_LIMIT = 8;
 
-function gatewayBase() {
-    const cfg = useRuntimeConfig();
-    const gw = (cfg.public.gatewayUrl as string) || '';
-    const org = (cfg.public.tenantOrgId as string) || '';
-    const key = (cfg.public.qsApiKey as string) || '';
-    if (!gw || !org || !key) {
-        throw createError({
-            statusCode: 500,
-            statusMessage:
-                'Atlas area-context: gateway credentials missing (NUXT_PUBLIC_GATEWAY_URL / TENANT_ORG_ID / QS_API_KEY).',
-        });
+interface RetailerNeidCacheEntry {
+    neid: string | null;
+    name: string | null;
+    score: number | null;
+    resolved_at: string;
+}
+
+let _retailerNeidCache: Record<string, RetailerNeidCacheEntry> | null = null;
+let _retailerNeidCacheAt = 0;
+
+function loadRetailerNeidCache(): Record<string, RetailerNeidCacheEntry> {
+    // Cheap in-process cache; refreshed if file mtime changes (we re-read every 60s).
+    const now = Date.now();
+    if (_retailerNeidCache && now - _retailerNeidCacheAt < 60_000) {
+        return _retailerNeidCache;
     }
-    return {
-        url: gw.replace(/\/$/, ''),
-        org,
-        key,
-    };
+    const path = join(process.cwd(), 'data', 'neid_cache', 'retailer_neids.json');
+    if (!existsSync(path)) {
+        _retailerNeidCache = {};
+        _retailerNeidCacheAt = now;
+        return _retailerNeidCache;
+    }
+    try {
+        _retailerNeidCache = JSON.parse(readFileSync(path, 'utf-8'));
+        _retailerNeidCacheAt = now;
+        return _retailerNeidCache!;
+    } catch (err) {
+        console.warn(
+            `[atlas-area-context] retailer_neids.json read failed: ${(err as Error).message}`
+        );
+        _retailerNeidCache = {};
+        _retailerNeidCacheAt = now;
+        return _retailerNeidCache;
+    }
 }
 
-async function elementalFindLinked(
-    gw: { url: string; org: string; key: string },
-    fid: number,
-    targetNeid: string,
-    limit: number
-): Promise<string[]> {
-    const expression = JSON.stringify({
-        type: 'and',
-        and: [
-            { type: 'is_type', is_type: { fid } },
-            { type: 'linked', linked: { to_entity: targetNeid, distance: 1 } },
-        ],
-    });
-    const body = new URLSearchParams();
-    body.set('expression', expression);
-    body.set('limit', String(limit));
-
-    const res = await $fetch<FindResponse>(`${gw.url}/api/qs/${gw.org}/elemental/find`, {
-        method: 'POST',
-        headers: {
-            'X-Api-Key': gw.key,
-            'Content-Type': 'application/x-www-form-urlencoded',
-        },
-        body: body.toString(),
-    });
-    return res.eids ?? [];
-}
-
-async function elementalProperties(
-    gw: { url: string; org: string; key: string },
-    eids: string[],
-    pids: number[]
-): Promise<PropertiesResponse> {
-    if (eids.length === 0) return { values: [] };
-    const body = new URLSearchParams();
-    body.set('eids', JSON.stringify(eids));
-    body.set('pids', JSON.stringify(pids));
-    return await $fetch<PropertiesResponse>(
-        `${gw.url}/api/qs/${gw.org}/elemental/entities/properties`,
-        {
-            method: 'POST',
-            headers: {
-                'X-Api-Key': gw.key,
-                'Content-Type': 'application/x-www-form-urlencoded',
-            },
-            body: body.toString(),
-        }
-    );
-}
-
-async function batchEntityNames(
-    gw: { url: string; org: string; key: string },
-    neids: string[]
-): Promise<Record<string, string>> {
-    if (neids.length === 0) return {};
-    const res = await $fetch<{ results?: Record<string, string> }>(
-        `${gw.url}/api/qs/${gw.org}/entities/names`,
-        {
-            method: 'POST',
-            headers: { 'X-Api-Key': gw.key, 'Content-Type': 'application/json' },
-            body: JSON.stringify({ neids }),
-        }
-    );
-    return res.results ?? {};
-}
-
-async function tracedCall<T>(
+async function tracedToolCall<T>(
+    client: Client,
     label: string,
-    fn: () => Promise<T>,
+    name: string,
+    args: Record<string, unknown>,
     tool_calls: ToolCall[]
 ): Promise<T | null> {
     const t0 = Date.now();
     try {
-        const v = await fn();
-        tool_calls.push({ tool: label, ms: Date.now() - t0, ok: true });
-        return v;
+        const res = await client.callTool({ name, arguments: args });
+        tool_calls.push({ tool: label, ms: Date.now() - t0, ok: !res.isError });
+        if (res.isError) {
+            const text = (res as { content?: Array<{ text?: string }> }).content?.[0]?.text ?? '';
+            console.warn(`[atlas-area-context] ${label} returned isError: ${text.slice(0, 200)}`);
+            return null;
+        }
+        return unwrapToolResult<T>(res);
     } catch (err) {
-        console.warn(`[atlas-area-context] ${label} failed: ${(err as Error).message}`);
+        console.warn(`[atlas-area-context] ${label} threw: ${(err as Error).message}`);
         tool_calls.push({ tool: label, ms: Date.now() - t0, ok: false });
         return null;
     }
 }
 
+/**
+ * Lovelace property values arrive wrapped as `{ ref?: string, value: T }`.
+ * `ref` is a citation pointer into the per-tool `_meta.lovelace/provenance`
+ * map — useful for verifying provenance, not for rendering. We just want
+ * `.value`.
+ */
+interface PropertyEnvelope {
+    ref?: string;
+    value?: unknown;
+}
+
+type PropertyMap = Record<string, PropertyEnvelope | undefined>;
+
+interface MCPEvent {
+    neid?: string;
+    name?: string;
+    flavor?: string;
+    properties?: PropertyMap;
+}
+
+interface ElementalGetEventsResult {
+    events?: MCPEvent[];
+    total?: number;
+}
+
+interface MCPRelationship {
+    neid?: string;
+    name?: string;
+    flavor?: string;
+    relationship_types?: string[];
+    properties?: PropertyMap;
+}
+
+interface ElementalGetRelatedResult {
+    relationships?: MCPRelationship[];
+    total?: number;
+}
+
+function propValue(props: PropertyMap | undefined, key: string): string | null {
+    if (!props) return null;
+    const env = props[key];
+    if (!env) return null;
+    const v = env.value;
+    if (v === null || v === undefined) return null;
+    if (typeof v === 'string') return v.trim() || null;
+    if (typeof v === 'number' || typeof v === 'boolean') return String(v);
+    // Defensive fallback — shouldn't trigger in practice.
+    try {
+        return JSON.stringify(v);
+    } catch {
+        return null;
+    }
+}
+
+function pickPropAny(props: PropertyMap | undefined, keys: string[]): string | null {
+    for (const k of keys) {
+        const v = propValue(props, k);
+        if (v) return v;
+    }
+    return null;
+}
+
+function mapEvents(payload: ElementalGetEventsResult | null): ContextEvent[] {
+    const events = payload?.events ?? [];
+    const out: ContextEvent[] = [];
+    for (const e of events) {
+        const headline = e.name?.trim();
+        const description = propValue(e.properties, 'description');
+        const summary = description ?? headline ?? '(event)';
+        if (!summary || summary === '(event)') continue;
+        out.push({
+            neid: e.neid ?? '',
+            summary,
+            ts: propValue(e.properties, 'date'),
+            kind: propValue(e.properties, 'category'),
+            likelihood: propValue(e.properties, 'likelihood'),
+        });
+    }
+    return out;
+}
+
+function mapArticles(payload: ElementalGetRelatedResult | null): ContextArticle[] {
+    const rels = payload?.relationships ?? [];
+    const out: ContextArticle[] = [];
+    for (const r of rels) {
+        // r.name is an opaque content-hash on article entities — never a
+        // human-readable title. The display title lives in properties.title.value.
+        const title = pickPropAny(r.properties, ['title', 'headline']);
+        if (!title) continue;
+        out.push({
+            neid: r.neid ?? '',
+            title,
+            publisher: pickPropAny(r.properties, [
+                'publisher',
+                'original_publication_name',
+                'source',
+            ]),
+            published_at: pickPropAny(r.properties, ['date', 'published_at', 'publication_date']),
+            url: pickPropAny(r.properties, ['url', 'home_url', 'homeUrl', 'link']),
+        });
+    }
+    return out;
+}
+
+function mapConcepts(payload: ElementalGetRelatedResult | null): ContextConcept[] {
+    const rels = payload?.relationships ?? [];
+    return rels
+        .filter((r) => (r.name ?? '').length > 0)
+        .map((r) => ({
+            neid: r.neid ?? '',
+            name: r.name ?? '(concept)',
+        }));
+}
+
 export default defineEventHandler(async (event): Promise<AreaContextResponse> => {
     const body = (await readBody(event)) as AreaContextRequest;
     if (!body || !body.area_neid) {
-        throw createError({
-            statusCode: 400,
-            statusMessage: 'area_neid required',
-        });
+        throw createError({ statusCode: 400, statusMessage: 'area_neid required' });
     }
+    const retailers = body.retailers ?? [];
 
-    const gw = gatewayBase();
     const tool_calls: ToolCall[] = [];
     const t0 = Date.now();
 
-    const [articleEids, conceptEids] = await Promise.all([
-        tracedCall(
-            'find:articles',
-            () => elementalFindLinked(gw, FID_ARTICLE, body.area_neid, ARTICLE_LIMIT),
-            tool_calls
-        ),
-        tracedCall(
-            'find:economic_concepts',
-            () => elementalFindLinked(gw, FID_ECONOMIC_CONCEPT, body.area_neid, CONCEPT_LIMIT),
-            tool_calls
-        ),
-    ]);
+    // Resolve per-retailer org NEIDs from the cache before opening the MCP
+    // session — keeps the session window tight.
+    const cache = loadRetailerNeidCache();
+    const retailerOrgs = retailers
+        .map((slug) => ({ slug, org_neid: cache[slug]?.neid ?? null }))
+        .filter((r): r is { slug: string; org_neid: string } => !!r.org_neid);
 
-    const articles: ContextArticle[] = [];
-    if (articleEids && articleEids.length > 0) {
-        const props = await tracedCall(
-            'properties:articles',
-            () =>
-                elementalProperties(gw, articleEids, [PID_NAME, PID_TITLE, PID_HOME_URL, PID_DATE]),
+    const result = await withElementalMcp(async (client) => {
+        const eventsP = tracedToolCall<ElementalGetEventsResult>(
+            client,
+            'events:area',
+            'elemental_get_events',
+            { entity: body.area_neid, limit: AREA_EVENT_LIMIT },
             tool_calls
         );
-        const byEid: Record<
-            string,
-            { name?: string; title?: string; url?: string; date?: string }
-        > = {};
-        for (const v of props?.values ?? []) {
-            const eid = String(v.eid);
-            byEid[eid] ??= {};
-            const pid = Number(v.pid);
-            const value = v.value === null || v.value === undefined ? '' : String(v.value);
-            if (pid === PID_NAME) byEid[eid].name = value;
-            else if (pid === PID_TITLE) byEid[eid].title = value;
-            else if (pid === PID_HOME_URL) byEid[eid].url = value;
-            else if (pid === PID_DATE) byEid[eid].date = value;
-        }
-        for (const eid of articleEids) {
-            const p = byEid[eid] ?? {};
-            articles.push({
-                neid: eid,
-                title: p.title || p.name || `(article ${eid.slice(0, 8)}…)`,
-                publisher: null,
-                published_at: p.date ?? null,
-                url: p.url ?? null,
-            });
-        }
-    }
-
-    const concepts: ContextConcept[] = [];
-    if (conceptEids && conceptEids.length > 0) {
-        const names = await tracedCall(
-            'names:concepts',
-            () => batchEntityNames(gw, conceptEids),
+        const articlesP = tracedToolCall<ElementalGetRelatedResult>(
+            client,
+            'related:articles',
+            'elemental_get_related',
+            {
+                entity: body.area_neid,
+                related_flavor: 'article',
+                related_properties: ['title', 'date', 'url', 'publisher'],
+                limit: ARTICLE_LIMIT,
+            },
             tool_calls
         );
-        for (const eid of conceptEids) {
-            concepts.push({
-                neid: eid,
-                name: names?.[eid] ?? `(concept ${eid.slice(0, 8)}…)`,
-            });
+        const conceptsP = tracedToolCall<ElementalGetRelatedResult>(
+            client,
+            'related:concepts',
+            'elemental_get_related',
+            {
+                entity: body.area_neid,
+                related_flavor: 'economic_concept',
+                limit: CONCEPT_LIMIT,
+            },
+            tool_calls
+        );
+        const retailerEventPromises = retailerOrgs.map(({ slug, org_neid }) =>
+            tracedToolCall<ElementalGetEventsResult>(
+                client,
+                `events:retailer:${slug}`,
+                'elemental_get_events',
+                { entity: org_neid, limit: RETAILER_EVENT_LIMIT },
+                tool_calls
+            ).then((payload) => ({ slug, events: mapEvents(payload) }))
+        );
+
+        const [areaEvents, areaArticles, areaConcepts, retailerResults] = await Promise.all([
+            eventsP,
+            articlesP,
+            conceptsP,
+            Promise.all(retailerEventPromises),
+        ]);
+
+        const retailer_events: Record<string, ContextEvent[]> = {};
+        for (const r of retailerResults) {
+            retailer_events[r.slug] = r.events;
         }
-    }
+
+        return {
+            area_events: mapEvents(areaEvents),
+            area_articles: mapArticles(areaArticles),
+            economic_concepts: mapConcepts(areaConcepts),
+            retailer_events,
+        };
+    });
 
     return {
-        area_events: [],
-        area_articles: articles,
-        economic_concepts: concepts,
-        retailer_events: {},
+        ...result,
         elapsed_ms: Date.now() - t0,
         tool_calls,
     };

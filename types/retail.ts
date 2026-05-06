@@ -96,6 +96,14 @@ export interface RetailerMeta {
     color: string;
     csv: string;
     sector: RetailerSector;
+    /**
+     * Optional Elemental NEID for the retailer's parent organization. Populated
+     * by `npm run expand:retailers` (cache file `data/neid_cache/retailer_neids.json`),
+     * then merged into the emitted `retailers.json` by `build-retail-data.ts`.
+     * When set, the `/atlas` context panel surfaces per-retailer events from
+     * `elemental_get_events(org_neid)`.
+     */
+    org_neid?: string | null;
 }
 
 export type RetailerSector =

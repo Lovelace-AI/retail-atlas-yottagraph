@@ -34,6 +34,7 @@ const SOURCE_DIR = join(ROOT, 'data', 'retail_locations');
 const OUT_DIR = join(ROOT, 'public', 'data', 'retail_atlas');
 const STORES_DIR = join(OUT_DIR, 'stores');
 const AREA_NEIDS_CACHE = join(ROOT, 'data', 'neid_cache', 'area_neids.json');
+const RETAILER_NEIDS_CACHE = join(ROOT, 'data', 'neid_cache', 'retailer_neids.json');
 
 interface AreaNeidCacheEntry {
     neid: string | null;
@@ -44,12 +45,30 @@ interface AreaNeidCacheEntry {
     resolved_at: string;
 }
 
+interface RetailerNeidCacheEntry {
+    neid: string | null;
+    name: string | null;
+    score: number | null;
+    matched_query: string | null;
+    resolved_at: string;
+}
+
 function loadAreaNeidCache(): Record<string, AreaNeidCacheEntry> {
     if (!existsSync(AREA_NEIDS_CACHE)) return {};
     try {
         return JSON.parse(readFileSync(AREA_NEIDS_CACHE, 'utf-8'));
     } catch (err) {
         console.warn(`  warning: could not read area NEID cache: ${(err as Error).message}`);
+        return {};
+    }
+}
+
+function loadRetailerNeidCache(): Record<string, RetailerNeidCacheEntry> {
+    if (!existsSync(RETAILER_NEIDS_CACHE)) return {};
+    try {
+        return JSON.parse(readFileSync(RETAILER_NEIDS_CACHE, 'utf-8'));
+    } catch (err) {
+        console.warn(`  warning: could not read retailer NEID cache: ${(err as Error).message}`);
         return {};
     }
 }
@@ -250,6 +269,25 @@ function main(): void {
     if (Object.keys(neidCache).length > 0) {
         console.log(
             `  merged area NEIDs: ${neidsApplied}/${areas.length} from cache (${Object.keys(neidCache).length} entries)`
+        );
+    }
+
+    // Merge in retailer org NEIDs from `npm run expand:retailers`. Each
+    // RetailerSummary in retailers.json carries `org_neid` so the client
+    // and the area-context endpoint can both resolve it without a separate
+    // cache lookup.
+    const retailerCache = loadRetailerNeidCache();
+    let retailerNeidsApplied = 0;
+    for (const s of summaries) {
+        const entry = retailerCache[s.slug];
+        if (entry?.neid) {
+            s.org_neid = entry.neid;
+            retailerNeidsApplied += 1;
+        }
+    }
+    if (Object.keys(retailerCache).length > 0) {
+        console.log(
+            `  merged retailer NEIDs: ${retailerNeidsApplied}/${summaries.length} from cache`
         );
     }
 

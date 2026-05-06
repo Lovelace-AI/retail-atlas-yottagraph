@@ -1,19 +1,13 @@
 import { ref, shallowRef } from 'vue';
 
 /**
- * Elemental fan-out for a clicked area (PRD R6.1, simplified for Phase 1).
+ * Elemental fan-out for a clicked area (PRD R6.1).
  *
  * Loads area-level events, articles, economic concepts, and per-active-
  * retailer events when a user pins an area. Cached per `(area_key,
- * retailers_hash)` for the lifetime of the page session — the full PRD
- * spec calls for a 1-hour Deno KV cache (R6.3) shared across users; that
- * graduates to a server-side cache when the Nitro fan-out endpoint lands.
- *
- * Phase 1 is a stub: it surfaces the shape of the panel and queries the
- * gateway only when an `area_neid` is available. Most areas in the
- * 30-retailer roster don't have NEIDs yet (the area-NEID expansion script
- * is on the Phase 1 backlog), so the panel falls back to "context unavailable
- * for this area" with a one-line "Resolve" CTA.
+ * retailers_hash)` for the lifetime of the page session. The Nitro
+ * `/api/atlas/area-context` endpoint runs the actual MCP fan-out via the
+ * Lovelace gateway; this composable just hands off the request and caches.
  */
 
 export interface AreaContextData {
@@ -28,16 +22,17 @@ export interface AreaContextData {
 export interface ContextEvent {
     neid: string;
     summary: string;
-    ts?: string;
-    kind?: string;
+    ts?: string | null;
+    kind?: string | null;
+    likelihood?: string | null;
 }
 
 export interface ContextArticle {
     neid: string;
     title: string;
-    publisher?: string;
-    published_at?: string;
-    url?: string;
+    publisher?: string | null;
+    published_at?: string | null;
+    url?: string | null;
 }
 
 export interface ContextConcept {

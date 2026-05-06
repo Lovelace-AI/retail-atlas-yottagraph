@@ -14,6 +14,7 @@
         "build:topojson": "tsx scripts/fetch-topojson.ts",
         "probe:coverage": "tsx scripts/probe-store-coverage.ts",
         "expand:areas": "tsx scripts/expand-area-neids.ts",
+        "expand:retailers": "tsx scripts/expand-retailer-neids.ts",
         "generate": "nuxt generate",
         "preview": "nuxt preview",
         "format": "prettier --write \"**/*.{js,ts,vue,json,md}\" --ignore-path .gitignore --ignore-path .prettierignore",
@@ -28,6 +29,7 @@
     },
     "dependencies": {
         "@hapi/iron": "^7.0.1",
+        "@modelcontextprotocol/sdk": "^1.29.0",
         "@tanstack/vue-virtual": "^3.13.8",
         "@upstash/redis": "^1.37.0",
         "@yottagraph-app/elemental-api": "^1.1.7",
