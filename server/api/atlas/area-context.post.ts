@@ -54,7 +54,12 @@ interface ContextArticle {
     title: string;
     publisher?: string | null;
     published_at?: string | null;
-    url?: string | null;
+    /** Article URL is intentionally absent — the Lovelace article schema
+     *  (`elemental_get_schema(article)`) doesn't carry a URL property; the
+     *  graph indexes title + publisher + dates + topic/tone signals only. */
+    topic?: string | null;
+    tone?: string | null;
+    title_factuality?: string | null;
 }
 
 interface ContextConcept {
@@ -235,18 +240,16 @@ function mapArticles(payload: ElementalGetRelatedResult | null): ContextArticle[
     for (const r of rels) {
         // r.name is an opaque content-hash on article entities — never a
         // human-readable title. The display title lives in properties.title.value.
-        const title = pickPropAny(r.properties, ['title', 'headline']);
+        const title = pickPropAny(r.properties, ['title']);
         if (!title) continue;
         out.push({
             neid: r.neid ?? '',
             title,
-            publisher: pickPropAny(r.properties, [
-                'publisher',
-                'original_publication_name',
-                'source',
-            ]),
-            published_at: pickPropAny(r.properties, ['date', 'published_at', 'publication_date']),
-            url: pickPropAny(r.properties, ['url', 'home_url', 'homeUrl', 'link']),
+            publisher: pickPropAny(r.properties, ['original_publication_name']),
+            published_at: pickPropAny(r.properties, ['published_at']),
+            topic: pickPropAny(r.properties, ['has_topic']),
+            tone: pickPropAny(r.properties, ['tone']),
+            title_factuality: pickPropAny(r.properties, ['title_factuality']),
         });
     }
     return out;
@@ -294,7 +297,18 @@ export default defineEventHandler(async (event): Promise<AreaContextResponse> =>
             {
                 entity: body.area_neid,
                 related_flavor: 'article',
-                related_properties: ['title', 'date', 'url', 'publisher'],
+                // Property names per `elemental_get_schema(article)` — the
+                // graph schema, not arbitrary names. Asking for unknowns
+                // returns a `resolution.skipped` payload; asking for these
+                // returns whatever each article actually has populated.
+                related_properties: [
+                    'title',
+                    'published_at',
+                    'original_publication_name',
+                    'has_topic',
+                    'tone',
+                    'title_factuality',
+                ],
                 limit: ARTICLE_LIMIT,
             },
             tool_calls

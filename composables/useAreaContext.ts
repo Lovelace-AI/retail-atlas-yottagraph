@@ -32,7 +32,9 @@ export interface ContextArticle {
     title: string;
     publisher?: string | null;
     published_at?: string | null;
-    url?: string | null;
+    topic?: string | null;
+    tone?: string | null;
+    title_factuality?: string | null;
 }
 
 export interface ContextConcept {

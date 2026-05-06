@@ -261,15 +261,10 @@
                             v-else-if="contextData && contextData.area_articles.length"
                             class="article-list"
                         >
-                            <component
-                                :is="a.url ? 'a' : 'div'"
+                            <div
                                 v-for="a in contextData.area_articles"
                                 :key="a.neid"
-                                :href="a.url || undefined"
-                                :target="a.url ? '_blank' : undefined"
-                                :rel="a.url ? 'noopener' : undefined"
                                 class="article-row"
-                                :class="{ 'article-row-link': !!a.url }"
                             >
                                 <div class="article-title">{{ a.title }}</div>
                                 <div class="article-meta mono muted">
@@ -277,10 +272,43 @@
                                     <span v-else>—</span>
                                     <span v-if="a.publisher" class="dot-sep">·</span>
                                     <span v-if="a.publisher">{{ a.publisher }}</span>
-                                    <span class="dot-sep">·</span>
-                                    <span>{{ a.neid.slice(0, 12) }}…</span>
                                 </div>
-                            </component>
+                                <div
+                                    v-if="a.topic || a.tone || a.title_factuality"
+                                    class="article-tags"
+                                >
+                                    <v-chip
+                                        v-if="a.topic"
+                                        size="x-small"
+                                        variant="tonal"
+                                        class="article-tag"
+                                    >
+                                        {{ a.topic }}
+                                    </v-chip>
+                                    <v-chip
+                                        v-if="a.tone"
+                                        size="x-small"
+                                        variant="tonal"
+                                        class="article-tag"
+                                        color="info"
+                                    >
+                                        tone: {{ a.tone }}
+                                    </v-chip>
+                                    <v-chip
+                                        v-if="a.title_factuality"
+                                        size="x-small"
+                                        variant="tonal"
+                                        class="article-tag"
+                                        :color="
+                                            a.title_factuality === 'sensational'
+                                                ? 'warning'
+                                                : 'success'
+                                        "
+                                    >
+                                        {{ a.title_factuality }}
+                                    </v-chip>
+                                </div>
+                            </div>
                         </div>
                         <div v-else class="muted-block">
                             No articles linked to this area yet, or the area NEID hasn't been
@@ -586,17 +614,18 @@
         display: block;
         padding: 8px 10px;
         border-radius: 4px;
-        text-decoration: none;
         color: inherit;
-        transition: background 150ms ease-out;
     }
 
-    .article-row.article-row-link {
-        cursor: pointer;
+    .article-tags {
+        display: flex;
+        gap: 4px;
+        flex-wrap: wrap;
+        margin-top: 4px;
     }
 
-    .article-row.article-row-link:hover {
-        background: rgba(255, 255, 255, 0.04);
+    .article-tag {
+        font-size: 0.65rem !important;
     }
 
     .article-title {
