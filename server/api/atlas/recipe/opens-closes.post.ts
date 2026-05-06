@@ -39,6 +39,7 @@ import type {
     RecipeResult,
     RecipeToolCall,
 } from '../../../../types/retail';
+import { kvKeyFor, withKvCache } from '../../../utils/atlasKv';
 import { unwrapToolResult, withElementalMcp } from '../../../utils/elementalMcp';
 
 interface RequestBody {
@@ -178,6 +179,25 @@ export default defineEventHandler(async (event): Promise<RecipeResult> => {
         throw createError({ statusCode: 400, statusMessage: 'country required' });
     }
     const retailers = body.retailers ?? [];
+
+    // Longer TTL than R7.1 (which uses 1 h) — opens/closes signal evolves
+    // more slowly, and at concurrency 4 the fan-out itself is cheaper since
+    // we hit one tool per retailer not one per area.
+    const cacheKey = kvKeyFor('recipe:opens-closes', {
+        country: body.country,
+        retailers,
+        time_window: body.time_window,
+    });
+
+    const { data, cache_hit, cache_age_ms } = await withKvCache<RecipeResult>(
+        { key: cacheKey, ttlSeconds: 6 * 60 * 60 },
+        async () => runOpensCloses(body, retailers)
+    );
+
+    return { ...data, cache_hit, cache_age_ms };
+});
+
+async function runOpensCloses(body: RequestBody, retailers: string[]): Promise<RecipeResult> {
     const tool_calls: RecipeToolCall[] = [];
 
     // Look up org_neids for the active retailers.
@@ -313,4 +333,4 @@ export default defineEventHandler(async (event): Promise<RecipeResult> => {
         scores,
         tool_calls,
     };
-});
+}

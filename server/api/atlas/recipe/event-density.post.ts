@@ -27,6 +27,7 @@ import type {
     RecipeResult,
     RecipeToolCall,
 } from '../../../../types/retail';
+import { kvKeyFor, withKvCache } from '../../../utils/atlasKv';
 import { unwrapToolResult, withElementalMcp } from '../../../utils/elementalMcp';
 
 interface RequestBody {
@@ -133,8 +134,23 @@ export default defineEventHandler(async (event): Promise<RecipeResult> => {
         throw createError({ statusCode: 400, statusMessage: 'country required' });
     }
     const retailers = body.retailers ?? [];
+
+    const cacheKey = kvKeyFor('recipe:event-density', {
+        country: body.country,
+        retailers,
+        time_window: body.time_window,
+    });
+
+    const { data, cache_hit, cache_age_ms } = await withKvCache<RecipeResult>(
+        { key: cacheKey, ttlSeconds: 60 * 60 },
+        async () => runEventDensity(body, retailers)
+    );
+
+    return { ...data, cache_hit, cache_age_ms };
+});
+
+async function runEventDensity(body: RequestBody, retailers: string[]): Promise<RecipeResult> {
     const tool_calls: RecipeToolCall[] = [];
-    const t0 = Date.now();
 
     // 1. Pick the top-K areas. Must have NEID + at least one active retailer
     //    with stores > 0.
@@ -210,4 +226,4 @@ export default defineEventHandler(async (event): Promise<RecipeResult> => {
         tool_calls,
         truncated: candidates.length >= TOP_K,
     };
-});
+}

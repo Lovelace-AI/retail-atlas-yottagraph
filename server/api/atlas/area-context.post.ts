@@ -39,6 +39,7 @@ import { join } from 'node:path';
 
 import type { Client } from '@modelcontextprotocol/sdk/client/index.js';
 
+import { kvKeyFor, withKvCache } from '../../utils/atlasKv';
 import { unwrapToolResult, withElementalMcp } from '../../utils/elementalMcp';
 
 interface ContextEvent {
@@ -86,7 +87,22 @@ interface AreaContextResponse {
     retailer_events: Record<string, ContextEvent[]>;
     elapsed_ms: number;
     tool_calls: ToolCall[];
+    /** True when the response body came from Upstash KV (no MCP fan-out
+     *  happened on this request). The composable still exposes its own
+     *  session-level cache_hit; both can be true. */
+    cache_hit: boolean;
+    cache_age_ms: number | null;
 }
+
+/** What gets memoized in KV — everything except per-request bookkeeping. */
+type AreaContextPayload = Omit<
+    AreaContextResponse,
+    'elapsed_ms' | 'tool_calls' | 'cache_hit' | 'cache_age_ms'
+> & {
+    /** Tool-call timing from the original fan-out, retained for ops insight
+     *  on cache hits. Wall-clock latency in `elapsed_ms` is the live one. */
+    fanout_tool_calls: ToolCall[];
+};
 
 const ARTICLE_LIMIT = 12;
 const CONCEPT_LIMIT = 8;
@@ -272,22 +288,46 @@ export default defineEventHandler(async (event): Promise<AreaContextResponse> =>
     }
     const retailers = body.retailers ?? [];
 
-    const tool_calls: ToolCall[] = [];
     const t0 = Date.now();
 
     // Resolve per-retailer org NEIDs from the cache before opening the MCP
-    // session — keeps the session window tight.
+    // session — keeps the session window tight. (This is the in-process
+    // retailer-NEID lookup, separate from the KV cache below.)
     const cache = loadRetailerNeidCache();
     const retailerOrgs = retailers
         .map((slug) => ({ slug, org_neid: cache[slug]?.neid ?? null }))
         .filter((r): r is { slug: string; org_neid: string } => !!r.org_neid);
 
+    const cacheKey = kvKeyFor('area-context', {
+        area_neid: body.area_neid,
+        retailers: retailerOrgs.map((r) => r.slug),
+    });
+
+    const { data, cache_hit, cache_age_ms } = await withKvCache<AreaContextPayload>(
+        { key: cacheKey, ttlSeconds: 60 * 60 },
+        async () => runAreaContextFanOut(body.area_neid, retailerOrgs)
+    );
+
+    return {
+        ...data,
+        elapsed_ms: Date.now() - t0,
+        tool_calls: data.fanout_tool_calls,
+        cache_hit,
+        cache_age_ms,
+    };
+});
+
+async function runAreaContextFanOut(
+    area_neid: string,
+    retailerOrgs: Array<{ slug: string; org_neid: string }>
+): Promise<AreaContextPayload> {
+    const tool_calls: ToolCall[] = [];
     const result = await withElementalMcp(async (client) => {
         const eventsP = tracedToolCall<ElementalGetEventsResult>(
             client,
             'events:area',
             'elemental_get_events',
-            { entity: body.area_neid, limit: AREA_EVENT_LIMIT },
+            { entity: area_neid, limit: AREA_EVENT_LIMIT },
             tool_calls
         );
         const articlesP = tracedToolCall<ElementalGetRelatedResult>(
@@ -295,7 +335,7 @@ export default defineEventHandler(async (event): Promise<AreaContextResponse> =>
             'related:articles',
             'elemental_get_related',
             {
-                entity: body.area_neid,
+                entity: area_neid,
                 related_flavor: 'article',
                 // Property names per `elemental_get_schema(article)` — the
                 // graph schema, not arbitrary names. Asking for unknowns
@@ -318,7 +358,7 @@ export default defineEventHandler(async (event): Promise<AreaContextResponse> =>
             'related:concepts',
             'elemental_get_related',
             {
-                entity: body.area_neid,
+                entity: area_neid,
                 related_flavor: 'economic_concept',
                 limit: CONCEPT_LIMIT,
             },
@@ -356,7 +396,6 @@ export default defineEventHandler(async (event): Promise<AreaContextResponse> =>
 
     return {
         ...result,
-        elapsed_ms: Date.now() - t0,
-        tool_calls,
+        fanout_tool_calls: tool_calls,
     };
-});
+}

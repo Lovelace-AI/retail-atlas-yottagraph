@@ -171,4 +171,9 @@ export interface RecipeResult {
     truncated?: boolean;
     /** Per-tool MCP fan-out timing (Step 2/3 only). */
     tool_calls?: RecipeToolCall[];
+    /** Server-side KV cache hit (PRD R6.3). The composable also has a
+     *  session-level cache; the panel surfaces either as a "cached" badge. */
+    cache_hit?: boolean;
+    /** Milliseconds since the cached entry was written, when `cache_hit` is true. */
+    cache_age_ms?: number | null;
 }
