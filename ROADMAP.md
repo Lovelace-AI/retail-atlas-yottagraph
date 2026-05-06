@@ -14,16 +14,17 @@ Deferred work, anchored to [`DESIGN.md`](DESIGN.md) and [`design/RETAIL_ATLAS_PR
 
 ## Status snapshot (2026-05-06)
 
-| PRD phase                                  | Status                                                                                                |
-| ------------------------------------------ | ----------------------------------------------------------------------------------------------------- |
-| **Phase 0** — Elemental store-NEID probe   | DONE → RED. < 10% strict per-store hit-rate; Phase 2 cancelled. Per-store entities are opportunistic. |
-| **Phase 1** — Map canvas (R1, R2, R3)      | SHIPPED. 30 retailers, 148k stores, 3,601 areas, 2,318 area NEIDs, halo + dot layers + control rail.  |
-| **Phase 1 R6** — Live area context fan-out | SHIPPED via MCP (events + articles + concepts + retailer events).                                     |
-| **Phase 2** — Store-level NEID resolution  | CANCELLED per Phase 0.                                                                                |
-| **Phase 3 R4/R7** — Recipes + URL sync     | SHIPPED. Three recipes (co-occurrence, event-density, opens-closes) + `?r=&f=&t=&c=&p=&halo=` sync.   |
-| **R-001 / R-007** — KV cache + telemetry   | SHIPPED. Cache wraps all three fan-out routes; telemetry list + summary endpoint live.                |
-| **Phase 4 R8** — Premium feeds             | NOT STARTED.                                                                                          |
-| **Phase 5 R9.2 / saved state / DB cache**  | NOT STARTED.                                                                                          |
+| PRD phase                                  | Status                                                                                                  |
+| ------------------------------------------ | ------------------------------------------------------------------------------------------------------- |
+| **Phase 0** — Elemental store-NEID probe   | DONE → RED. < 10% strict per-store hit-rate; Phase 2 cancelled. Per-store entities are opportunistic.   |
+| **Phase 1** — Map canvas (R1, R2, R3)      | SHIPPED. 30 retailers, 148k stores, 3,601 areas, 2,318 area NEIDs, halo + dot layers + control rail.    |
+| **Phase 1 R6** — Live area context fan-out | SHIPPED via MCP (events + articles + concepts + retailer events).                                       |
+| **Phase 2** — Store-level NEID resolution  | CANCELLED per Phase 0.                                                                                  |
+| **Phase 3 R4** — Multi-retailer overlays   | SHIPPED. Lead retailer drives solid choropleth; non-lead retailers render as hatch / dots SVG patterns. |
+| **Phase 3 R4/R7** — Recipes + URL sync     | SHIPPED. Three recipes (co-occurrence, event-density, opens-closes) + `?r=&f=&t=&c=&p=&halo=` sync.     |
+| **R-001 / R-007** — KV cache + telemetry   | SHIPPED. Cache wraps all three fan-out routes; telemetry list + summary endpoint live.                  |
+| **Phase 4 R8** — Premium feeds             | NOT STARTED.                                                                                            |
+| **Phase 5 R9.2 / saved state / DB cache**  | NOT STARTED.                                                                                            |
 
 ---
 

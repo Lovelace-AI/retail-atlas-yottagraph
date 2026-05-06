@@ -92,7 +92,14 @@
 </template>
 
 <script setup lang="ts">
-    import { geoAlbersUsa, geoMercator, geoPath, type GeoPath, type GeoProjection } from 'd3-geo';
+    import {
+        geoAlbersUsa,
+        geoIdentity,
+        geoMercator,
+        geoPath,
+        type GeoPath,
+        type GeoProjection,
+    } from 'd3-geo';
     import { feature, mesh } from 'topojson-client';
     import type { Feature, FeatureCollection, MultiPolygon, Polygon } from 'geojson';
     import { computed, onMounted, onUnmounted, ref, shallowRef, watch } from 'vue';
@@ -141,6 +148,19 @@
 
     function projectionFor(c: typeof country.value, w: number, h: number): GeoProjection {
         if (c === 'US') return geoAlbersUsa().fitSize([w, h], { type: 'Sphere' } as never);
+        // Canada uses a planar `geoIdentity` projection because the
+        // Statistics Canada CMA TopoJSON we ship in `public/data/topojson/ca/`
+        // contains MultiPolygons with hundreds of pixel-scale "islands"
+        // that decode with mixed/inverted ring winding. Spherical Mercator
+        // (rightly) interprets a counter-clockwise outer ring as "the
+        // rest of the sphere", and even a single such sub-polygon makes
+        // d3-geo project the whole feature as the full Mercator clip
+        // rectangle — every `.area-path` ends up filling the canvas, so
+        // the map looks like a solid black box instead of a set of CMA
+        // polygons. Planar projection bypasses spherical winding entirely
+        // and still produces a recognizable Canada at this latitude band.
+        // UK keeps Mercator (the ONS LAD topology is well-formed).
+        if (c === 'CA') return geoIdentity().reflectY(true);
         return geoMercator();
     }
 
@@ -393,7 +413,7 @@
                 pinned: isPinned,
                 hovered: isHovered,
                 haloed: isHaloed,
-                title: tooltipFor(name, region, score, neid, recipeEntry),
+                title: tooltipFor(name, region, score, neid, recipeEntry, area),
             });
         }
         return out;
@@ -404,11 +424,29 @@
         region: string,
         storeCount: number,
         neid: string | null | undefined,
-        recipeEntry: { score: number; numerator?: number; denominator?: number } | undefined
+        recipeEntry: { score: number; numerator?: number; denominator?: number } | undefined,
+        area: AreaRecord | undefined
     ): string {
         const head = `${name}${region ? ', ' + region : ''}`;
-        const baseStores = `${storeCount.toLocaleString()} stores`;
         const haloMark = neid ? ' · NEID resolved' : '';
+
+        // R4.1: when no recipe is active and >=1 retailer is active, the tooltip
+        // breaks the polygon's store count down by retailer regardless of which
+        // retailer's fill or pattern is drawing the polygon.
+        if (recipe.value === 'none' && area && activeRetailers.value.length > 0) {
+            const parts: string[] = [];
+            for (const slug of activeRetailers.value) {
+                const c = area.store_counts_by_retailer[slug] ?? 0;
+                if (c > 0) {
+                    const meta = (retailersRef.value ?? []).find((r) => r.slug === slug);
+                    parts.push(`${meta?.name ?? slug} ${c.toLocaleString()}`);
+                }
+            }
+            const breakdown = parts.length ? ' · ' + parts.join(' · ') : '';
+            return `${head}${breakdown}${haloMark}`;
+        }
+
+        const baseStores = `${storeCount.toLocaleString()} stores`;
         if (!recipeEntry || recipe.value === 'none') {
             return `${head} · ${baseStores}${haloMark}`;
         }
@@ -432,6 +470,94 @@
         for (const f of areaFeatures.value) {
             if (!f.haloed || f.pinned) continue;
             out.push({ id: f.id, path: f.path });
+        }
+        return out;
+    });
+
+    /**
+     * R4.1 — multi-retailer pattern overlays.
+     *
+     * Each non-lead active retailer gets one SVG <pattern> def + one rendering
+     * layer. The pattern kind cycles through hatch-45, hatch-135, dots, vertical
+     * (in that order) so the four-retailer simultaneous case stays decodable.
+     * Pattern color = retailer color (parsed from the registry's `hsl(...)`
+     * string); per-area opacity = sqrt(retailer_count / max_retailer_count) so
+     * dense areas stand out.
+     *
+     * Skipped when a recipe is active (recipe drives the polygon fill alone).
+     */
+    interface OverlayPattern {
+        id: string;
+        slug: string;
+        color: string;
+        kind: 'hatch-45' | 'hatch-135' | 'vertical' | 'dots';
+        size: number;
+    }
+
+    interface OverlayPatch {
+        id: string;
+        path: string;
+        opacity: number;
+    }
+
+    interface OverlayLayer {
+        slug: string;
+        patternId: string;
+        patches: OverlayPatch[];
+    }
+
+    /** Slugs to render as overlays — every active retailer except the lead. */
+    const overlaySlugs = computed<string[]>(() => {
+        if (recipe.value !== 'none') return [];
+        const lead = leadSlug.value;
+        const list = activeRetailers.value.filter(
+            (slug) => slug !== lead && !!(retailersRef.value ?? []).find((r) => r.slug === slug)
+        );
+        return list;
+    });
+
+    const overlayPatterns = computed<OverlayPattern[]>(() => {
+        const kinds: OverlayPattern['kind'][] = ['hatch-45', 'hatch-135', 'dots', 'vertical'];
+        const out: OverlayPattern[] = [];
+        overlaySlugs.value.forEach((slug, i) => {
+            const meta = (retailersRef.value ?? []).find((r) => r.slug === slug);
+            if (!meta) return;
+            out.push({
+                id: `atlas-pat-${slug}`,
+                slug,
+                color: meta.color,
+                kind: kinds[i % kinds.length],
+                size: 6,
+            });
+        });
+        return out;
+    });
+
+    const overlayLayers = computed<OverlayLayer[]>(() => {
+        const slugs = overlaySlugs.value;
+        if (slugs.length === 0) return [];
+        const out: OverlayLayer[] = [];
+        const maxByRetailer = retailerMaxByCountry.value;
+        for (const slug of slugs) {
+            const max = maxByRetailer[slug] ?? 0;
+            if (max === 0) continue;
+            const patches: OverlayPatch[] = [];
+            for (const f of areaFeatures.value) {
+                if (f.pinned) continue;
+                const area = areasByCode.value.get(f.id);
+                const c = area?.store_counts_by_retailer[slug] ?? 0;
+                if (c <= 0) continue;
+                const t = Math.sqrt(c / max);
+                // Floor at 0.18 so a one-store county still reads at all.
+                const opacity = Math.max(0.18, Math.min(0.9, t));
+                patches.push({ id: f.id, path: f.path, opacity });
+            }
+            if (patches.length === 0) continue;
+            out.push({
+                slug,
+                patternId: `atlas-pat-${slug}`,
+                patches,
+            });
         }
         return out;
     });
