@@ -8,6 +8,8 @@
             role="img"
             :aria-label="`Retail Atlas map of ${country}`"
             @click="handleBackgroundClick"
+            @pointermove="handlePointerMove"
+            @pointerleave="hideHoverTooltip"
         >
             <!-- Layer 1: country basemap silhouette -->
             <g class="layer-basemap">
@@ -27,15 +29,12 @@
                     :class="{ 'area-pinned': feat.pinned, 'area-hovered': feat.hovered }"
                     role="button"
                     tabindex="0"
-                    @mouseenter="hoveredAreaKey = feat.area_key"
-                    @mouseleave="hoveredAreaKey = null"
+                    :aria-label="feat.title"
+                    :data-area-key="feat.area_key"
+                    :data-tooltip="feat.title"
                     @click.stop="pinArea(feat.area_key)"
                     @keydown.enter.stop="pinArea(feat.area_key)"
-                >
-                    <title>
-                        {{ feat.title }}
-                    </title>
-                </path>
+                />
             </g>
 
             <!-- Layer 4: NEID halo (PRD R3.1) — gold outline on areas with a
@@ -67,12 +66,29 @@
                     :stroke="d.pinned ? '#ffd700' : 'rgba(0,0,0,0.4)'"
                     :stroke-width="d.pinned ? 2 : 0.5"
                     class="store-dot"
+                    role="button"
+                    tabindex="0"
+                    :aria-label="d.title"
+                    :data-store-id="d.store_id"
+                    :data-tooltip="d.title"
                     @click.stop="pinStore(d.store_id, dotLayer.slug)"
-                >
-                    <title>{{ d.title }}</title>
-                </circle>
+                    @keydown.enter.stop="pinStore(d.store_id, dotLayer.slug)"
+                />
             </g>
         </svg>
+
+        <v-card
+            v-if="hoverTooltip.visible"
+            class="hover-tooltip"
+            elevation="6"
+            rounded="lg"
+            :style="{
+                left: `${hoverTooltip.x}px`,
+                top: `${hoverTooltip.y}px`,
+            }"
+        >
+            <div class="hover-tooltip-body mono">{{ hoverTooltip.text }}</div>
+        </v-card>
 
         <!-- Status overlay: empty / loading / error -->
         <div v-if="!ready" class="status-overlay">
@@ -105,6 +121,7 @@
     import { computed, onMounted, onUnmounted, ref, shallowRef, watch } from 'vue';
 
     import { useAtlasData } from '~/composables/useAtlasData';
+    import { usePerfMarks } from '~/composables/usePerfMarks';
     import { useAtlasRecipe } from '~/composables/useAtlasRecipe';
     import { useAtlasState } from '~/composables/useAtlasState';
     import type { AreaRecord, RetailerSummary, StoreRecord } from '~/types/retail';
@@ -113,9 +130,17 @@
 
     const containerRef = ref<HTMLDivElement | null>(null);
     const size = ref({ w: 800, h: 600 });
+    const TOOLTIP_WIDTH = 340;
+    const TOOLTIP_OFFSET = 12;
 
     const loading = ref(true);
     const error = ref<string | null>(null);
+    const hoverTooltip = ref<{ visible: boolean; x: number; y: number; text: string }>({
+        visible: false,
+        x: 0,
+        y: 0,
+        text: '',
+    });
 
     const {
         country,
@@ -137,6 +162,8 @@
     } = useAtlasData();
     // R7 — pull the active recipe's per-area score map, if any.
     const { recipe, data: recipeData, scoresByKey: recipeScores } = useAtlasRecipe();
+    const { markFirstRenderOnce, markFirstInteractiveOnce } = usePerfMarks();
+    const firstRenderSeen = ref(false);
 
     const topology = shallowRef<any>(null);
     const areas = shallowRef<AreaRecord[]>([]);
@@ -648,6 +675,65 @@
         clearPin();
     }
 
+    function hideHoverTooltip(): void {
+        hoverTooltip.value.visible = false;
+        hoveredAreaKey.value = null;
+    }
+
+    function positionTooltip(clientX: number, clientY: number): { x: number; y: number } {
+        const el = containerRef.value;
+        if (!el) {
+            return { x: clientX + TOOLTIP_OFFSET, y: clientY + TOOLTIP_OFFSET };
+        }
+        const rect = el.getBoundingClientRect();
+        const localX = clientX - rect.left;
+        const localY = clientY - rect.top;
+
+        const maxX = Math.max(8, rect.width - TOOLTIP_WIDTH - 8);
+        const x =
+            localX + TOOLTIP_OFFSET > maxX
+                ? Math.max(8, localX - TOOLTIP_WIDTH - 10)
+                : localX + TOOLTIP_OFFSET;
+        const y = Math.max(8, Math.min(rect.height - 8, localY + TOOLTIP_OFFSET));
+        return { x, y };
+    }
+
+    function handlePointerMove(evt: PointerEvent): void {
+        const target = evt.target as HTMLElement | null;
+        if (!target) {
+            hideHoverTooltip();
+            return;
+        }
+
+        const areaTarget = target.closest('[data-area-key]') as HTMLElement | null;
+        const storeTarget = target.closest('[data-store-id]') as HTMLElement | null;
+
+        let text = '';
+        let areaKey: string | null = null;
+        if (storeTarget) {
+            text = storeTarget.getAttribute('data-tooltip') ?? '';
+        } else if (areaTarget) {
+            text = areaTarget.getAttribute('data-tooltip') ?? '';
+            areaKey = areaTarget.getAttribute('data-area-key');
+        } else {
+            hideHoverTooltip();
+            return;
+        }
+
+        hoveredAreaKey.value = areaKey;
+        if (!text) {
+            hoverTooltip.value.visible = false;
+            return;
+        }
+        const pos = positionTooltip(evt.clientX, evt.clientY);
+        hoverTooltip.value = {
+            visible: true,
+            x: pos.x,
+            y: pos.y,
+            text,
+        };
+    }
+
     let resizeObs: ResizeObserver | null = null;
 
     onMounted(async () => {
@@ -709,6 +795,20 @@
             await loadActiveStores();
         },
         { immediate: false }
+    );
+
+    watch(
+        ready,
+        (isReady) => {
+            if (!isReady || firstRenderSeen.value) return;
+            firstRenderSeen.value = true;
+            markFirstRenderOnce();
+            // Let one frame paint before we call this interactive.
+            requestAnimationFrame(() => {
+                markFirstInteractiveOnce();
+            });
+        },
+        { immediate: true }
     );
     /* eslint-enable @typescript-eslint/no-explicit-any */
 </script>
@@ -802,5 +902,22 @@
         border: 1px solid rgba(255, 255, 255, 0.08);
         border-radius: 4px;
         max-width: 360px;
+    }
+
+    .hover-tooltip {
+        position: absolute;
+        pointer-events: none;
+        background: rgba(15, 15, 15, 0.96) !important;
+        border: 1px solid rgba(63, 234, 0, 0.28) !important;
+        max-width: 340px;
+        z-index: 9;
+    }
+
+    .hover-tooltip-body {
+        white-space: normal;
+        line-height: 1.35;
+        font-size: 0.74rem;
+        color: rgba(235, 235, 235, 0.94);
+        padding: 8px 10px;
     }
 </style>

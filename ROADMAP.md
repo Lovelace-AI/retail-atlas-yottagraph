@@ -26,6 +26,8 @@ Deferred work, anchored to [`DESIGN.md`](DESIGN.md) and [`design/RETAIL_ATLAS_PR
 | **R-002 / R-013** — Saved recipes + admin telemetry page | SHIPPED.                                                                                                |
 | **R12** — Documentation                                  | SHIPPED. README + DATA + COVERAGE + RECIPES. COVERAGE auto-regenerated from probe + cache reports.      |
 | **R-009** — Lift R7.1 event cap                          | SHIPPED. Adaptive two-pass (50→500) breaks leader-board ties for dense counties.                        |
+| **R-010** — Hover tooltip upgrade                        | SHIPPED. Native SVG `<title>` replaced with delegated Vue overlay tooltip in map canvas.                |
+| **R-012** — PostHog client-side perf marks               | SHIPPED. TTFR/TTFI + panel-open-latency emitted when PostHog client is present.                         |
 | **Phase 1 R9.1** — Auth + access                         | SHIPPED. /welcome marketing splash + access-request form + env allowlist gate on all API routes.        |
 | **Phase 4 R8** — Premium feeds                           | NOT STARTED.                                                                                            |
 | **Phase 5 R9.2 / saved state / DB cache**                | NOT STARTED.                                                                                            |
@@ -111,12 +113,13 @@ These weren't on the user's flagged list but were called out as "out of scope / 
 - **Probe:** [`scripts/probe-event-total.ts`](scripts/probe-event-total.ts) (`npm run probe:event-total`) confirmed `total === min(real_count, limit)` on MCP `elemental_get_events`, so the obvious `total_only: true` path doesn't exist. Dropping limit to 1 would still report total=1.
 - **Where it landed:** Adaptive two-pass in [`server/api/atlas/recipe/event-density.post.ts`](server/api/atlas/recipe/event-density.post.ts). Fast call at `limit: 50` for every area; deep follow-up at `limit: 500` only for areas that hit the fast cap. Adds `capped_areas` to `RecipeResult` and surfaces the count as a legend caveat. Most areas stay on the fast path; dense counties get accurate counts up to 500. See updated [`design/RECIPES.md`](design/RECIPES.md) R7.1 section.
 
-### R-010 · Hover tooltips upgraded from native SVG to Vuetify
+### R-010 · Hover tooltips upgraded from native SVG to Vuetify — SHIPPED
 
 - **PRD:** R3.3 doesn't specify; this is UX polish.
-- **Status:** `Queued, low priority`.
-- **Today:** [`components/AtlasMapCanvas.vue`](components/AtlasMapCanvas.vue) uses native SVG `<title>` on every `<path>` and `<circle>`. Browsers render this with their own tooltip styling (slow, OS-dependent, can't include rich content).
-- **Plan sketch:** Switch to a Vue-based hover tooltip — track mouse position, render an absolutely-positioned `<div>` with the same content. Allows formatting (chips for retailers, mini sparklines, etc.). Risk: 3,600 polygons each emitting mouse events; need event delegation on the SVG root.
+- **Status:** `Shipped`.
+- **Where it landed:** [`components/AtlasMapCanvas.vue`](components/AtlasMapCanvas.vue) now renders a `v-card` hover tooltip overlay instead of native SVG `<title>`. Tooltip position tracks pointer in local canvas coordinates and clamps away from the right edge.
+- **Perf path:** event delegation on the SVG root (`@pointermove` + target `closest()`), so there are no per-polygon `mouseenter` / `mouseleave` handlers across 3,600+ areas.
+- **Behavior:** both area polygons and store dots emit tooltip text via `data-tooltip`; `hoveredAreaKey` stays in sync for polygon border emphasis and clears on pointer leave.
 
 ### R-011 · Dot rendering to canvas
 
@@ -130,9 +133,10 @@ These weren't on the user's flagged list but were called out as "out of scope / 
 ### R-012 · PostHog client-side perf marks
 
 - **PRD:** R10 — PRD calls for time-to-first-render, time-to-first-interactive, and panel-open-latency in PostHog.
-- **Status:** `Queued`.
-- **Today:** Server-side latency is captured (R-007). Client-side TTFR / panel-open-latency are not.
-- **Plan sketch:** Tiny `usePerfMarks` composable that wraps `performance.mark` / `performance.measure` and posts to PostHog (or any analytics provider) on key UI events: first canvas render, first context-panel open, recipe selection. ~half-day with the right SDK in place.
+- **Status:** `Shipped`.
+- **Where it landed:** [`composables/usePerfMarks.ts`](composables/usePerfMarks.ts) captures `ttfr_ms`, `ttfi_ms`, and `panel_open_latency_ms` from browser `performance.now()` and emits them via `window.posthog.capture('atlas_perf_metric', ...)` when PostHog is present.
+- **Wiring:** [`components/AtlasMapCanvas.vue`](components/AtlasMapCanvas.vue) marks TTFR/TTFI on first render-ready frame; [`components/AtlasContextPanel.vue`](components/AtlasContextPanel.vue) measures panel-open latency per area pin and tags outcome (`ok`/`error`) + cache-hit status.
+- **Degrade path:** if no PostHog client is loaded, all methods are no-ops (no runtime errors, no extra network calls).
 
 ### R-014 · Email-the-team on access-request submission
 

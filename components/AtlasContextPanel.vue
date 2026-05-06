@@ -354,6 +354,7 @@
 
     import { useAreaContext } from '~/composables/useAreaContext';
     import { useAtlasData } from '~/composables/useAtlasData';
+    import { usePerfMarks } from '~/composables/usePerfMarks';
     import { useAtlasState } from '~/composables/useAtlasState';
     import type { AreaRecord, RetailerSummary, StoreRecord } from '~/types/retail';
 
@@ -366,6 +367,7 @@
         error: contextError,
         data: contextData,
     } = useAreaContext();
+    const { startPanelOpen, finishPanelOpen, cancelPanelOpen } = usePerfMarks();
 
     const tab = ref<string>('overview');
 
@@ -454,17 +456,20 @@
             const a = area.value;
             const p = pinned.value;
             if (!p) {
+                cancelPanelOpen();
                 resetAreaContext();
                 tab.value = 'overview';
                 return;
             }
             if (p.kind !== 'area') {
+                cancelPanelOpen();
                 resetAreaContext();
                 return;
             }
             // Fire fan-out for the pinned area. The composable handles caching
             // by `(area_neid, area_key, retailers_hash)`; if the area has no
             // resolved NEID, it returns an empty payload.
+            startPanelOpen(p.area_key);
             loadAreaContext({
                 area_key: p.area_key,
                 area_neid: a?.neid ?? null,
@@ -472,6 +477,16 @@
             });
         },
         { immediate: true }
+    );
+
+    watch(
+        contextLoading,
+        (loading, prev) => {
+            if (!prev || loading) return;
+            const isError = !!contextError.value;
+            finishPanelOpen(isError ? 'error' : 'ok', contextData.value?.cache_hit ?? false);
+        },
+        { immediate: false }
     );
 </script>
 
