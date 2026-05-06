@@ -145,6 +145,9 @@ export default defineNuxtConfig({
     // NUXT_PUBLIC_[KEY_NAME] for public config (e.g., NUXT_PUBLIC_APP_ID overrides appId)
     // See: https://nuxt.com/docs/guide/going-further/runtime-config
     runtimeConfig: {
+        // Server-only — set ATLAS_ALLOWLIST="alice@x.com,bob@y.com" to gate
+        // the Atlas UI + API routes by email. Empty = open (dev / unset = no gate).
+        atlasAllowlist: '',
         public: {
             qsApiKey: bcYaml.qsApiKey,
             // App Identity — broadchurch.yaml provides defaults for provisioned projects

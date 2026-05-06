@@ -5,6 +5,10 @@ export default defineNuxtPlugin(async () => {
     if (path === '/a0callback') {
         return;
     }
+    // /welcome is the marketing splash — no auth required.
+    if (path === '/welcome') {
+        return;
+    }
 
     const { setUserFromCookie, setUserFromString } = useUserState();
     const userName = useRuntimeConfig().public.userName;

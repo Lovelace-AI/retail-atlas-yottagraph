@@ -37,6 +37,7 @@ let _picture = ref<string | undefined>(undefined);
 const _permissions = ref('');
 let _userId = ref<string | undefined>(undefined);
 let _userName = ref<string | undefined>(undefined);
+let _userEmail = ref<string | undefined>(undefined);
 
 export function useUserState() {
     async function clearUser() {
@@ -172,6 +173,7 @@ export function useUserState() {
         _picture.value = user.picture;
         _userId.value = user.sub;
         _userName.value = user.name;
+        _userEmail.value = user.email;
 
         const cookieName = useRuntimeConfig().public.auth0CookieName;
         const cookie = useCookie(cookieName, {
@@ -206,6 +208,7 @@ export function useUserState() {
             _picture.value = unsealed.user.picture;
             _userId.value = unsealed.user.sub;
             _userName.value = unsealed.user.name;
+            _userEmail.value = unsealed.user.email;
             _cookie.value = cookie.value;
             _accessToken.value = unsealed.access_token;
         } catch (e) {
@@ -259,6 +262,7 @@ export function useUserState() {
         accessToken: readonly(_accessToken),
         userId: readonly(_userId),
         userName: readonly(_userName),
+        userEmail: readonly(_userEmail),
         userPicture: readonly(_picture),
     };
 }

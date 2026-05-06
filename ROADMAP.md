@@ -26,6 +26,7 @@ Deferred work, anchored to [`DESIGN.md`](DESIGN.md) and [`design/RETAIL_ATLAS_PR
 | **R-002 / R-013** — Saved recipes + admin telemetry page | SHIPPED.                                                                                                |
 | **R12** — Documentation                                  | SHIPPED. README + DATA + COVERAGE + RECIPES. COVERAGE auto-regenerated from probe + cache reports.      |
 | **R-009** — Lift R7.1 event cap                          | SHIPPED. Adaptive two-pass (50→500) breaks leader-board ties for dense counties.                        |
+| **Phase 1 R9.1** — Auth + access                         | SHIPPED. /welcome marketing splash + access-request form + env allowlist gate on all API routes.        |
 | **Phase 4 R8** — Premium feeds                           | NOT STARTED.                                                                                            |
 | **Phase 5 R9.2 / saved state / DB cache**                | NOT STARTED.                                                                                            |
 
@@ -132,6 +133,13 @@ These weren't on the user's flagged list but were called out as "out of scope / 
 - **Status:** `Queued`.
 - **Today:** Server-side latency is captured (R-007). Client-side TTFR / panel-open-latency are not.
 - **Plan sketch:** Tiny `usePerfMarks` composable that wraps `performance.mark` / `performance.measure` and posts to PostHog (or any analytics provider) on key UI events: first canvas render, first context-panel open, recipe selection. ~half-day with the right SDK in place.
+
+### R-014 · Email-the-team on access-request submission
+
+- **PRD:** R9.1 — "stores submissions in `atlas_access_requests` table + emails the Atlas team".
+- **Status:** `Queued`.
+- **Today:** [`server/api/atlas/access-request.post.ts`](server/api/atlas/access-request.post.ts) writes to Upstash. The "email the team" half is deferred — no transactional email provider is wired into the project yet.
+- **Plan sketch:** Pick a provider (Resend / Postmark / SendGrid), add a server-only env (`ATLAS_NOTIFY_EMAIL`, `RESEND_API_KEY`), fire-and-forget after the LPUSH succeeds. ~half-day with the SDK in place.
 
 ### R-013 · Admin telemetry dashboard page — SHIPPED
 

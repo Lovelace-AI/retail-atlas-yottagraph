@@ -12,7 +12,7 @@
  * single LRANGE; safe to call repeatedly.
  */
 
-import { unsealCookie } from '../../../utils/cookies';
+import { assertAllowlistedUser } from '../../../utils/atlasAllowlist';
 import { readToolCalls, type TelemetryRecord } from '../../../utils/atlasKv';
 
 interface EndpointBucket {
@@ -99,10 +99,7 @@ function aggregate(records: TelemetryRecord[], hours: number): TelemetrySummary 
 }
 
 export default defineEventHandler(async (event): Promise<TelemetrySummary> => {
-    const cookie = await unsealCookie(event);
-    if (!cookie?.user) {
-        throw createError({ statusCode: 401, statusMessage: 'Authentication required' });
-    }
+    await assertAllowlistedUser(event);
 
     const query = getQuery(event);
     const hoursRaw = Number(query.hours ?? 24);

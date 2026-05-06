@@ -40,6 +40,10 @@
             >
             </v-btn>
 
+            <p class="learn-more mt-4 mono">
+                <NuxtLink to="/welcome" class="link">About Retail Atlas →</NuxtLink>
+            </p>
+
             <!-- Version -->
             <p class="version-text mt-6">v{{ uiVersion }}</p>
         </v-card>
@@ -156,5 +160,15 @@
         font-family: var(--font-mono);
         font-size: 0.75rem;
         margin: 0;
+    }
+    .learn-more {
+        font-size: 0.8rem;
+    }
+    .link {
+        color: var(--lv-green, #3fea00);
+        text-decoration: none;
+    }
+    .link:hover {
+        text-decoration: underline;
     }
 </style>

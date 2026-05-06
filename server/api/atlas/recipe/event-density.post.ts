@@ -34,6 +34,7 @@ import type {
     RecipeResult,
     RecipeToolCall,
 } from '../../../../types/retail';
+import { assertAllowlistedUser } from '../../../utils/atlasAllowlist';
 import { kvKeyFor, logToolCalls, withKvCache } from '../../../utils/atlasKv';
 import { unwrapToolResult, withElementalMcp } from '../../../utils/elementalMcp';
 
@@ -137,6 +138,7 @@ async function flightedMap<T, R>(
 }
 
 export default defineEventHandler(async (event): Promise<RecipeResult> => {
+    await assertAllowlistedUser(event);
     const body = (await readBody(event)) as RequestBody;
     if (!body || !body.country) {
         throw createError({ statusCode: 400, statusMessage: 'country required' });

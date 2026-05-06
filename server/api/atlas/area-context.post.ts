@@ -39,6 +39,7 @@ import { join } from 'node:path';
 
 import type { Client } from '@modelcontextprotocol/sdk/client/index.js';
 
+import { assertAllowlistedUser } from '../../utils/atlasAllowlist';
 import { kvKeyFor, logToolCalls, withKvCache } from '../../utils/atlasKv';
 import { unwrapToolResult, withElementalMcp } from '../../utils/elementalMcp';
 
@@ -282,6 +283,7 @@ function mapConcepts(payload: ElementalGetRelatedResult | null): ContextConcept[
 }
 
 export default defineEventHandler(async (event): Promise<AreaContextResponse> => {
+    await assertAllowlistedUser(event);
     const body = (await readBody(event)) as AreaContextRequest;
     if (!body || !body.area_neid) {
         throw createError({ statusCode: 400, statusMessage: 'area_neid required' });
