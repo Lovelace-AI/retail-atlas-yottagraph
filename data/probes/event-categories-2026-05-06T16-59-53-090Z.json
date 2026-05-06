@@ -1,0 +1,1308 @@
+{
+    "generated_at": "2026-05-06T16:59:53.089Z",
+    "per_retailer_limit": 100,
+    "retailers_probed": 30,
+    "union_categories": [
+        {
+            "name": "Market commentary",
+            "total": 437,
+            "retailers": 27,
+            "looks_open": false,
+            "looks_close": false
+        },
+        {
+            "name": "Launch of a new product",
+            "total": 392,
+            "retailers": 26,
+            "looks_open": true,
+            "looks_close": false
+        },
+        {
+            "name": "Analyst report",
+            "total": 330,
+            "retailers": 25,
+            "looks_open": false,
+            "looks_close": false
+        },
+        {
+            "name": "Corporate restructuring",
+            "total": 323,
+            "retailers": 29,
+            "looks_open": false,
+            "looks_close": false
+        },
+        {
+            "name": "Strategic partnership",
+            "total": 271,
+            "retailers": 25,
+            "looks_open": false,
+            "looks_close": false
+        },
+        {
+            "name": "Earnings call",
+            "total": 187,
+            "retailers": 24,
+            "looks_open": false,
+            "looks_close": false
+        },
+        {
+            "name": "Change in government policy",
+            "total": 97,
+            "retailers": 23,
+            "looks_open": false,
+            "looks_close": false
+        },
+        {
+            "name": "New funding or investment",
+            "total": 79,
+            "retailers": 20,
+            "looks_open": false,
+            "looks_close": false
+        },
+        {
+            "name": "Regulatory filing & compliance",
+            "total": 77,
+            "retailers": 22,
+            "looks_open": false,
+            "looks_close": false
+        },
+        {
+            "name": "Significant legal judgement",
+            "total": 55,
+            "retailers": 19,
+            "looks_open": false,
+            "looks_close": false
+        },
+        {
+            "name": "Mergers & acquisitions",
+            "total": 53,
+            "retailers": 18,
+            "looks_open": false,
+            "looks_close": false
+        },
+        {
+            "name": "Dividend announcement",
+            "total": 34,
+            "retailers": 12,
+            "looks_open": false,
+            "looks_close": false
+        },
+        {
+            "name": "Industry award",
+            "total": 33,
+            "retailers": 13,
+            "looks_open": false,
+            "looks_close": false
+        },
+        {
+            "name": "Major leadership change",
+            "total": 31,
+            "retailers": 15,
+            "looks_open": false,
+            "looks_close": false
+        },
+        {
+            "name": "Insider trading",
+            "total": 19,
+            "retailers": 11,
+            "looks_open": false,
+            "looks_close": false
+        },
+        {
+            "name": "Customer loss",
+            "total": 19,
+            "retailers": 15,
+            "looks_open": false,
+            "looks_close": false
+        },
+        {
+            "name": "Layoffs",
+            "total": 19,
+            "retailers": 12,
+            "looks_open": false,
+            "looks_close": false
+        },
+        {
+            "name": "Product delays",
+            "total": 14,
+            "retailers": 6,
+            "looks_open": false,
+            "looks_close": false
+        },
+        {
+            "name": "Major crime",
+            "total": 14,
+            "retailers": 6,
+            "looks_open": false,
+            "looks_close": false
+        },
+        {
+            "name": "Personnel changes",
+            "total": 14,
+            "retailers": 9,
+            "looks_open": false,
+            "looks_close": false
+        },
+        {
+            "name": "Acts of war",
+            "total": 12,
+            "retailers": 9,
+            "looks_open": false,
+            "looks_close": false
+        },
+        {
+            "name": "Win of long-term, high-value contract",
+            "total": 6,
+            "retailers": 6,
+            "looks_open": false,
+            "looks_close": false
+        },
+        {
+            "name": "Political commentary",
+            "total": 5,
+            "retailers": 5,
+            "looks_open": false,
+            "looks_close": false
+        },
+        {
+            "name": "Major natural disaster",
+            "total": 5,
+            "retailers": 3,
+            "looks_open": false,
+            "looks_close": false
+        },
+        {
+            "name": "Entertainment",
+            "total": 3,
+            "retailers": 3,
+            "looks_open": false,
+            "looks_close": false
+        },
+        {
+            "name": "Insolvency",
+            "total": 3,
+            "retailers": 3,
+            "looks_open": false,
+            "looks_close": false
+        },
+        {
+            "name": "Technological breakthrough",
+            "total": 2,
+            "retailers": 2,
+            "looks_open": false,
+            "looks_close": false
+        },
+        {
+            "name": "Epidemic/pandemic disease",
+            "total": 1,
+            "retailers": 1,
+            "looks_open": false,
+            "looks_close": false
+        },
+        {
+            "name": "Market milestone",
+            "total": 1,
+            "retailers": 1,
+            "looks_open": false,
+            "looks_close": false
+        },
+        {
+            "name": "Credit rating upgrade",
+            "total": 1,
+            "retailers": 1,
+            "looks_open": false,
+            "looks_close": false
+        },
+        {
+            "name": "Credit rating downgrade",
+            "total": 1,
+            "retailers": 1,
+            "looks_open": false,
+            "looks_close": false
+        },
+        {
+            "name": "Cybersecurity breach",
+            "total": 1,
+            "retailers": 1,
+            "looks_open": false,
+            "looks_close": false
+        }
+    ],
+    "per_retailer": [
+        {
+            "slug": "walmart",
+            "name": "Walmart",
+            "org_neid": "00183501313607800924",
+            "n_events": 100,
+            "n_total": 100,
+            "categories": {
+                "Market commentary": 19,
+                "Corporate restructuring": 14,
+                "Analyst report": 11,
+                "Dividend announcement": 1,
+                "Insider trading": 2,
+                "Launch of a new product": 20,
+                "New funding or investment": 4,
+                "Strategic partnership": 15,
+                "Regulatory filing & compliance": 2,
+                "Product delays": 1,
+                "Acts of war": 1,
+                "Change in government policy": 1,
+                "Earnings call": 2,
+                "Major leadership change": 1,
+                "Political commentary": 1,
+                "Major natural disaster": 1,
+                "Significant legal judgement": 2,
+                "Customer loss": 1,
+                "Layoffs": 1
+            },
+            "open_keyword_hits": 23,
+            "close_keyword_hits": 3,
+            "sample_open_descriptions": [
+                "Hilton Food Group's growth investment in Canada, centered on a new facility supporting a 10-year partnership with Walmart, is on track for a full launch in early 2027. The project is expected to contr",
+                "Trader Joe’s plans to open a new 12,506-square-foot store at 21364 Kuykendahl Road in Spring, Texas, within the Spring Town Center development. Construction is expected to start in June and finish in ",
+                "Walmart is debuting its first in-store Dunkin' location in San Antonio, Texas, as part of a broader partnership to enhance the shopping experience and offer affordable indulgences, mirroring a strateg",
+                "Walmart celebrated the grand opening of its third owned and operated milk processing facility in Robinson, Texas, representing a more than $350 million investment. This facility will create over 400 n",
+                "Discount grocery chain Aldi is opening a new store in Vero Beach, Florida, on March 19, 2026, as part of its wider growth strategy."
+            ],
+            "sample_close_descriptions": [
+                "The Sam’s Club Fulfillment Center in Worcester, owned and operated by Walmart, is expected to close, resulting in the layoff of 90 employees by May 29, 2026.",
+                "Publix Super Markets will close for Easter Sunday.",
+                "US President Donald Trump posted 56 times on Truth Social within one hour, making multiple claims about California and Governor Gavin Newsom, including a false claim that Walmart would close 85% of it"
+            ]
+        },
+        {
+            "slug": "target",
+            "name": "Target",
+            "org_neid": "06540589491244829530",
+            "n_events": 100,
+            "n_total": 100,
+            "categories": {
+                "Market commentary": 16,
+                "Launch of a new product": 21,
+                "Change in government policy": 6,
+                "Strategic partnership": 20,
+                "Corporate restructuring": 10,
+                "Analyst report": 13,
+                "Customer loss": 1,
+                "Earnings call": 8,
+                "Dividend announcement": 3,
+                "Major leadership change": 1,
+                "Political commentary": 1
+            },
+            "open_keyword_hits": 38,
+            "close_keyword_hits": 9,
+            "sample_open_descriptions": [
+                "A new 225,000-square-foot shopping center named \"Legacy at Jackson Landing\" is under construction in Monument, Colorado, and is expected to have its grand opening in October 2027. It will feature stor",
+                "The Parke x Target collection, including nearly 60 items across women’s apparel and accessories, will launch on Target.com and in select Target stores.",
+                "On Anzac Day 2026, Coles, Woolworths, Bunnings, Dan Murphy’s, BWS, Liquorland, and Vintage Cellars will be closed in NSW. Takeaway stores, cafes, seafood stores, nurseries, florists, news agencies, an",
+                "The Global Sourcing Fair Vietnam 2026 will open at the Saigon Exhibition and Convention Center (SECC) in Ho Chi Minh City, Vietnam. The event aims to connect international buyers with manufacturers fr",
+                "Target Corporation announced a limited-time collaboration with Parke, a premium brand, to launch a new collection."
+            ],
+            "sample_close_descriptions": [
+                "Target will cease selling cereals that contain synthetic colors by the end of May 2026. This decision follows years of phasing out such colors and working with brands to reformulate products. Target w",
+                "On Anzac Day 2026, Coles, Woolworths, Bunnings, Dan Murphy’s, BWS, Liquorland, and Vintage Cellars will be closed in NSW. Takeaway stores, cafes, seafood stores, nurseries, florists, news agencies, an",
+                "Costco warehouses and gas stations across the United States remained closed on Easter Sunday, April 5, 2026, in observance of one of the retailer's seven annual holiday closures, leading members to se",
+                "Various grocery and retail stores in Illinois will either be closed, open with reduced hours and staffing, or open on a holiday schedule on Easter Sunday, April 5, 2026. This represents a temporary ad",
+                "Home Depot stores across the United States are operating on Easter Sunday, April 5, 2026, with abbreviated hours from 8 a.m. to 6 p.m. local time. This decision allows customers to purchase home impro"
+            ]
+        },
+        {
+            "slug": "costco",
+            "name": "Costco",
+            "org_neid": "08704837087179871155",
+            "n_events": 100,
+            "n_total": 100,
+            "categories": {
+                "Analyst report": 19,
+                "Launch of a new product": 15,
+                "Strategic partnership": 11,
+                "New funding or investment": 3,
+                "Insider trading": 1,
+                "Earnings call": 7,
+                "Dividend announcement": 3,
+                "Change in government policy": 5,
+                "Regulatory filing & compliance": 4,
+                "Market commentary": 19,
+                "Corporate restructuring": 4,
+                "Significant legal judgement": 6,
+                "Customer loss": 1,
+                "Major crime": 1,
+                "Acts of war": 1
+            },
+            "open_keyword_hits": 27,
+            "close_keyword_hits": 5,
+            "sample_open_descriptions": [
+                "Costco plans to open a $74 million warehouse and adjoining fuel station in Pakenham, Melbourne's southeast, by 2027.",
+                "Costco Wholesale Corporation is rolling out standalone gas stations, which are expected to drive traffic, boost ancillary revenue, and increase membership stickiness.",
+                "Costco is set to become the anchor tenant of the $33 million Alkimos Central Home X Trade Hub in Perth’s northern suburbs, expected to open in 2027.",
+                "Costco has long-term goals to open approximately 30 new warehouses annually in the United States starting in 2027.",
+                "Work is underway to build a 152,000-square-foot Costco warehouse center in Newport News, expected to open in 2027, replacing an existing one."
+            ],
+            "sample_close_descriptions": [
+                "Various grocery and retail stores in Maryland will either be open with regular or reduced hours, or closed entirely on Easter Sunday, April 5, 2026. This will impact their potential sales and operatio",
+                "Cracker Barrel has confirmed it will be open for Easter Sunday, April 5, 2026, a decision that contrasts with many other major retailers and fast-food chains that will be closed on the holiday.",
+                "Various grocery and retail stores in Illinois will either be closed, open with reduced hours and staffing, or open on a holiday schedule on Easter Sunday, April 5, 2026. This represents a temporary ad",
+                "Costco Wholesale is expected to announce its Q2 2026 financial results, including earnings per share and revenue, after market close on Thursday, March 5th.",
+                "Some national retail chains, including Aldi, Trader Joe's, and Costco, will be closed on New Year's Day 2026."
+            ]
+        },
+        {
+            "slug": "kohls",
+            "name": "Kohl's",
+            "org_neid": "02536396868320396814",
+            "n_events": 100,
+            "n_total": 100,
+            "categories": {
+                "Dividend announcement": 2,
+                "Earnings call": 15,
+                "Launch of a new product": 12,
+                "Analyst report": 23,
+                "Market commentary": 22,
+                "Strategic partnership": 7,
+                "Significant legal judgement": 2,
+                "Corporate restructuring": 11,
+                "Mergers & acquisitions": 1,
+                "Major leadership change": 2,
+                "Change in government policy": 1,
+                "Insider trading": 1,
+                "New funding or investment": 1
+            },
+            "open_keyword_hits": 19,
+            "close_keyword_hits": 8,
+            "sample_open_descriptions": [
+                "H Mart is opening its largest store ever, with two floors, inside the Pacific Commons Shopping Center in Fremont, California. Construction will start late in 2026, and the store is expected to open in",
+                "Cuisinart launched two new products, the FlavorBoostTM 8-in-1 Outdoor Electric Grill (CEG-1302) and the FastFreezeTM Max Ice Cream Maker (ICE-FD50), designed for at-home entertaining and small-space u",
+                "On Easter Monday, April 6, 2026, stock markets, banks, federal agencies, postal services, shipping companies, restaurants, retail stores, pharmacies, and grocery stores in the United States are operat",
+                "Cracker Barrel has confirmed it will be open for Easter Sunday, April 5, 2026, a decision that contrasts with many other major retailers and fast-food chains that will be closed on the holiday.",
+                "YSL Beauty will launch its product line in 200 Sephora at Kohl’s locations in April 2026."
+            ],
+            "sample_close_descriptions": [
+                "Cracker Barrel has confirmed it will be open for Easter Sunday, April 5, 2026, a decision that contrasts with many other major retailers and fast-food chains that will be closed on the holiday.",
+                "Kohl's will close for Easter Sunday.",
+                "Kohl’s board of directors declared a quarterly cash dividend of 12.5 cents per share on the company’s common stock. The dividend is payable April 1, 2026, to shareholders of record at the close of bus",
+                "Major retailers in the United States are adopting mixed strategies for Easter Sunday 2026, with some operating during regular hours, others with reduced hours, and many choosing to close entirely. Thi",
+                "Kohl's CEO Michael Bender stated that the company does not currently plan to close any additional stores from its remaining fleet of approximately 1,150 locations in 2026, following internal improveme"
+            ]
+        },
+        {
+            "slug": "home_depot",
+            "name": "The Home Depot",
+            "org_neid": "07877936924083156360",
+            "n_events": 100,
+            "n_total": 100,
+            "categories": {
+                "Market commentary": 22,
+                "Analyst report": 12,
+                "Strategic partnership": 6,
+                "Win of long-term, high-value contract": 1,
+                "Launch of a new product": 13,
+                "Major crime": 4,
+                "Major leadership change": 1,
+                "Corporate restructuring": 6,
+                "Change in government policy": 6,
+                "Regulatory filing & compliance": 6,
+                "Mergers & acquisitions": 2,
+                "Insider trading": 1,
+                "Earnings call": 11,
+                "Dividend announcement": 2,
+                "Personnel changes": 2,
+                "Significant legal judgement": 2,
+                "Layoffs": 2,
+                "New funding or investment": 1
+            },
+            "open_keyword_hits": 17,
+            "close_keyword_hits": 4,
+            "sample_open_descriptions": [
+                "Jordan Broggi, Executive Vice President of Customer Experience and President of Online at The Home Depot, commented on the launch of AI-powered phone agents, highlighting their role in improving custo",
+                "Scotts, a leading lawn care brand, introduced a newly formulated, family-safe Turf Builder® Lawn Food. This advanced, pesticide-free, slow-release formula is designed for safety and performance, feedi",
+                "Lowe's announced its 'Spring Black Friday' sale, officially named 'Lowe’s SpringFest,' which is set to begin on April 9, 2026, and run until April 22, 2026. This sale is positioned to compete with Hom",
+                "Various grocery and retail stores in Illinois will either be closed, open with reduced hours and staffing, or open on a holiday schedule on Easter Sunday, April 5, 2026. This represents a temporary ad",
+                "Many Home Depot branches in Ontario will close on Good Friday, April 3, 2026, and reopen on Saturday, due to the public holiday."
+            ],
+            "sample_close_descriptions": [
+                "Home Depot stores across the United States are operating on Easter Sunday, April 5, 2026, with abbreviated hours from 8 a.m. to 6 p.m. local time. This decision allows customers to purchase home impro",
+                "Various grocery and retail stores in Illinois will either be closed, open with reduced hours and staffing, or open on a holiday schedule on Easter Sunday, April 5, 2026. This represents a temporary ad",
+                "Many Home Depot branches in Ontario will close on Good Friday, April 3, 2026, and reopen on Saturday, due to the public holiday.",
+                "A 54-year-old independent True Value affiliate closed its store, highlighting competitive strain on smaller operators, which could benefit larger chains like The Home Depot, Inc."
+            ]
+        },
+        {
+            "slug": "lowes",
+            "name": "Lowe's",
+            "org_neid": "06717425681394921975",
+            "n_events": 100,
+            "n_total": 100,
+            "categories": {
+                "Market commentary": 23,
+                "Strategic partnership": 13,
+                "Analyst report": 14,
+                "Significant legal judgement": 1,
+                "Launch of a new product": 12,
+                "Corporate restructuring": 4,
+                "Mergers & acquisitions": 4,
+                "New funding or investment": 4,
+                "Layoffs": 2,
+                "Dividend announcement": 4,
+                "Earnings call": 11,
+                "Regulatory filing & compliance": 2,
+                "Product delays": 1,
+                "Win of long-term, high-value contract": 1,
+                "Change in government policy": 1,
+                "Major leadership change": 1,
+                "Insider trading": 2
+            },
+            "open_keyword_hits": 17,
+            "close_keyword_hits": 11,
+            "sample_open_descriptions": [
+                "Trader Joe’s plans to open a new 12,506-square-foot store at 21364 Kuykendahl Road in Spring, Texas, within the Spring Town Center development. Construction is expected to start in June and finish in ",
+                "Synchrony announced an expanded co-brand partnership with Lowe's, under which Synchrony will now issue the MyLowe's Pro Rewards American Express® Card. This new card, available today, is designed to h",
+                "Lowe's announced its 'Spring Black Friday' sale, officially named 'Lowe’s SpringFest,' which is set to begin on April 9, 2026, and run until April 22, 2026. This sale is positioned to compete with Hom",
+                "Cracker Barrel has confirmed it will be open for Easter Sunday, April 5, 2026, a decision that contrasts with many other major retailers and fast-food chains that will be closed on the holiday.",
+                "Various grocery and retail stores in Illinois will either be closed, open with reduced hours and staffing, or open on a holiday schedule on Easter Sunday, April 5, 2026. This represents a temporary ad"
+            ],
+            "sample_close_descriptions": [
+                "The Alabama Department of Transportation, in partnership with the city of Bessemer and Jefferson County, is undertaking a $19 million project to construct a shortcut connecting Morgan Road with Lakesh",
+                "Lowe's will close its physical stores on Easter Sunday, April 5, but will offer one-day-only online savings on spring essentials to allow customers to shop.",
+                "Home Depot stores across the United States are operating on Easter Sunday, April 5, 2026, with abbreviated hours from 8 a.m. to 6 p.m. local time. This decision allows customers to purchase home impro",
+                "Cracker Barrel has confirmed it will be open for Easter Sunday, April 5, 2026, a decision that contrasts with many other major retailers and fast-food chains that will be closed on the holiday.",
+                "Various grocery and retail stores in Illinois will either be closed, open with reduced hours and staffing, or open on a holiday schedule on Easter Sunday, April 5, 2026. This represents a temporary ad"
+            ]
+        },
+        {
+            "slug": "kroger",
+            "name": "Kroger",
+            "org_neid": "01504284816507286463",
+            "n_events": 100,
+            "n_total": 100,
+            "categories": {
+                "Strategic partnership": 20,
+                "Earnings call": 5,
+                "Launch of a new product": 19,
+                "Regulatory filing & compliance": 3,
+                "New funding or investment": 3,
+                "Change in government policy": 1,
+                "Dividend announcement": 2,
+                "Analyst report": 10,
+                "Market commentary": 14,
+                "Corporate restructuring": 5,
+                "Customer loss": 1,
+                "Insider trading": 2,
+                "Industry award": 3,
+                "Significant legal judgement": 2,
+                "Layoffs": 1,
+                "Product delays": 2,
+                "Mergers & acquisitions": 3,
+                "Personnel changes": 2,
+                "Major leadership change": 1,
+                "Win of long-term, high-value contract": 1
+            },
+            "open_keyword_hits": 25,
+            "close_keyword_hits": 7,
+            "sample_open_descriptions": [
+                "Kroger is expected to announce its Q4 2026 financial results before the market opens on Thursday, March 5th. Analysts expect Kroger to post earnings of $1.20 per share and revenue of $35.0976 billion ",
+                "7UP launched a new soda flavor that is exclusively available at Kroger stores.",
+                "Trader Joe's is planning to open a new grocery store location at 3020 Matlock Road in Mansfield, Tarrant County, with construction expected to wrap up by March 2027.",
+                "A new Kroger Marketplace, described as the first-of-its-kind, is scheduled to open in June 2026 at the Park Place development in South Charleston, requiring 200-250 new employees.",
+                "The Kroger Co. announced the launch of Pearl Street Academy, a comprehensive career development and training platform designed to provide high-quality learning opportunities to associates across the K"
+            ],
+            "sample_close_descriptions": [
+                "Kroger locations will remain open on Easter Sunday, April 5, 2026, but their pharmacies and clinics will be closed.",
+                "Kroger will close all 18 of its The Little Clinic sites across the state of Georgia, effective April 4, 2026.",
+                "Publix Super Markets will close for Easter Sunday.",
+                "The Kroger Co. will close three store locations in California in March and lay off 171 workers. This follows the closure of nine fulfillment centers across the country in November 2025, which eliminat",
+                "Gelson's Markets will permanently close its Carlsbad, California, store on February 28, 2026, due to years of unprofitability. The location will then be sold to Kroger-owned Ralphs, which is expected "
+            ]
+        },
+        {
+            "slug": "albertsons",
+            "name": "Albertsons",
+            "org_neid": "00746755380379956554",
+            "n_events": 100,
+            "n_total": 100,
+            "categories": {
+                "Strategic partnership": 5,
+                "Insider trading": 1,
+                "Layoffs": 1,
+                "Significant legal judgement": 2,
+                "Launch of a new product": 6,
+                "Earnings call": 13,
+                "Industry award": 1,
+                "Corporate restructuring": 17,
+                "Analyst report": 19,
+                "Market commentary": 14,
+                "Dividend announcement": 6,
+                "Change in government policy": 6,
+                "Regulatory filing & compliance": 2,
+                "New funding or investment": 3,
+                "Acts of war": 1,
+                "Mergers & acquisitions": 1,
+                "Epidemic/pandemic disease": 1,
+                "Customer loss": 1
+            },
+            "open_keyword_hits": 13,
+            "close_keyword_hits": 12,
+            "sample_open_descriptions": [
+                "Suja Organic announced the launch of two new functional beverages: Watermelon Love Cold-Pressed Juice, an addition to its Loves cold-pressed juice lineup with probiotics, and Digestion Goldenberry Wel",
+                "Dole Packaged Foods, LLC announced a major expansion of its Dole Whip retail offerings, introducing new formats and a new tropical flavor called Tropical Guava Passion, along with existing Pineapple a",
+                "On Martin Luther King, Jr. Day 2026, most major retailers, restaurants, and grocery stores, including a comprehensive list of specific brands, are expected to be open for regular hours, allowing peopl",
+                "Albertsons stores will be open from 6 a.m. to 8 p.m. on New Year's Day, January 1, 2026.",
+                "Many retail stores and services in the United States will either be closed or operating on reduced hours for Easter Sunday 2026, while others will remain open. This is due to retailers observing the h"
+            ],
+            "sample_close_descriptions": [
+                "Albertsons Companies Inc. will close two North Texas supermarkets, Store No. 4286 in Fort Worth and Store No. 106 in Euless, and lay off 138 workers by April 25. Employees were notified on March 9, 20",
+                "Albertsons Companies is undergoing restructuring efforts, which include closing several stores and laying off 295 employees.",
+                "Safeway, a chain operated by Albertsons, closed a store in North Carolina earlier in 2026.",
+                "Many retail stores and services in the United States will either be closed or operating on reduced hours for Easter Sunday 2026, while others will remain open. This is due to retailers observing the h",
+                "Major retailers in the United States are adopting mixed strategies for Easter Sunday 2026, with some operating during regular hours, others with reduced hours, and many choosing to close entirely. Thi"
+            ]
+        },
+        {
+            "slug": "publix",
+            "name": "Publix",
+            "org_neid": "07805016938837963125",
+            "n_events": 100,
+            "n_total": 100,
+            "categories": {
+                "Major leadership change": 3,
+                "Market commentary": 19,
+                "Corporate restructuring": 19,
+                "Strategic partnership": 13,
+                "Launch of a new product": 17,
+                "Significant legal judgement": 4,
+                "Industry award": 6,
+                "Customer loss": 1,
+                "Entertainment": 1,
+                "New funding or investment": 7,
+                "Mergers & acquisitions": 2,
+                "Analyst report": 2,
+                "Major natural disaster": 2,
+                "Personnel changes": 1,
+                "Earnings call": 1,
+                "Change in government policy": 1,
+                "Regulatory filing & compliance": 1
+            },
+            "open_keyword_hits": 24,
+            "close_keyword_hits": 5,
+            "sample_open_descriptions": [
+                "A new Publix store, approximately 46,791 square feet and offering liquor service, will open at The Shoppes at Country Club, located at 4267 Dundee Road in Winter Haven, Polk County.",
+                "The Publix at Seven Hills store, a 48,387-square-foot supermarket including pharmacy services and a liquor store, will officially open at 160 Mariner Boulevard in Spring Hill, Hernando County.",
+                "Publix, a grocery chain, is establishing a presence in Bainbridge, which is seen as a positive indicator for the city's future development.",
+                "Takami Sushi, a new Japanese restaurant owned by Yan Chen, is planning to open in Apopka at 2565 Ocoee Apopka Road. The restaurant will offer fresh sushi and other authentic Japanese items such as tem",
+                "Arden's Garden officially announced the launch of its newest wellness shot, Sea Moss EnergyTM. This low-calorie shot is crafted with fruit juices, St Lucia Sea Moss gel, and green tea, providing susta"
+            ],
+            "sample_close_descriptions": [
+                "Publix Super Markets will close for Easter Sunday.",
+                "The longtime Publix store at 8250 Mills Drive shut its doors on January 17, 2026, with plans to demolish the existing store and rebuild a larger, more modern supermarket on the same site.",
+                "Several major retailers, including Costco, Sam's Club, Aldi, and Publix, will close all their locations on Easter Sunday to allow employees time with their families, continuing a long-standing policy.",
+                "Several major retailers have announced their decision to completely close all their stores nationwide for Easter Sunday.",
+                "State representatives in Florida have unveiled a legislative proposal to encourage private businesses to provide employees with at least $5,000 for down payment and closing costs, in exchange for a co"
+            ]
+        },
+        {
+            "slug": "aldi",
+            "name": "Aldi",
+            "org_neid": "08314611281697807508",
+            "n_events": 100,
+            "n_total": 100,
+            "categories": {
+                "New funding or investment": 5,
+                "Market commentary": 20,
+                "Corporate restructuring": 17,
+                "Change in government policy": 17,
+                "Launch of a new product": 18,
+                "Strategic partnership": 5,
+                "Mergers & acquisitions": 1,
+                "Regulatory filing & compliance": 6,
+                "Industry award": 3,
+                "Customer loss": 2,
+                "Analyst report": 3,
+                "Personnel changes": 2,
+                "Insolvency": 1
+            },
+            "open_keyword_hits": 47,
+            "close_keyword_hits": 13,
+            "sample_open_descriptions": [
+                "Aldi plans a total investment of €500 million in Portugal by 2035, aiming to reach 250 supermarkets by that year, including opening 90 new stores.",
+                "Aldi opened a temporary distribution center in Valongo for the Northern region and plans to open a permanent logistics platform in Santo Tirso by 2030.",
+                "Aldi plans to open more than 50 stores in Colorado within the next five years and aims to double its Las Vegas store count by 2030.",
+                "Aldi plans to open 50 new stores in Denver and Colorado Springs over the next five years.",
+                "New York City Mayor Zohran Mamdani has promised to open five city-run supermarkets, including the Mamdani Mart in Harlem, by 2029, to combat high prices by eliminating the profit motive and passing sa"
+            ],
+            "sample_close_descriptions": [
+                "Various grocery and retail stores in Maryland will either be open with regular or reduced hours, or closed entirely on Easter Sunday, April 5, 2026. This will impact their potential sales and operatio",
+                "Costco warehouses and gas stations across the United States remained closed on Easter Sunday, April 5, 2026, in observance of one of the retailer's seven annual holiday closures, leading members to se",
+                "Large shops over 280 square metres in England and Wales are legally required to close on Easter Sunday due to trading restrictions similar to Christmas Day.",
+                "On Easter Sunday, April 5, 2026, many major retailers will face trading restrictions. Aldi will have varied hours with some locations closed. Coles and Woolworths will have most stores open but with r",
+                "On Easter Sunday, April 5, 2026, various retail and grocery stores in Rhode Island will either be open, operate with reduced hours, or be closed. Most traditional grocery stores will be open at least "
+            ]
+        },
+        {
+            "slug": "hy_vee",
+            "name": "Hy-Vee",
+            "org_neid": "04140450180328122935",
+            "n_events": 27,
+            "n_total": 27,
+            "categories": {
+                "Strategic partnership": 11,
+                "Corporate restructuring": 4,
+                "Launch of a new product": 2,
+                "Analyst report": 4,
+                "Market commentary": 1,
+                "Mergers & acquisitions": 1,
+                "Change in government policy": 3,
+                "New funding or investment": 1
+            },
+            "open_keyword_hits": 4,
+            "close_keyword_hits": 4,
+            "sample_open_descriptions": [
+                "Milliways has scaled its distribution to more than 2,000 stores nationwide in the US within just over a year of its launch, partnering with major retailers such as Sprouts, Meijer, Hy-Vee, Raley's, an",
+                "The newly launched Strawberry Strudel and Apple Turnover Protein Cereal flavors became available online and in-stores at major retailers including Amazon, iHerb, Vitacost, Walmart, Target, Whole Foods",
+                "Ripple Foods has released a new organic milk alternative that delivers more protein per serving than almond milk. Made with five ingredients or fewer, it contains no oils or gums, offers 5 grams of pr",
+                "Hy-Vee and Raley's achieved price parity on Instacart's marketplace, and Fareway launched on the marketplace and Storefront Pro at parity, along with several other independent grocers."
+            ],
+            "sample_close_descriptions": [
+                "The United States Postal Service closed several contracted satellite retail locations within Hy-Vee and Lewis Drug stores in the Sioux Falls area, leaving only two main USPS-operated locations.",
+                "Caribou Coffee closed a store located inside a Hy-Vee grocery store off 95th Street and Antioch Road in Overland Park earlier this year.",
+                "Hy-Vee's Midwest Heritage Bank announced the acquisition of Iowa Savings Bank, a century-old institution based in Carroll. The deal includes four Iowa Savings Bank locations (Carroll, Glidden, Coon Ra",
+                "Hy-Vee closed 1 store location in January."
+            ]
+        },
+        {
+            "slug": "whole_foods",
+            "name": "Whole Foods Market",
+            "org_neid": "05295388371903151172",
+            "n_events": 100,
+            "n_total": 100,
+            "categories": {
+                "Change in government policy": 3,
+                "Strategic partnership": 14,
+                "Corporate restructuring": 18,
+                "Layoffs": 2,
+                "Launch of a new product": 26,
+                "Major leadership change": 1,
+                "Market commentary": 17,
+                "Analyst report": 9,
+                "Significant legal judgement": 1,
+                "Mergers & acquisitions": 1,
+                "Customer loss": 1,
+                "New funding or investment": 4,
+                "Regulatory filing & compliance": 1,
+                "Earnings call": 2
+            },
+            "open_keyword_hits": 34,
+            "close_keyword_hits": 15,
+            "sample_open_descriptions": [
+                "New York City Mayor Zohran Mamdani has promised to open five city-run supermarkets, including the Mamdani Mart in Harlem, by 2029, to combat high prices by eliminating the profit motive and passing sa",
+                "Whole Foods Market is set to open a new 39,546-square-foot grocery store at Cottonwood Corners on Albuquerque’s West Side, taking over a former furniture site next to Best Buy and Michaels. This will ",
+                "Kite Hill, a leader in dairy-free foods, announced the nationwide launch of its Kite Hill Protein Cream Cheese Alternative, a first-of-its-kind dairy-free innovation that provides 4g of protein per 2 ",
+                "PerfectTed extended its ready-to-drink Matcha Latte range with two new flavors: Blueberry Matcha Latte and Original Matcha Latte.",
+                "On Easter Monday, April 6, 2026, stock markets, banks, federal agencies, postal services, shipping companies, restaurants, retail stores, pharmacies, and grocery stores in the United States are operat"
+            ],
+            "sample_close_descriptions": [
+                "Various grocery and retail stores in Maryland will either be open with regular or reduced hours, or closed entirely on Easter Sunday, April 5, 2026. This will impact their potential sales and operatio",
+                "Many Whole Foods and Giant Eagle locations may close earlier than normal on Easter Sunday, April 5, 2026.",
+                "On Easter Sunday, April 5, 2026, various retail and grocery stores in Rhode Island will either be open, operate with reduced hours, or be closed. Most traditional grocery stores will be open at least ",
+                "Amazon is closing multiple Amazon Fresh grocery stores and Amazon Go physical retail locations across several states, including Northern Virginia, California, and Maryland, resulting in significant la",
+                "Publix Super Markets will close for Easter Sunday."
+            ]
+        },
+        {
+            "slug": "trader_joes",
+            "name": "Trader Joe's",
+            "org_neid": "01564099943338265387",
+            "n_events": 100,
+            "n_total": 100,
+            "categories": {
+                "Launch of a new product": 22,
+                "Strategic partnership": 4,
+                "Significant legal judgement": 3,
+                "Mergers & acquisitions": 3,
+                "Market commentary": 23,
+                "Corporate restructuring": 13,
+                "Product delays": 5,
+                "Regulatory filing & compliance": 4,
+                "Analyst report": 10,
+                "Change in government policy": 1,
+                "Industry award": 8,
+                "New funding or investment": 3,
+                "Earnings call": 1
+            },
+            "open_keyword_hits": 32,
+            "close_keyword_hits": 6,
+            "sample_open_descriptions": [
+                "Trader Joe's is planning to open a new grocery store location at 3020 Matlock Road in Mansfield, Tarrant County, with construction expected to wrap up by March 2027.",
+                "Trader Joe's is expected to open its first store in Bellaire, Texas, in the first half of 2027, taking over the space of a former Randall's at 5130 Bellaire Blvd.",
+                "Trader Joe’s plans to open a new 12,506-square-foot store at 21364 Kuykendahl Road in Spring, Texas, within the Spring Town Center development. Construction is expected to start in June and finish in ",
+                "On Easter Monday, April 6, 2026, stock markets, banks, federal agencies, postal services, shipping companies, restaurants, retail stores, pharmacies, and grocery stores in the United States are operat",
+                "Trader Joe's and Whole Foods will be open in most areas on Easter Sunday, April 5, 2026."
+            ],
+            "sample_close_descriptions": [
+                "On Easter Sunday, April 5, 2026, several businesses and services in the Modesto area will be closed or operate on reduced hours, impacting their normal operations and potential revenue.",
+                "Presidents Day, officially known as Washington’s Birthday, will be observed as a federal holiday nationwide on Monday, February 16, 2026, leading to the closure of some government-linked services and ",
+                "Some national retail chains, including Aldi, Trader Joe's, and Costco, will be closed on New Year's Day 2026.",
+                "Major retailers in the United States are adopting mixed strategies for Easter Sunday 2026, with some operating during regular hours, others with reduced hours, and many choosing to close entirely. Thi",
+                "Many retail stores and services in the United States will either be closed or operating on reduced hours for Easter Sunday 2026, while others will remain open. This is due to retailers observing the h"
+            ]
+        },
+        {
+            "slug": "dollargeneral",
+            "name": "Dollar General",
+            "org_neid": "02070303497596472121",
+            "n_events": 100,
+            "n_total": 100,
+            "categories": {
+                "Market commentary": 18,
+                "Major leadership change": 2,
+                "Strategic partnership": 10,
+                "Earnings call": 11,
+                "Analyst report": 21,
+                "Launch of a new product": 7,
+                "Dividend announcement": 3,
+                "Corporate restructuring": 14,
+                "Significant legal judgement": 3,
+                "Market milestone": 1,
+                "Major crime": 3,
+                "Acts of war": 2,
+                "Change in government policy": 2,
+                "Personnel changes": 1,
+                "Mergers & acquisitions": 2
+            },
+            "open_keyword_hits": 18,
+            "close_keyword_hits": 9,
+            "sample_open_descriptions": [
+                "Dollar General announced the launch of simmer & stir, a new private-label kitchen brand featuring nearly 30 thoughtfully designed kitchen tools and accessories, all priced at $12 or less, with most be",
+                "Dollar General has rolled out a new wave of weekly deals and promotions, valid until April 11, 2026. These promotions leverage digital coupons and bundle deals across various categories like snacks, b",
+                "CVS, Walgreens, and many Dollar General locations will stay open on Easter Sunday, April 5, 2026, though hours may be reduced.",
+                "Dollar General will remain open for regular business hours on Easter Sunday.",
+                "Dollar General is anticipated to release its Q4 2026 results before the market opens, with analysts expecting earnings of $1.57 per share and revenue of $10.7769 billion. An earnings call is scheduled"
+            ],
+            "sample_close_descriptions": [
+                "The Alabama Department of Transportation, in partnership with the city of Bessemer and Jefferson County, is undertaking a $19 million project to construct a shortcut connecting Morgan Road with Lakesh",
+                "Dollar General Corporation's shares gained 100.69% of their value over the last 52 weeks, closing at $143.43 per share on January 30, 2026.",
+                "On January 19, 2026, which is Martin Luther King, Jr. Day, banks, schools, most government offices nationwide, Department of Motor Vehicles branches, and the U.S. Post Office will be closed.",
+                "Major retailers in the United States are adopting mixed strategies for Easter Sunday 2026, with some operating during regular hours, others with reduced hours, and many choosing to close entirely. Thi",
+                "U.S. retailers are expected to close about 7,900 stores in 2026, reflecting mounting pressure across the grocery sector due to competition, economic uncertainty, rising costs, and evolving consumer pr"
+            ]
+        },
+        {
+            "slug": "dollar_tree",
+            "name": "Dollar Tree",
+            "org_neid": "02303759068279354923",
+            "n_events": 100,
+            "n_total": 100,
+            "categories": {
+                "Earnings call": 10,
+                "Market commentary": 13,
+                "Regulatory filing & compliance": 3,
+                "Analyst report": 57,
+                "Corporate restructuring": 5,
+                "Mergers & acquisitions": 3,
+                "New funding or investment": 4,
+                "Acts of war": 1,
+                "Insider trading": 4
+            },
+            "open_keyword_hits": 6,
+            "close_keyword_hits": 3,
+            "sample_open_descriptions": [
+                "Dollar Tree plans to open 400 new stores in 2026.",
+                "Dollar Tree, Inc. stock opened at $130.41 on a Tuesday and was down 3.0%.",
+                "Dollar Tree, Inc. launched a long-awaited store renovation program, which is expected to generate attractive returns and contribute to value creation for the company.",
+                "Global oil supplies were disrupted and prices rose by approximately 50% following strikes launched by the US and Israel on Iran on February 28.",
+                "Dollar Tree (NASDAQ:DLTR) stock opened at $119.88 on Tuesday, indicating a 5.2% drop."
+            ],
+            "sample_close_descriptions": [
+                "On April 6, 2026, Dollar Tree, Inc. (NASDAQ:DLTR) stock closed at $111.09 per share.",
+                "Dollar Tree, Inc. stock demonstrated strong performance, with a one-month return of 10.59% and a 52-week gain of 77.65%, closing at $131.71 per share on February 24, 2026.",
+                "Dollar Tree, Inc.'s stock price reached a new 52-week high on Monday, trading as high as $136.36 and closing at $135.7580, with a volume of 401818 shares changing hands."
+            ]
+        },
+        {
+            "slug": "family_dollar",
+            "name": "Family Dollar",
+            "org_neid": "04545185627976716551",
+            "n_events": 79,
+            "n_total": 79,
+            "categories": {
+                "Strategic partnership": 10,
+                "Layoffs": 2,
+                "Analyst report": 3,
+                "Major crime": 1,
+                "Credit rating upgrade": 1,
+                "Market commentary": 14,
+                "Launch of a new product": 4,
+                "Corporate restructuring": 23,
+                "Earnings call": 5,
+                "Mergers & acquisitions": 10,
+                "Major leadership change": 1,
+                "Change in government policy": 3,
+                "Significant legal judgement": 2
+            },
+            "open_keyword_hits": 7,
+            "close_keyword_hits": 20,
+            "sample_open_descriptions": [
+                "Many retail stores and services in the United States will either be closed or operating on reduced hours for Easter Sunday 2026, while others will remain open. This is due to retailers observing the h",
+                "Family Dollar plans to launch its Extra Small Box (XSB) store format, a smaller and more flexible store design requiring less inventory and lower operating costs. A pilot is scheduled for 2026, with u",
+                "Dollar Tree plans to open 400 new stores in 2026.",
+                "Family Dollar launched a Value Creation program encompassing approximately 70 initiatives across merchandising, store operations, supply chain, and technology to drive transformational improvements.",
+                "Discount retail chains, including Dollar Tree and Family Dollar, are actively acquiring and converting former pharmacy buildings across the United States, utilizing their strong street visibility, par"
+            ],
+            "sample_close_descriptions": [
+                "Family Dollar is permanently closing its distribution facility in Matthews, North Carolina, resulting in the elimination of approximately 373 jobs. Employee separations will begin on May 18, with rema",
+                "Several national chain businesses, including KFC, Citgo, Maker’s Market, Buddy’s Appliance, and Family Dollar, have either closed or are preparing to close their locations in Walnut Ridge, Arkansas. T",
+                "Major retailers in the United States are adopting mixed strategies for Easter Sunday 2026, with some operating during regular hours, others with reduced hours, and many choosing to close entirely. Thi",
+                "Many retail stores and services in the United States will either be closed or operating on reduced hours for Easter Sunday 2026, while others will remain open. This is due to retailers observing the h",
+                "U.S. retailers are expected to close about 7,900 stores in 2026, reflecting mounting pressure across the grocery sector due to competition, economic uncertainty, rising costs, and evolving consumer pr"
+            ]
+        },
+        {
+            "slug": "cvs",
+            "name": "CVS",
+            "org_neid": "01875778411857501512",
+            "n_events": 100,
+            "n_total": 100,
+            "categories": {
+                "Change in government policy": 14,
+                "Analyst report": 17,
+                "Corporate restructuring": 8,
+                "Strategic partnership": 7,
+                "Earnings call": 16,
+                "Launch of a new product": 7,
+                "Significant legal judgement": 5,
+                "Market commentary": 14,
+                "Political commentary": 1,
+                "Layoffs": 2,
+                "Major crime": 2,
+                "Technological breakthrough": 1,
+                "New funding or investment": 3,
+                "Industry award": 2,
+                "Regulatory filing & compliance": 1
+            },
+            "open_keyword_hits": 18,
+            "close_keyword_hits": 7,
+            "sample_open_descriptions": [
+                "The Market at Olive, a 50-acre multi-anchor development in University City, is expanding with the opening of a 149,000-square-foot Target store, the largest in the St. Louis area, on May 19, 2026. Thi",
+                "Oreo launched its new limited-edition Firecracker Pop cookie, featuring triple-layered creme in blue raspberry, lemon, and cherry, between two golden wafers, inspired by the classic Bomb Pop frozen tr",
+                "On Easter Monday, April 6, 2026, stock markets, banks, federal agencies, postal services, shipping companies, restaurants, retail stores, pharmacies, and grocery stores in the United States are operat",
+                "Various grocery and retail stores in Illinois will either be closed, open with reduced hours and staffing, or open on a holiday schedule on Easter Sunday, April 5, 2026. This represents a temporary ad",
+                "CVS, Walgreens, and many Dollar General locations will stay open on Easter Sunday, April 5, 2026, though hours may be reduced."
+            ],
+            "sample_close_descriptions": [
+                "CVS Health has threatened to challenge the constitutionality of the new Tennessee law in federal court and warned that the policy, effective July 1, 2028, could lead to the closure of 25 MinuteClinic ",
+                "Various grocery and retail stores in Illinois will either be closed, open with reduced hours and staffing, or open on a holiday schedule on Easter Sunday, April 5, 2026. This represents a temporary ad",
+                "On Easter Sunday, April 5, 2026, various retail and grocery stores in Rhode Island will either be open, operate with reduced hours, or be closed. Most traditional grocery stores will be open at least ",
+                "Publix Super Markets will close for Easter Sunday.",
+                "CVS stock closed at $75.77 on February 9, 2026, representing a 3.76% decline year-to-date."
+            ]
+        },
+        {
+            "slug": "walgreens",
+            "name": "Walgreens",
+            "org_neid": "00658600491251816740",
+            "n_events": 22,
+            "n_total": 22,
+            "categories": {
+                "Layoffs": 2,
+                "Launch of a new product": 1,
+                "Industry award": 1,
+                "Mergers & acquisitions": 6,
+                "Corporate restructuring": 6,
+                "Significant legal judgement": 1,
+                "Market commentary": 3,
+                "Dividend announcement": 1,
+                "Major leadership change": 1
+            },
+            "open_keyword_hits": 0,
+            "close_keyword_hits": 0,
+            "sample_open_descriptions": [],
+            "sample_close_descriptions": []
+        },
+        {
+            "slug": "mcdonalds",
+            "name": "McDonald's",
+            "org_neid": "00088825367017563609",
+            "n_events": 100,
+            "n_total": 100,
+            "categories": {
+                "Corporate restructuring": 11,
+                "Change in government policy": 5,
+                "Strategic partnership": 9,
+                "Launch of a new product": 18,
+                "Acts of war": 2,
+                "Earnings call": 6,
+                "Analyst report": 8,
+                "Market commentary": 23,
+                "Customer loss": 1,
+                "Regulatory filing & compliance": 6,
+                "Dividend announcement": 1,
+                "Mergers & acquisitions": 1,
+                "Insider trading": 1,
+                "Product delays": 1,
+                "New funding or investment": 3,
+                "Industry award": 1,
+                "Layoffs": 1,
+                "Credit rating downgrade": 1,
+                "Political commentary": 1
+            },
+            "open_keyword_hits": 22,
+            "close_keyword_hits": 2,
+            "sample_open_descriptions": [
+                "McDonald's plans to open approximately 8,000 new restaurants globally by the end of 2027, with at least 900 of these locations in the United States.",
+                "McDonald's is offering packs of collectible KPop Demon Hunters cards, including exclusive photocards, with the purchase of themed meals.",
+                "McDonald's launched its new 'biggest and boldest' double-patty burger, the Big Arch, in the US.",
+                "McDonald's and Crayola have partnered to launch a special edition Crayola Happy Meal featuring toys and materials designed for creativity, with Crayola also becoming a supplier of colored pencils for ",
+                "McDonald's is launching new and returning menu items in March, including the Double Big Mac, Spicy Chicken McNuggets, Mini Eggs McFlurries, Creme Egg McFlurries, a limited-edition Mini Eggs Frappe, an"
+            ],
+            "sample_close_descriptions": [
+                "Major retailers in the United States are adopting mixed strategies for Easter Sunday 2026, with some operating during regular hours, others with reduced hours, and many choosing to close entirely. Thi",
+                "McDonald's ended its partnership with Krispy Kreme, which contributed to worsening U.S. sales trends for Krispy Kreme."
+            ]
+        },
+        {
+            "slug": "subway",
+            "name": "Subway",
+            "org_neid": "00200351864555714536",
+            "n_events": 0,
+            "n_total": 0,
+            "categories": {},
+            "open_keyword_hits": 0,
+            "close_keyword_hits": 0,
+            "sample_open_descriptions": [],
+            "sample_close_descriptions": []
+        },
+        {
+            "slug": "chick_fil_a",
+            "name": "Chick-fil-A",
+            "org_neid": "03755598766390423643",
+            "n_events": 100,
+            "n_total": 100,
+            "categories": {
+                "Launch of a new product": 49,
+                "New funding or investment": 6,
+                "Political commentary": 1,
+                "Strategic partnership": 11,
+                "Change in government policy": 3,
+                "Regulatory filing & compliance": 8,
+                "Major leadership change": 1,
+                "Market commentary": 6,
+                "Corporate restructuring": 8,
+                "Industry award": 3,
+                "Customer loss": 1,
+                "Major crime": 3
+            },
+            "open_keyword_hits": 47,
+            "close_keyword_hits": 1,
+            "sample_open_descriptions": [
+                "A new 225,000-square-foot shopping center named \"Legacy at Jackson Landing\" is under construction in Monument, Colorado, and is expected to have its grand opening in October 2027. It will feature stor",
+                "A Chick-fil-A and a Cafe Zupas, each with a two-lane drive-thru, are anticipated to open in February 2027 on the former OfficeMax site at 1346 Port Washington Road in Grafton, with construction beginn",
+                "Chick-fil-A plans to expand its presence in Oregon by opening six new restaurants by 2027.",
+                "Jacksonville International Airport's brand-new Concourse B is scheduled to open next Christmas, featuring four new restaurants including local favorites Bono’s and Willie Jewell’s Old Pit BBQ, alongsi",
+                "Chick-fil-A is opening a new restaurant location in Ocean Springs, Mississippi, creating 115 local jobs and bringing in additional staff for training. The city and company are preparing for a large cr"
+            ],
+            "sample_close_descriptions": [
+                "Presidents Day, officially known as Washington’s Birthday, will be observed as a federal holiday nationwide on Monday, February 16, 2026, leading to the closure of some government-linked services and "
+            ]
+        },
+        {
+            "slug": "chipotle",
+            "name": "Chipotle",
+            "org_neid": "01419696910153505500",
+            "n_events": 100,
+            "n_total": 100,
+            "categories": {
+                "Corporate restructuring": 18,
+                "Mergers & acquisitions": 1,
+                "Launch of a new product": 17,
+                "Strategic partnership": 6,
+                "Market commentary": 16,
+                "Analyst report": 18,
+                "Earnings call": 14,
+                "Regulatory filing & compliance": 1,
+                "Entertainment": 1,
+                "Customer loss": 2,
+                "Major leadership change": 5,
+                "Change in government policy": 1
+            },
+            "open_keyword_hits": 23,
+            "close_keyword_hits": 1,
+            "sample_open_descriptions": [
+                "Chipotle could expand its catering services, targeting corporate clients for B2B, and potentially opening up new revenue streams.",
+                "Chipotle is confirmed to be one of four retailers opening a new location within the Morado on Berry mixed-use development on TCU's campus, which is expected to open in Fall 2027.",
+                "Chipotle Mexican Grill Inc. anticipates opening in Singapore in 2027.",
+                "Chipotle might explore new store formats to penetrate urban markets more effectively, potentially boosting revenue and stock performance.",
+                "Chipotle is building a new restaurant at 13333 W. Maple, expected to open in late 2026."
+            ],
+            "sample_close_descriptions": [
+                "On March 30, 2026, Chipotle Mexican Grill, Inc. (NYSE:CMG) closed at $31.16 per share, with a one-month return of -15.62% and a 52-week loss of 39.69%."
+            ]
+        },
+        {
+            "slug": "starbucks",
+            "name": "Starbucks",
+            "org_neid": "09179645699895803808",
+            "n_events": 100,
+            "n_total": 100,
+            "categories": {
+                "Launch of a new product": 15,
+                "Corporate restructuring": 18,
+                "Analyst report": 14,
+                "Market commentary": 23,
+                "New funding or investment": 4,
+                "Insider trading": 2,
+                "Regulatory filing & compliance": 6,
+                "Earnings call": 5,
+                "Mergers & acquisitions": 2,
+                "Significant legal judgement": 2,
+                "Change in government policy": 1,
+                "Strategic partnership": 8
+            },
+            "open_keyword_hits": 21,
+            "close_keyword_hits": 4,
+            "sample_open_descriptions": [
+                "McDonald's Canada is launching a new permanent drink menu featuring crafted sodas, fruity refreshers, and foamy iced coffees to tap into the fast-growing beverage category and become a beverage destin",
+                "Quebec Superior Court Justice Mathieu Piché-Messier issued a ruling ordering Starbucks to reopen its Rockland Centre location for 10 days, ahead of further legal proceedings where Cominar will seek a",
+                "Starbucks announced its plan to open a new corporate office in Nashville, committing to invest $100 million and employ up to 2,000 people over the next five years. This involves new hires and the relo",
+                "Several major U.S. fast food restaurant chains, including McDonald's, Starbucks, Taco Bell, Burger King, Five Guys, and Wendy's, are expected to remain open on Easter Sunday, April 5, 2026. While many",
+                "Swiggy Dineout and Starbucks announced a partnership to launch the 'Cancel Summer' campaign, which includes a flat 50% off on Starbucks via Dineout, additional DineCash rewards, and immersive digital "
+            ],
+            "sample_close_descriptions": [
+                "Landmark Properties and Manulife Investment Management are constructing The Metropolitan, a 259-unit high-rise student housing development at 1208 S. University Ave. This development will replace the ",
+                "Trading on the Indian stock market was closed on April 3, 2026, for Good Friday.",
+                "Starbucks Corp. shares fell 1.62% to $97.35 in midday trading, declining $1.60 from the previous close.",
+                "Approximately 1,400 stores are expected to close in 2026, including locations from Macy’s, Francesca’s, and Eddie Bauer. Additionally, 7-Eleven is closing about 645 stores in North America, and Grocer"
+            ]
+        },
+        {
+            "slug": "dunkin_donuts",
+            "name": "Dunkin",
+            "org_neid": "07403585156199657270",
+            "n_events": 100,
+            "n_total": 100,
+            "categories": {
+                "Corporate restructuring": 13,
+                "Strategic partnership": 16,
+                "Significant legal judgement": 5,
+                "Market commentary": 11,
+                "Regulatory filing & compliance": 1,
+                "Acts of war": 1,
+                "Launch of a new product": 40,
+                "Customer loss": 2,
+                "Industry award": 1,
+                "Analyst report": 3,
+                "Change in government policy": 2,
+                "Layoffs": 2,
+                "Entertainment": 1,
+                "Earnings call": 1,
+                "Win of long-term, high-value contract": 1
+            },
+            "open_keyword_hits": 33,
+            "close_keyword_hits": 10,
+            "sample_open_descriptions": [
+                "Walmart is debuting its first in-store Dunkin' location in San Antonio, Texas, as part of a broader partnership to enhance the shopping experience and offer affordable indulgences, mirroring a strateg",
+                "Muffin House Cafe, a family-run group of bakery-cafes, is opening its seventh location in Canton, Massachusetts, in a former Dunkin’ space at 22 Washington St in the Cobb Corner Shopping Center. This ",
+                "The Muffin House Café is expanding its operations by opening its seventh location at 22 Washington St., Canton, Massachusetts. The new store, which was formerly a Dunkin’ location, is currently under",
+                "Dunkin’ and designer Vera Wang partnered to launch a contest for National Proposal Day, inviting fans to share their “I Dough” proposal moments on social media for a chance to win a wedding experience",
+                "Dunkin’ introduced a limited-edition “I Dough” ring box, which contains a Wedding Cake MUNCHKIN, and also launched new Wedding Cake MUNCHKINS, to celebrate National Proposal Day."
+            ],
+            "sample_close_descriptions": [
+                "Jubilant FoodWorks, the franchise partner for Dunkin' in India, has announced it will not renew its franchise agreement upon its expiration on December 31, 2026, leading to Dunkin's exit from the Indi",
+                "Jubilant FoodWorks Ltd (JFL) decided to exit its Dunkin’ franchise operations in India due to the brand's poor financial performance, contributing only 0.61% to JFL's FY25 revenue and posting a loss o",
+                "Dunkin' permanently closed its store at the Providence Place mall in early March 2026.",
+                "Major retailers in the United States are adopting mixed strategies for Easter Sunday 2026, with some operating during regular hours, others with reduced hours, and many choosing to close entirely. Thi",
+                "Dunkin' is considering exiting an entire market in 2026 after 14 years of operation, indicating a potential restructuring of its global presence."
+            ]
+        },
+        {
+            "slug": "planet_fitness",
+            "name": "Planet Fitness",
+            "org_neid": "05804494414640518906",
+            "n_events": 100,
+            "n_total": 100,
+            "categories": {
+                "Strategic partnership": 7,
+                "Launch of a new product": 13,
+                "Earnings call": 17,
+                "Corporate restructuring": 16,
+                "Analyst report": 19,
+                "Regulatory filing & compliance": 1,
+                "Major leadership change": 3,
+                "Significant legal judgement": 2,
+                "Personnel changes": 1,
+                "Market commentary": 6,
+                "New funding or investment": 13,
+                "Industry award": 1,
+                "Customer loss": 1
+            },
+            "open_keyword_hits": 16,
+            "close_keyword_hits": 0,
+            "sample_open_descriptions": [
+                "Trader Joe’s plans to open a new 12,506-square-foot store at 21364 Kuykendahl Road in Spring, Texas, within the Spring Town Center development. Construction is expected to start in June and finish in ",
+                "A 17-acre shopping center anchored by Sprouts Farmers Market at County Roads 491 and 486 is nearing completion, with the Sprouts store expected to open on May 29, 2026. The center will also include Lo",
+                "Planet Fitness, Inc. announced that it will report its first quarter results for the period ended March 31, 2026, before the market opens on Thursday, May 7, 2026, and will discuss these results on a ",
+                "NH Doughnut Co. is opening a new, improved location in Concord at 89 Fort Eddy Road, featuring a full kitchen, seating, and coffee options, replacing its previous downtown spot.",
+                "Pomerantz LLP launched an investor investigation into Planet Fitness, which introduces litigation risk and may pressure the stock until details and potential exposures are clarified."
+            ],
+            "sample_close_descriptions": []
+        },
+        {
+            "slug": "lululemon",
+            "name": "lululemon",
+            "org_neid": "08016528823221398967",
+            "n_events": 100,
+            "n_total": 100,
+            "categories": {
+                "Market commentary": 16,
+                "Earnings call": 10,
+                "Major leadership change": 7,
+                "Personnel changes": 3,
+                "Analyst report": 15,
+                "Regulatory filing & compliance": 2,
+                "Strategic partnership": 14,
+                "Corporate restructuring": 15,
+                "Launch of a new product": 6,
+                "Significant legal judgement": 4,
+                "Product delays": 4,
+                "Customer loss": 2,
+                "Change in government policy": 1,
+                "Industry award": 1
+            },
+            "open_keyword_hits": 9,
+            "close_keyword_hits": 2,
+            "sample_open_descriptions": [
+                "lululemon athletica inc. announced the launch of its 100th store in the EMEA region, expected to open in Poland on March 13. This marks a significant milestone in the company’s expansion strategy, whi",
+                "Piper Sandler expressed concerns about Lululemon Athletica Inc.'s product direction after reviewing the recently launched EasyFive denim collection.",
+                "lululemon athletica inc. launched a new line of high-performance gym wear called Unrestricted Power, designed specifically for heavy weightlifting and intense strength training. The new line is immedi",
+                "Shoe retailers are evolving their store designs in 2026 to create more comfortable and experiential shopping environments. This involves reducing on-floor inventory for open layouts, integrating shoes",
+                "Lululemon halted online sales of its new 'Get Low' line of yoga pants just three days after launching due to customer complaints about them being 'see-through' and 'not squat-proof'."
+            ],
+            "sample_close_descriptions": [
+                "DocuSign and Lululemon Athletica are scheduled to release their earnings reports after the closing bell on Wall Street.",
+                "lululemon athletica is projected to announce its Q4 2025 financial results after the market closes on Tuesday, March 17th, 2026. Analysts expect earnings of $4.74 per share and revenue of $3.5898 bill"
+            ]
+        },
+        {
+            "slug": "tesco",
+            "name": "Tesco",
+            "org_neid": "04042212589706048194",
+            "n_events": 100,
+            "n_total": 100,
+            "categories": {
+                "New funding or investment": 2,
+                "Market commentary": 31,
+                "Change in government policy": 13,
+                "Corporate restructuring": 11,
+                "Launch of a new product": 5,
+                "Analyst report": 5,
+                "Strategic partnership": 8,
+                "Earnings call": 4,
+                "Regulatory filing & compliance": 11,
+                "Insolvency": 1,
+                "Acts of war": 2,
+                "Major natural disaster": 2,
+                "Win of long-term, high-value contract": 1,
+                "Insider trading": 2,
+                "Layoffs": 1,
+                "Personnel changes": 1
+            },
+            "open_keyword_hits": 17,
+            "close_keyword_hits": 3,
+            "sample_open_descriptions": [
+                "Penneys announced plans to open its first store in Co Cavan, located on Main Street in Cavan town, occupying the existing Tesco site. This will be their 39th store in the Republic of Ireland and is ex",
+                "Tesco has confirmed it will open a new 2,422 sq ft store in Strabane, County Tyrone, Northern Ireland, before March 2027. This will be the first Tesco in West Tyrone and is expected to create up to 40",
+                "Tesco plans to open more than 70 Express stores by March 2027.",
+                "Tesco is undertaking an ambitious plan to expand its store network across the UK, including opening over 70 new Express stores and acquiring former Amazon Fresh locations, with a target completion bef",
+                "Tesco announced plans to open three new stores across Scotland, including a smaller Express store in Wallyford by March 2027, and two new superstores in Pitlochry and the Heartlands before the end of "
+            ],
+            "sample_close_descriptions": [
+                "Tesco Bank has decided to discontinue its Clubcard Pay+ service, which combined a debit card and a round-up savings account, for existing customers. The service will officially close on April 26, 2026",
+                "Supermarkets in Scotland will remain open as normal throughout the Easter weekend, including Easter Sunday, due to differing government policies regarding holiday trading hours. This contrasts with st",
+                "Major supermarkets, including Tesco, Waitrose, and Aldi, will close most of their large stores on Easter Sunday (April 5, 2026) due to legal obligations under the Sunday Trading Act 1994. Additionally"
+            ]
+        },
+        {
+            "slug": "booker",
+            "name": "Booker",
+            "org_neid": "01219319639364111140",
+            "n_events": 7,
+            "n_total": 7,
+            "categories": {
+                "Earnings call": 4,
+                "Personnel changes": 1,
+                "Corporate restructuring": 2
+            },
+            "open_keyword_hits": 0,
+            "close_keyword_hits": 1,
+            "sample_open_descriptions": [],
+            "sample_close_descriptions": [
+                "JET Restalrig in Edinburgh reopened after a six-month closure and major redevelopment, significantly enhancing its forecourt and convenience store offerings, including a full resurfacing, new pumps, i"
+            ]
+        },
+        {
+            "slug": "onestop",
+            "name": "One Stop",
+            "org_neid": "06878918399616010082",
+            "n_events": 4,
+            "n_total": 4,
+            "categories": {
+                "Insolvency": 1,
+                "Regulatory filing & compliance": 1,
+                "Corporate restructuring": 2
+            },
+            "open_keyword_hits": 0,
+            "close_keyword_hits": 2,
+            "sample_open_descriptions": [],
+            "sample_close_descriptions": [
+                "The One Stop shop located in Stanhope Road, Northampton, permanently ceased operations on Wednesday, March 25. The closure was reportedly influenced by persistent shoplifting incidents.",
+                "The Long Lane Post Office branch in Bexleyheath will permanently close on May 9 at 12:30 pm due to the resignation of its retail partner, One Stop, and the subsequent withdrawal of the premises for Po"
+            ]
+        },
+        {
+            "slug": "loblaw",
+            "name": "Loblaw",
+            "org_neid": "02370413029320802934",
+            "n_events": 100,
+            "n_total": 100,
+            "categories": {
+                "Corporate restructuring": 11,
+                "Dividend announcement": 6,
+                "Industry award": 2,
+                "Regulatory filing & compliance": 5,
+                "Earnings call": 8,
+                "Strategic partnership": 21,
+                "Mergers & acquisitions": 9,
+                "Market commentary": 14,
+                "Launch of a new product": 7,
+                "Cybersecurity breach": 1,
+                "New funding or investment": 5,
+                "Significant legal judgement": 6,
+                "Customer loss": 1,
+                "Acts of war": 1,
+                "Win of long-term, high-value contract": 1,
+                "Analyst report": 1,
+                "Technological breakthrough": 1
+            },
+            "open_keyword_hits": 13,
+            "close_keyword_hits": 4,
+            "sample_open_descriptions": [
+                "Kiddicare, a baby care brand designed and owned by New Zealanders, has officially launched its Ultra Dry Diapers range nationally in Canada. The products are now available at over 450 retail locations",
+                "Oatly Group AB announced the nationwide launch of three new oat drinks in Canada: Oatly Matcha Oat Drink, Oatly Organic Barista Edition Oat Drink, and Oatly 4 Ingredient Oat Drink, marking the company",
+                "Bio-K+ launched a new marketing campaign called 'Pain in the Gut' to highlight the impact of digestive discomfort and promote its probiotic products, which are now available nationwide at Loblaws and ",
+                "Righteous Gelato has officially launched its new line of Sorbetto Bars, a dairy-free, fruit-forward frozen treat, across Canada. These bars are initially available at Loblaws, Real Canadian Superstore",
+                "Loblaws, Zehrs, and Your Independent Grocer unveiled their new multi-channel 'FOODS FOR ALL THE MOODS' brand platform and campaign. This initiative aims to celebrate life's moments and provide food so"
+            ],
+            "sample_close_descriptions": [
+                "EQB Inc. received approval from the federal finance minister for its deal to acquire PC Financial from Loblaw Cos. Ltd. The acquisition, valued at $800 million in shares and cash, includes President’s",
+                "In connection with the closing of the PC Financial acquisition, EQB Inc. will enter into a long-term strategic commercial arrangement with Loblaw Companies Limited, becoming the exclusive financial pa",
+                "Loblaw Companies has announced its intention to enter into an automatic securities purchase plan (ASPP) to buy EQB shares ahead of the closing of the PC Financial transaction.",
+                "Loblaw Companies Limited entered into an agreement with EQB Inc. for EQB to acquire President's Choice Bank and certain other affiliated entities, collectively known as PC Financial. The closing is ex"
+            ]
+        }
+    ],
+    "summary": {
+        "total_events": 2539,
+        "open_keyword_total": 570,
+        "close_keyword_total": 171,
+        "likely_open_categories": ["Launch of a new product"],
+        "likely_close_categories": []
+    }
+}

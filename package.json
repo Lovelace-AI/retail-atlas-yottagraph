@@ -15,6 +15,7 @@
         "probe:coverage": "tsx scripts/probe-store-coverage.ts",
         "expand:areas": "tsx scripts/expand-area-neids.ts",
         "expand:retailers": "tsx scripts/expand-retailer-neids.ts",
+        "probe:event-categories": "tsx scripts/probe-event-categories.ts",
         "generate": "nuxt generate",
         "preview": "nuxt preview",
         "format": "prettier --write \"**/*.{js,ts,vue,json,md}\" --ignore-path .gitignore --ignore-path .prettierignore",
