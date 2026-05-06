@@ -135,3 +135,40 @@ export interface BuildManifest {
         csv_sha256: string;
     }>;
 }
+
+/**
+ * R7 — Analysis recipes. Each recipe produces a per-area score that drives
+ * the choropleth fill instead of the default store-count score. The map
+ * canvas + legend swap to a sequential or diverging color scale based on
+ * `RecipeResult.scale`.
+ */
+export type RecipeKey = 'none' | 'event_density' | 'opens_minus_closes' | 'co_occurrence';
+
+export interface RecipeAreaScore {
+    area_key: string;
+    score: number;
+    /** Tooltip context — the count side of a ratio (events for R7.1, opens for R7.2). */
+    numerator?: number;
+    /** Tooltip context — the denominator side (store_count for R7.1, closes for R7.2). */
+    denominator?: number;
+}
+
+export interface RecipeToolCall {
+    tool: string;
+    ms: number;
+    ok: boolean;
+}
+
+export interface RecipeResult {
+    recipe: RecipeKey;
+    generated_at: string;
+    scale: 'sequential' | 'diverging';
+    domain: [number, number];
+    /** Diverging only — the neutral midpoint. */
+    midpoint?: number;
+    scores: RecipeAreaScore[];
+    /** True when the result is a top-K subset (e.g. event-density fan-out). */
+    truncated?: boolean;
+    /** Per-tool MCP fan-out timing (Step 2/3 only). */
+    tool_calls?: RecipeToolCall[];
+}

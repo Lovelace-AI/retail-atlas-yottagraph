@@ -98,6 +98,7 @@
     import { computed, onMounted, onUnmounted, ref, shallowRef, watch } from 'vue';
 
     import { useAtlasData } from '~/composables/useAtlasData';
+    import { useAtlasRecipe } from '~/composables/useAtlasRecipe';
     import { useAtlasState } from '~/composables/useAtlasState';
     import type { AreaRecord, RetailerSummary, StoreRecord } from '~/types/retail';
 
@@ -127,6 +128,8 @@
         topologyObjectKey,
         retailers: retailersRef,
     } = useAtlasData();
+    // R7 — pull the active recipe's per-area score map, if any.
+    const { recipe, data: recipeData, scoresByKey: recipeScores } = useAtlasRecipe();
 
     const topology = shallowRef<any>(null);
     const areas = shallowRef<AreaRecord[]>([]);
@@ -221,14 +224,55 @@
         return max;
     });
 
-    function choroplethFill(score: number): string {
+    function sequentialFill(score: number, max: number): string {
         if (score <= 0) return 'rgba(40, 40, 40, 0.55)';
-        const max = maxScore.value || 1;
+        const m = max || 1;
         // sqrt scale to compress long-tail
-        const t = Math.sqrt(score / max);
+        const t = Math.sqrt(score / m);
         const lightness = 30 + t * 35;
         const alpha = 0.35 + t * 0.5;
         return `hsla(150, 70%, ${lightness}%, ${alpha})`;
+    }
+
+    /**
+     * Diverging fill — red for negative, neutral grey at zero, green for
+     * positive. Used by R7.1 (when a midpoint is set) and R7.2.
+     */
+    function divergingFill(score: number, domain: [number, number], midpoint = 0): string {
+        const [lo, hi] = domain;
+        if (!Number.isFinite(score)) return 'rgba(40, 40, 40, 0.55)';
+        if (score === midpoint) return 'rgba(60, 60, 60, 0.55)';
+        if (score < midpoint) {
+            const range = midpoint - lo || 1;
+            const t = Math.min(1, (midpoint - score) / range);
+            const lightness = 38 + (1 - t) * 12;
+            const alpha = 0.4 + t * 0.45;
+            return `hsla(0, 75%, ${lightness}%, ${alpha})`;
+        }
+        const range = hi - midpoint || 1;
+        const t = Math.min(1, (score - midpoint) / range);
+        const lightness = 32 + (1 - t) * 12;
+        const alpha = 0.4 + t * 0.45;
+        return `hsla(150, 70%, ${lightness}%, ${alpha})`;
+    }
+
+    /**
+     * Pick the right fill for the active recipe.
+     * - `none`: existing store-count sequential ramp.
+     * - recipe with `sequential` scale: shade by `score / domain[1]`.
+     * - recipe with `diverging` scale: red↔grey↔green about `midpoint`.
+     */
+    function recipeFill(areaKey: string, fallbackScore: number): string {
+        if (recipe.value === 'none' || !recipeData.value) {
+            return sequentialFill(fallbackScore, maxScore.value);
+        }
+        const entry = recipeScores.value.get(areaKey);
+        if (!entry) return 'rgba(40, 40, 40, 0.4)';
+        const r = recipeData.value;
+        if (r.scale === 'diverging') {
+            return divergingFill(entry.score, r.domain, r.midpoint ?? 0);
+        }
+        return sequentialFill(entry.score, r.domain[1] || 1);
     }
 
     interface RenderableArea {
@@ -277,15 +321,13 @@
             const name = area?.area_name ?? (f.properties as any)?.name ?? code;
             const region = area?.region ?? '';
             const neid = area?.neid;
+            const recipeEntry = recipeScores.value.get(pinKey);
+            const fillBase = recipeFill(pinKey, score);
             out.push({
                 area_key: pinKey,
                 id: code,
                 path: d,
-                fill: isPinned
-                    ? 'rgba(255, 215, 0, 0.55)'
-                    : isHovered
-                      ? choroplethFill(score * 1.15)
-                      : choroplethFill(score),
+                fill: isPinned ? 'rgba(255, 215, 0, 0.55)' : fillBase,
                 stroke: isPinned
                     ? '#ffd700'
                     : isHovered
@@ -295,11 +337,39 @@
                 pinned: isPinned,
                 hovered: isHovered,
                 haloed: isHaloed,
-                title: `${name}${region ? ', ' + region : ''} · ${score.toLocaleString()} stores${neid ? ' · NEID resolved' : ''}`,
+                title: tooltipFor(name, region, score, neid, recipeEntry),
             });
         }
         return out;
     });
+
+    function tooltipFor(
+        name: string,
+        region: string,
+        storeCount: number,
+        neid: string | null | undefined,
+        recipeEntry: { score: number; numerator?: number; denominator?: number } | undefined
+    ): string {
+        const head = `${name}${region ? ', ' + region : ''}`;
+        const baseStores = `${storeCount.toLocaleString()} stores`;
+        const haloMark = neid ? ' · NEID resolved' : '';
+        if (!recipeEntry || recipe.value === 'none') {
+            return `${head} · ${baseStores}${haloMark}`;
+        }
+        const ratio = recipeEntry.score.toFixed(2);
+        if (recipe.value === 'event_density') {
+            return `${head} · ${recipeEntry.numerator ?? 0} events / ${recipeEntry.denominator ?? 0} stores · density ${ratio}`;
+        }
+        if (recipe.value === 'opens_minus_closes') {
+            const opens = recipeEntry.numerator ?? 0;
+            const closes = recipeEntry.denominator ?? 0;
+            return `${head} · opens ${opens} / closes ${closes} · net ${recipeEntry.score >= 0 ? '+' : ''}${recipeEntry.score}`;
+        }
+        if (recipe.value === 'co_occurrence') {
+            return `${head} · ${recipeEntry.numerator ?? 0} primary × ${recipeEntry.denominator ?? 0} competitor · ${baseStores}`;
+        }
+        return `${head} · ${baseStores}${haloMark}`;
+    }
 
     const haloFeatures = computed<RenderableHalo[]>(() => {
         const out: RenderableHalo[] = [];

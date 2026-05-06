@@ -10,19 +10,29 @@
         </div>
         <div v-if="!collapsed" class="legend-body">
             <div class="legend-section">
-                <div class="legend-section-title">Choropleth</div>
+                <div class="legend-section-title">{{ rampTitle }}</div>
                 <div class="ramp-row">
                     <div class="ramp">
                         <span
-                            v-for="i in 6"
+                            v-for="(c, i) in rampCells"
                             :key="i"
                             class="ramp-cell"
-                            :style="{
-                                background: `hsla(150, 70%, ${30 + (i - 1) * 6}%, ${0.4 + (i - 1) * 0.1})`,
-                            }"
+                            :style="{ background: c }"
                         />
                     </div>
-                    <span class="muted mono">store density</span>
+                    <span class="muted mono">{{ rampLabel }}</span>
+                </div>
+                <div v-if="recipeData?.scale === 'diverging'" class="ramp-anchors mono muted">
+                    <span>{{ Math.round(recipeData.domain[0]) }}</span>
+                    <span>0</span>
+                    <span>+{{ Math.round(recipeData.domain[1]) }}</span>
+                </div>
+                <div v-else-if="recipeData" class="ramp-anchors mono muted">
+                    <span>0</span>
+                    <span>{{ Math.round(recipeData.domain[1]) }}</span>
+                </div>
+                <div v-if="recipeData?.truncated" class="muted mono notice">
+                    top-K subset (rural areas omitted)
                 </div>
             </div>
 
@@ -59,11 +69,13 @@
     import { computed, ref } from 'vue';
 
     import { useAtlasData } from '~/composables/useAtlasData';
+    import { useAtlasRecipe } from '~/composables/useAtlasRecipe';
     import { useAtlasState } from '~/composables/useAtlasState';
     import type { RetailerSummary } from '~/types/retail';
 
     const { activeRetailers, country } = useAtlasState();
     const { retailers } = useAtlasData();
+    const { recipe, data: recipeData } = useAtlasRecipe();
 
     const collapsed = ref(false);
 
@@ -79,6 +91,54 @@
         if (n < 10_000) return `${(n / 1_000).toFixed(1)}k`;
         return `${Math.round(n / 1_000)}k`;
     }
+
+    const rampTitle = computed(() => {
+        switch (recipe.value) {
+            case 'event_density':
+                return 'Event density (R7.1)';
+            case 'opens_minus_closes':
+                return 'Opens − closes (R7.2)';
+            case 'co_occurrence':
+                return 'Co-occurrence (R7.3)';
+            default:
+                return 'Choropleth';
+        }
+    });
+
+    const rampLabel = computed(() => {
+        switch (recipe.value) {
+            case 'event_density':
+                return 'events / store';
+            case 'opens_minus_closes':
+                return 'net opens';
+            case 'co_occurrence':
+                return 'primary × competitor';
+            default:
+                return 'store density';
+        }
+    });
+
+    /**
+     * Build the colored ramp swatches that match the active recipe.
+     * Sequential = single hue gradient; diverging = red ↔ grey ↔ green.
+     */
+    const rampCells = computed<string[]>(() => {
+        if (recipeData.value?.scale === 'diverging') {
+            return [
+                'hsla(0, 75%, 38%, 0.85)',
+                'hsla(0, 75%, 46%, 0.65)',
+                'hsla(0, 60%, 50%, 0.45)',
+                'rgba(60, 60, 60, 0.55)',
+                'hsla(150, 60%, 44%, 0.45)',
+                'hsla(150, 70%, 36%, 0.65)',
+                'hsla(150, 70%, 32%, 0.85)',
+            ];
+        }
+        return Array.from(
+            { length: 6 },
+            (_, i) => `hsla(150, 70%, ${30 + i * 6}%, ${0.4 + i * 0.1})`
+        );
+    });
 </script>
 
 <style scoped>
@@ -137,6 +197,19 @@
         display: flex;
         gap: 6px;
         align-items: center;
+    }
+
+    .ramp-anchors {
+        display: flex;
+        justify-content: space-between;
+        font-size: 0.65rem;
+        margin-top: 2px;
+        max-width: 110px;
+    }
+
+    .notice {
+        font-size: 0.65rem;
+        margin-top: 4px;
     }
 
     .retailer-rows,

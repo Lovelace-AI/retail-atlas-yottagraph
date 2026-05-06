@@ -6,6 +6,7 @@
             <AtlasLegend />
             <AtlasContextPanel />
         </div>
+        <AtlasRankingTable v-if="overlay === 'co_occurrence'" />
         <div class="footer-strip">
             <span class="mono">
                 <v-icon icon="mdi-map-marker-multiple" size="x-small" class="mr-1" />
@@ -34,6 +35,7 @@
     import AtlasControlRail from '~/components/AtlasControlRail.vue';
     import AtlasLegend from '~/components/AtlasLegend.vue';
     import AtlasMapCanvas from '~/components/AtlasMapCanvas.vue';
+    import AtlasRankingTable from '~/components/AtlasRankingTable.vue';
     import { useAtlasData } from '~/composables/useAtlasData';
     import { useAtlasState } from '~/composables/useAtlasState';
 
@@ -55,7 +57,7 @@
         ],
     });
 
-    const { activeRetailers, country, pinned, clearPin } = useAtlasState();
+    const { activeRetailers, country, overlay, pinned, clearPin } = useAtlasState();
     const { retailers, areas } = useAtlasData();
 
     const totalActiveStores = computed(() => {
