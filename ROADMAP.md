@@ -132,12 +132,11 @@ These weren't on the user's flagged list but were called out as "out of scope / 
 - **Today:** Server-side latency is captured (R-007). Client-side TTFR / panel-open-latency are not.
 - **Plan sketch:** Tiny `usePerfMarks` composable that wraps `performance.mark` / `performance.measure` and posts to PostHog (or any analytics provider) on key UI events: first canvas render, first context-panel open, recipe selection. ~half-day with the right SDK in place.
 
-### R-013 · Admin telemetry dashboard page
+### R-013 · Admin telemetry dashboard page — SHIPPED
 
 - **PRD:** R10 — "Weekly summary cron: top-10 most-clicked areas, top-10 slowest tools, panel cache hit-rate, invite-request count".
-- **Status:** `Queued, blocked-on-design`.
-- **Today:** [`/api/atlas/telemetry/summary`](server/api/atlas/telemetry/summary.get.ts) returns the data; nobody renders it.
-- **Plan sketch:** New `pages/admin/telemetry.vue` (RBAC-gated when Phase 5 auth lands; for now any logged-in user can hit it since auth is single-role per PRD R9.1). Vuetify table + a couple of `chroma-js`-backed sparklines. Half-day max.
+- **Status:** `Shipped` (this commit).
+- **Where it landed:** [`pages/admin/telemetry.vue`](pages/admin/telemetry.vue) renders the four KPI cards (count, cache hit-rate, p50, p95), per-endpoint breakdown, top retailers with proportional bars, by-country breakdown, and the most-recent 50 calls. Window selector (1h / 24h / 7d / 30d). [`composables/useTelemetrySummary.ts`](composables/useTelemetrySummary.ts) wraps the fetch. Auth-gated by the underlying API route's Auth0 cookie check; no RBAC yet (single-role per PRD R9.1). Empty-state copy explains the KV-not-configured path.
 
 ## Won't-fix / cancelled
 
