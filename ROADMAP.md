@@ -28,6 +28,7 @@ Deferred work, anchored to [`DESIGN.md`](DESIGN.md) and [`design/RETAIL_ATLAS_PR
 | **R-009** — Lift R7.1 event cap                          | SHIPPED. Adaptive two-pass (50→500) breaks leader-board ties for dense counties.                        |
 | **R-010** — Hover tooltip upgrade                        | SHIPPED. Native SVG `<title>` replaced with delegated Vue overlay tooltip in map canvas.                |
 | **R-012** — PostHog client-side perf marks               | SHIPPED. TTFR/TTFI + panel-open-latency emitted when PostHog client is present.                         |
+| **R-014** — Access-request email notification            | SHIPPED. Resend-backed best-effort email after successful access-request persist.                       |
 | **Phase 1 R9.1** — Auth + access                         | SHIPPED. /welcome marketing splash + access-request form + env allowlist gate on all API routes.        |
 | **Phase 4 R8** — Premium feeds                           | NOT STARTED.                                                                                            |
 | **Phase 5 R9.2 / saved state / DB cache**                | NOT STARTED.                                                                                            |
@@ -141,9 +142,10 @@ These weren't on the user's flagged list but were called out as "out of scope / 
 ### R-014 · Email-the-team on access-request submission
 
 - **PRD:** R9.1 — "stores submissions in `atlas_access_requests` table + emails the Atlas team".
-- **Status:** `Queued`.
-- **Today:** [`server/api/atlas/access-request.post.ts`](server/api/atlas/access-request.post.ts) writes to Upstash. The "email the team" half is deferred — no transactional email provider is wired into the project yet.
-- **Plan sketch:** Pick a provider (Resend / Postmark / SendGrid), add a server-only env (`ATLAS_NOTIFY_EMAIL`, `RESEND_API_KEY`), fire-and-forget after the LPUSH succeeds. ~half-day with the SDK in place.
+- **Status:** `Shipped`.
+- **Where it landed:** [`server/utils/accessRequestNotify.ts`](server/utils/accessRequestNotify.ts) + [`server/api/atlas/access-request.post.ts`](server/api/atlas/access-request.post.ts). After a successful LPUSH/LTRIM, the route sends a best-effort notification email through Resend (`https://api.resend.com/emails`).
+- **Env:** `RESEND_API_KEY`, `ATLAS_NOTIFY_EMAIL`, optional `ATLAS_NOTIFY_FROM` (defaults to `onboarding@resend.dev`).
+- **Degrade path:** missing env or provider failure never fails the submit endpoint; response still returns `ok: true` with `notified: false`.
 
 ### R-013 · Admin telemetry dashboard page — SHIPPED
 

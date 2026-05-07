@@ -6,11 +6,15 @@
  * `atlas:access-requests:v1`. Reading is admin-only via the companion
  * GET endpoint.
  *
- * No email-the-team integration today — track as R-014 in the roadmap.
- * If KV isn't configured, returns success but logs a warning so the form
- * doesn't break local dev.
+ * R-014: after successful persist, this route also sends a best-effort
+ * notification email via Resend when `RESEND_API_KEY` and
+ * `ATLAS_NOTIFY_EMAIL` are configured.
+ *
+ * If KV isn't configured, returns success but logs a warning so local dev
+ * doesn't break.
  */
 
+import { notifyAccessRequest, type AccessRequestRecord } from '../../utils/accessRequestNotify';
 import { getRedis } from '../../utils/redis';
 
 const LIST_KEY = 'atlas:access-requests:v1';
@@ -22,16 +26,6 @@ interface AccessRequestBody {
     company?: string;
     note?: string;
     source?: string;
-}
-
-interface StoredRecord {
-    ts: string;
-    email: string;
-    name: string;
-    company: string;
-    note: string;
-    source: string;
-    ip: string | null;
 }
 
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -57,7 +51,7 @@ export default defineEventHandler(async (event) => {
     const xff = getRequestHeader(event, 'x-forwarded-for') ?? '';
     const ip = xff.split(',')[0].trim() || null;
 
-    const record: StoredRecord = {
+    const record: AccessRequestRecord = {
         ts: new Date().toISOString(),
         email,
         name,
@@ -72,14 +66,18 @@ export default defineEventHandler(async (event) => {
         console.warn(
             '[access-request] KV not configured (KV_REST_API_URL/_TOKEN missing); request not persisted'
         );
-        return { ok: true, persisted: false };
+        return { ok: true, persisted: false, notified: false };
     }
     try {
         await redis.lpush(LIST_KEY, JSON.stringify(record));
         await redis.ltrim(LIST_KEY, 0, MAX_LEN - 1);
-        return { ok: true, persisted: true };
+        const notified = await notifyAccessRequest(event, record);
+        if (!notified.sent && notified.attempted) {
+            console.warn(`[access-request] notify failed: ${notified.reason ?? 'unknown'}`);
+        }
+        return { ok: true, persisted: true, notified: notified.sent };
     } catch (err) {
         console.error('[access-request] persist failed', err);
-        return { ok: true, persisted: false };
+        return { ok: true, persisted: false, notified: false };
     }
 });

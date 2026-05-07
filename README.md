@@ -102,15 +102,18 @@ Push to `main` → Vercel auto-deploys. The `prebuild` hook regenerates `public/
 
 `broadchurch.yaml` is the source of truth for tenant config. `init-project.js --local` derives `.env` from it. For Vercel deploys, mirror these in the project's environment-variable settings:
 
-| Var                         | Source              | Purpose                                                        |
-| --------------------------- | ------------------- | -------------------------------------------------------------- |
-| `NUXT_PUBLIC_GATEWAY_URL`   | `broadchurch.yaml`  | Lovelace gateway base URL                                      |
-| `NUXT_PUBLIC_TENANT_ORG_ID` | `broadchurch.yaml`  | Tenant id (path segment in MCP routes)                         |
-| `NUXT_PUBLIC_QS_API_KEY`    | `broadchurch.yaml`  | Query Server / gateway API key                                 |
-| `NUXT_PUBLIC_AUTH0_*`       | `broadchurch.yaml`  | Auth0 SPA config                                               |
-| `KV_REST_API_URL`           | Vercel KV / Upstash | R-001 cache + R-007 telemetry + R9.1 access requests; optional |
-| `KV_REST_API_TOKEN`         | Vercel KV / Upstash | …same. All helpers no-op gracefully when unset.                |
-| `ATLAS_ALLOWLIST`           | hand-curated        | R9.1 invite-list — comma-separated emails. Empty = no gate.    |
+| Var                         | Source               | Purpose                                                        |
+| --------------------------- | -------------------- | -------------------------------------------------------------- |
+| `NUXT_PUBLIC_GATEWAY_URL`   | `broadchurch.yaml`   | Lovelace gateway base URL                                      |
+| `NUXT_PUBLIC_TENANT_ORG_ID` | `broadchurch.yaml`   | Tenant id (path segment in MCP routes)                         |
+| `NUXT_PUBLIC_QS_API_KEY`    | `broadchurch.yaml`   | Query Server / gateway API key                                 |
+| `NUXT_PUBLIC_AUTH0_*`       | `broadchurch.yaml`   | Auth0 SPA config                                               |
+| `KV_REST_API_URL`           | Vercel KV / Upstash  | R-001 cache + R-007 telemetry + R9.1 access requests; optional |
+| `KV_REST_API_TOKEN`         | Vercel KV / Upstash  | …same. All helpers no-op gracefully when unset.                |
+| `ATLAS_ALLOWLIST`           | hand-curated         | R9.1 invite-list — comma-separated emails. Empty = no gate.    |
+| `RESEND_API_KEY`            | Resend               | R-014 access-request email notification provider key.          |
+| `ATLAS_NOTIFY_EMAIL`        | your ops mailbox     | R-014 notification destination (who gets new access requests). |
+| `ATLAS_NOTIFY_FROM`         | Resend-verified from | Optional sender; defaults to `onboarding@resend.dev`.          |
 
 ## How the data flows
 
