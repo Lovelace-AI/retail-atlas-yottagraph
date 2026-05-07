@@ -29,6 +29,7 @@ Deferred work, anchored to [`DESIGN.md`](DESIGN.md) and [`design/RETAIL_ATLAS_PR
 | **R-010** — Hover tooltip upgrade                        | SHIPPED. Native SVG `<title>` replaced with delegated Vue overlay tooltip in map canvas.                |
 | **R-012** — PostHog client-side perf marks               | SHIPPED. TTFR/TTFI + panel-open-latency emitted when PostHog client is present.                         |
 | **R-014** — Access-request email notification            | SHIPPED. Resend-backed best-effort email after successful access-request persist.                       |
+| **R-015** — Neon location + analytics store              | IN PROGRESS. Phase A schema/setup/load/parity tooling shipped; runtime still JSON-first.                |
 | **Phase 1 R9.1** — Auth + access                         | SHIPPED. /welcome marketing splash + access-request form + env allowlist gate on all API routes.        |
 | **Phase 4 R8** — Premium feeds                           | NOT STARTED.                                                                                            |
 | **Phase 5 R9.2 / saved state / DB cache**                | NOT STARTED.                                                                                            |
@@ -87,8 +88,9 @@ These weren't on the user's flagged list but were called out as "out of scope / 
 ### R-006 · NER-backed area attribution for R7.2
 
 - **PRD:** R7.2 fallback — "parse `events.summary` text for open/close keywords".
-- **Status:** `Blocked-on-design`.
-- **Today:** [`server/api/atlas/recipe/opens-closes.post.ts`](server/api/atlas/recipe/opens-closes.post.ts) attributes events to areas via zero-padded participant NEID match only. A description-text fallback was prototyped and removed because "McDonald's" the brand collides with "McDonald County, MO" any time the company is named. Result: R7.2 is sparse but trustworthy.
+- **Status:** `Blocked-on-design` (partial heuristic shipped).
+- **Today:** [`server/api/atlas/recipe/opens-closes.post.ts`](server/api/atlas/recipe/opens-closes.post.ts) still attributes primarily via zero-padded participant NEID match, but now includes a **guarded US-only text fallback** when participants miss: explicit `"<area suffix>, <ST>"` mentions (e.g. `"Fulton County, GA"`) are mapped to `areas.json` keys. This is intentionally strict to avoid brand/county collisions like `"McDonald's"` vs `"McDonald County"`.
+- **Remaining gap:** This is not full NER and does not cover UK/CA text attribution. For richer recall we still need either graph-side location relationships on events or an actual NER pass.
 - **Plan sketch:** Use `elemental_get_entity` per event-NEID with a richer property fetch and look for explicit location-flavored relationships, OR run a secondary pass through a real NER model (spaCy / OpenAI / etc.) on the description string with the area-name list as an anchor vocabulary. Reject candidates that look like company names (cross-check against `retailer_neids.json`). See [`design/RECIPES.md`](design/RECIPES.md) for the full caveat list.
 - **Effort:** ~3 days for an MCP-side fix if Lovelace can promote location attribution; ~1 person-week for in-app NER.
 
@@ -146,6 +148,24 @@ These weren't on the user's flagged list but were called out as "out of scope / 
 - **Where it landed:** [`server/utils/accessRequestNotify.ts`](server/utils/accessRequestNotify.ts) + [`server/api/atlas/access-request.post.ts`](server/api/atlas/access-request.post.ts). After a successful LPUSH/LTRIM, the route sends a best-effort notification email through Resend (`https://api.resend.com/emails`).
 - **Env:** `RESEND_API_KEY`, `ATLAS_NOTIFY_EMAIL`, optional `ATLAS_NOTIFY_FROM` (defaults to `onboarding@resend.dev`).
 - **Degrade path:** missing env or provider failure never fails the submit endpoint; response still returns `ok: true` with `notified: false`.
+
+### R-015 · Neon-backed store-location + analytics substrate
+
+- **PRD tie-in:** Phase 5 R9.2 (saved state / DB cache) and broader production-hardening for recipe surfaces.
+- **Status:** `In progress` (Phase A shipped).
+- **Today:** Store locations and area aggregates are generated from CSVs into `public/data/retail_atlas/*.json` and loaded client-side; recipe calculations are mostly runtime fan-out (`elemental_get_events`) + in-memory arithmetic, with Upstash KV used only for cache/telemetry/session-like state.
+- **Phase A landed:** Neon utility + schema setup + backfill + parity tooling:
+    - [`server/utils/neon.ts`](server/utils/neon.ts) — `getDb()`, `ensureAtlasTables()`, `ensureAtlasTablesOnce()`.
+    - [`server/api/db/atlas-setup.post.ts`](server/api/db/atlas-setup.post.ts) — auth-gated table bootstrap route.
+    - [`scripts/db-atlas-setup.ts`](scripts/db-atlas-setup.ts), [`scripts/load-neon-atlas.ts`](scripts/load-neon-atlas.ts), [`scripts/report-neon-parity.ts`](scripts/report-neon-parity.ts).
+    - npm commands: `db:atlas:setup`, `db:atlas:load`, `db:atlas:parity`.
+- **Why this item exists:** File-based JSON is fast to ship but weak for ad-hoc analytics, incremental refreshes, lineage/versioning, and server-side aggregate queries (e.g., precomputed top-N by viewport, historical deltas, materialized recipe baselines).
+- **Plan sketch:**
+    1. Add Neon tables for `atlas_retailers`, `atlas_areas`, `atlas_stores` (+ build/version metadata).
+    2. Add optional materialized aggregate tables for recipe helper metrics (per-area store vectors, rolling event counters, opens/closes deltas by window).
+    3. Keep JSON as fallback while dual-writing/dual-reading behind a feature flag.
+    4. Migrate heavy server endpoints to DB-backed reads where latency/cost wins are clear.
+- **Dependencies:** Neon credentials provisioned in runtime env; schema/migration ownership decision; backfill job from current JSON substrate.
 
 ### R-013 · Admin telemetry dashboard page — SHIPPED
 

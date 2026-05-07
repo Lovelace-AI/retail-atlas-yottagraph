@@ -100,6 +100,9 @@ const OPEN_REGEX =
     /\b(open|opens|opened|opening|launch|launches|launched|launching|debut|debuted|new\s+location|new\s+store|grand\s+opening|reopen|reopens)\b/i;
 const CLOSE_REGEX =
     /\b(close|closes|closed|closing|closure|shutter|shutters|liquidat|exit|exits|exited|wind\s+down|cease)\b/i;
+const ENABLE_US_TEXT_FALLBACK = true;
+const US_AREA_MENTION_RE =
+    /\b([a-z0-9'.-]+(?:\s+[a-z0-9'.-]+)*)\s+(county|parish|borough|municipality|census\s+area),\s*([a-z]{2})\b/gi;
 
 let _areasCache: AreaRecord[] | null = null;
 function loadAreas(): AreaRecord[] {
@@ -242,18 +245,39 @@ async function runOpensCloses(body: RequestBody, retailers: string[]): Promise<R
     // unpadded (18-19 chars). We pad before lookup.
     const allAreas = loadAreas();
     const areaByNeid = new Map<string, AreaRecord>();
-    /** Lowercase area name → AreaRecord, for description-text fallback when
-     *  events don't carry a county-level participant (most retailer-level
-     *  events don't). Multiple areas can share a name (e.g. "Springfield"
-     *  exists in many states); the map keeps the last write. */
-    const areaByLowerName = new Map<string, AreaRecord>();
+    const areaByUSNameRegion = new Map<string, AreaRecord>();
     for (const a of allAreas) {
         if (a.country !== body.country) continue;
         if (a.neid) areaByNeid.set(a.neid, a);
-        if (a.area_name) areaByLowerName.set(a.area_name.toLowerCase(), a);
+        if (body.country === 'US' && a.area_name && a.region) {
+            areaByUSNameRegion.set(`${norm(a.area_name)}|${a.region.toLowerCase()}`, a);
+        }
     }
     function padNeid(neid: string): string {
         return neid.padStart(20, '0');
+    }
+    function norm(s: string): string {
+        return s
+            .toLowerCase()
+            .replace(/[^a-z0-9\s]/g, ' ')
+            .replace(/\s+/g, ' ')
+            .trim();
+    }
+    function extractUSAreaMentions(text: string): Set<string> {
+        const out = new Set<string>();
+        if (!ENABLE_US_TEXT_FALLBACK || body.country !== 'US' || !text) return out;
+        US_AREA_MENTION_RE.lastIndex = 0;
+        let m: RegExpExecArray | null = null;
+        while ((m = US_AREA_MENTION_RE.exec(text)) !== null) {
+            const core = m[1] ?? '';
+            const suffix = m[2] ?? '';
+            const state = (m[3] ?? '').toUpperCase();
+            if (!core || !suffix || !state) continue;
+            const areaName = `${core} ${suffix}`;
+            const hit = areaByUSNameRegion.get(`${norm(areaName)}|${state.toLowerCase()}`);
+            if (hit) out.add(hit.area_key);
+        }
+        return out;
     }
 
     const timeRange = timeRangeFor(body.time_window);
@@ -261,6 +285,7 @@ async function runOpensCloses(body: RequestBody, retailers: string[]): Promise<R
     // Per-area accumulators: opens, closes
     const opens = new Map<string, number>();
     const closes = new Map<string, number>();
+    let textFallbackAttributions = 0;
     const inc = (m: Map<string, number>, key: string) => m.set(key, (m.get(key) ?? 0) + 1);
 
     // Fan out one MCP session, all retailers in parallel up to CONCURRENCY.
@@ -302,15 +327,19 @@ async function runOpensCloses(body: RequestBody, retailers: string[]): Promise<R
                                 if (a) matchedAreas.add(a.area_key);
                             }
 
-                            // Description-text fallback was tested and trips
-                            // a major false-positive class: "McDonald's" the
-                            // brand collides with "McDonald County, MO" any
-                            // time the event mentions the company by name
-                            // (and similarly for Lake/Hill/King/Polk-style
-                            // common county names). We trade sparser but
-                            // trustworthy signal over false-positive noise.
-                            // Re-enable once we have proper area NER (Phase
-                            // 1.5+).
+                            // Guarded text fallback (US only): only accept
+                            // explicit mentions shaped like
+                            // "Foo County, ST" / "Bar Parish, ST". This avoids
+                            // the old false-positive class where brand names
+                            // collide with county names (e.g. "McDonald's"
+                            // vs "McDonald County") because suffix+state are
+                            // both required.
+                            if (matchedAreas.size === 0) {
+                                const text = `${ev.name ?? ''} ${ev.properties?.description?.value ?? ''}`;
+                                const fromText = extractUSAreaMentions(text);
+                                for (const ak of fromText) matchedAreas.add(ak);
+                                textFallbackAttributions += fromText.size;
+                            }
 
                             for (const ak of matchedAreas) {
                                 if (sig === 1) inc(opens, ak);
@@ -323,6 +352,14 @@ async function runOpensCloses(body: RequestBody, retailers: string[]): Promise<R
         }
         await Promise.all(workers);
     });
+
+    if (ENABLE_US_TEXT_FALLBACK && body.country === 'US') {
+        tool_calls.push({
+            tool: `attribution:text-fallback:${textFallbackAttributions}`,
+            ms: 0,
+            ok: true,
+        });
+    }
 
     // Build scores. Domain mirrored about zero so the midpoint is centered.
     const scores: RecipeAreaScore[] = [];

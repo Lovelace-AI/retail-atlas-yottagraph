@@ -84,6 +84,9 @@ npm run format            # Prettier (always run before committing — pre-commi
 npm run build:data        # CSV → JSON; runs automatically on `build`
 npm run build:topojson    # Re-fetch boundaries (rare; data refresh only)
 npm run build:coverage    # Regenerate COVERAGE.md from the report JSONs
+npm run db:atlas:setup    # Create Neon Atlas tables (R-015 Phase A)
+npm run db:atlas:load     # Backfill Neon from public/data/retail_atlas/*.json
+npm run db:atlas:parity   # Compare Neon row counts vs JSON substrate
 
 npm run expand:areas      # Resolve admin-area NEIDs (idempotent; ~7 min for 3,601)
 npm run expand:retailers  # Resolve parent-corp NEIDs (~30 retailers, ~30 s)
@@ -102,18 +105,19 @@ Push to `main` → Vercel auto-deploys. The `prebuild` hook regenerates `public/
 
 `broadchurch.yaml` is the source of truth for tenant config. `init-project.js --local` derives `.env` from it. For Vercel deploys, mirror these in the project's environment-variable settings:
 
-| Var                         | Source               | Purpose                                                        |
-| --------------------------- | -------------------- | -------------------------------------------------------------- |
-| `NUXT_PUBLIC_GATEWAY_URL`   | `broadchurch.yaml`   | Lovelace gateway base URL                                      |
-| `NUXT_PUBLIC_TENANT_ORG_ID` | `broadchurch.yaml`   | Tenant id (path segment in MCP routes)                         |
-| `NUXT_PUBLIC_QS_API_KEY`    | `broadchurch.yaml`   | Query Server / gateway API key                                 |
-| `NUXT_PUBLIC_AUTH0_*`       | `broadchurch.yaml`   | Auth0 SPA config                                               |
-| `KV_REST_API_URL`           | Vercel KV / Upstash  | R-001 cache + R-007 telemetry + R9.1 access requests; optional |
-| `KV_REST_API_TOKEN`         | Vercel KV / Upstash  | …same. All helpers no-op gracefully when unset.                |
-| `ATLAS_ALLOWLIST`           | hand-curated         | R9.1 invite-list — comma-separated emails. Empty = no gate.    |
-| `RESEND_API_KEY`            | Resend               | R-014 access-request email notification provider key.          |
-| `ATLAS_NOTIFY_EMAIL`        | your ops mailbox     | R-014 notification destination (who gets new access requests). |
-| `ATLAS_NOTIFY_FROM`         | Resend-verified from | Optional sender; defaults to `onboarding@resend.dev`.          |
+| Var                         | Source               | Purpose                                                          |
+| --------------------------- | -------------------- | ---------------------------------------------------------------- |
+| `NUXT_PUBLIC_GATEWAY_URL`   | `broadchurch.yaml`   | Lovelace gateway base URL                                        |
+| `NUXT_PUBLIC_TENANT_ORG_ID` | `broadchurch.yaml`   | Tenant id (path segment in MCP routes)                           |
+| `NUXT_PUBLIC_QS_API_KEY`    | `broadchurch.yaml`   | Query Server / gateway API key                                   |
+| `NUXT_PUBLIC_AUTH0_*`       | `broadchurch.yaml`   | Auth0 SPA config                                                 |
+| `KV_REST_API_URL`           | Vercel KV / Upstash  | R-001 cache + R-007 telemetry + R9.1 access requests; optional   |
+| `KV_REST_API_TOKEN`         | Vercel KV / Upstash  | …same. All helpers no-op gracefully when unset.                  |
+| `ATLAS_ALLOWLIST`           | hand-curated         | R9.1 invite-list — comma-separated emails. Empty = no gate.      |
+| `RESEND_API_KEY`            | Resend               | R-014 access-request email notification provider key.            |
+| `ATLAS_NOTIFY_EMAIL`        | your ops mailbox     | R-014 notification destination (who gets new access requests).   |
+| `ATLAS_NOTIFY_FROM`         | Resend-verified from | Optional sender; defaults to `onboarding@resend.dev`.            |
+| `DATABASE_URL`              | Vercel Postgres/Neon | R-015 Neon substrate (Phase A tooling + future DB-backed reads). |
 
 ## How the data flows
 

@@ -13,6 +13,9 @@
         "build:data": "tsx scripts/build-retail-data.ts",
         "build:topojson": "tsx scripts/fetch-topojson.ts",
         "build:coverage": "tsx scripts/build-coverage.ts",
+        "db:atlas:setup": "tsx scripts/db-atlas-setup.ts",
+        "db:atlas:load": "tsx scripts/load-neon-atlas.ts",
+        "db:atlas:parity": "tsx scripts/report-neon-parity.ts",
         "probe:coverage": "tsx scripts/probe-store-coverage.ts",
         "expand:areas": "tsx scripts/expand-area-neids.ts",
         "expand:retailers": "tsx scripts/expand-retailer-neids.ts",
@@ -33,6 +36,7 @@
     "dependencies": {
         "@hapi/iron": "^7.0.1",
         "@modelcontextprotocol/sdk": "^1.29.0",
+        "@neondatabase/serverless": "^1.1.0",
         "@tanstack/vue-virtual": "^3.13.8",
         "@upstash/redis": "^1.37.0",
         "@yottagraph-app/elemental-api": "^1.1.7",

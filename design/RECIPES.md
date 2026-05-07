@@ -58,8 +58,9 @@ Per-area: `score = opens − closes`. Domain mirrored about zero so reds and gre
 
 Per the step-3a probe, the Elemental knowledge graph does NOT carry a discrete "Store opening" / "Store closure" event category — only "Launch of a new product" matched. The keyword fallback is the primary signal source. Two known limits:
 
-1. **Most retailer-level events do not carry county-granularity participants.** A retailer's event feed often surfaces with the retailer org plus state-level locations (e.g. "California") which don't match our county-keyed `areas.json`. Result: most areas show zero score. Areas that DO show a score are reliable; absent score does not mean "no activity".
-2. **A description-text fallback was prototyped and removed.** Matching event-description text against `area_name` strings tripped a major false-positive class — "McDonald's" the brand collides with "McDonald County, MO" any time the company is named, similarly for Lake/Hill/King/Polk-style common county names. Without proper area-name NER, participant-NEID matching is the only reliable attribution path. Re-enable once we have NER (Phase 1.5+).
+1. **Most retailer-level events do not carry county-granularity participants.** A retailer's event feed often surfaces with the retailer org plus state-level locations (e.g. "California") which don't match our county-keyed `areas.json`. Result: many areas still show zero score even after fallback. Areas that do show a score remain trustworthy; absent score does not mean "no activity".
+2. **Guarded text fallback is now US-only and strict.** If participant attribution yields zero matches, we run a conservative text parser that only accepts explicit `"<area suffix>, <state code>"` phrases (e.g., `"Fulton County, GA"`, `"McDonald County, MO"`). This avoids the old false-positive class where bare county names collide with brand terms (for example `"McDonald's"` vs `"McDonald County"`). It improves recall modestly without opening the broad ambiguity floodgate.
+3. **Full area-name NER is still deferred.** UK/CA text attribution and fuzzy US text attribution remain out of scope until a proper NER pass lands (R-006).
 
 ## URL serialization (R7.4)
 
